@@ -2,9 +2,16 @@ import React from 'react'
 import Colors from '@theme/colors'
 
 // components
-import { Box, Typography } from '@mui/material'
+import {
+  Box,
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@mui/material'
+import { ExpandMore as IconExpandMore } from '@mui/icons-material'
 
-export type Props = { isLandingPage?: boolean }
+export type Props = {}
 
 const Header: React.FC<Props> = () => {
   return (
@@ -12,15 +19,14 @@ const Header: React.FC<Props> = () => {
       <Box
         sx={{
           width: '100%',
-          // height: '40px',
-          py: 1,
+          height: 40,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          bgcolor: '#587597',
+          bgcolor: Colors.primary,
         }}
       >
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Box sx={{ width: 20, height: 35, ml: 2 }}>
             <img
               src="/img/shutis.svg"
@@ -31,12 +37,14 @@ const Header: React.FC<Props> = () => {
           </Box>
           <Box sx={{ width: 180 }}>
             <Typography
+              variant="body2"
               sx={{
                 fontFamily: 'Arial, Helvetica, sans-serif',
                 fontSize: '10px',
                 fontWeight: 700,
-                color: 'white',
+                color: Colors.mainWhite,
                 textAlign: 'center',
+                lineheight: '10px',
               }}
             >
               ШИНЖЛЭХ УХААН ТЕХНОЛОГИЙН ИХ СУРГУУЛЬ
@@ -44,16 +52,60 @@ const Header: React.FC<Props> = () => {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ bgcolor: '#E9E9E9', py: 1 }}>
-        <Typography
+      <Box
+        sx={{
+          bgcolor: Colors.cardBg,
+          height: 23,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderBottom: '1px solid #D5D5D5',
+        }}
+      >
+        <Box
           sx={{
-            color: '#333333',
-            fontFamily: 'Arial, Helvetica, sans-serif',
-            fontSize: '11px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: 218,
+            // borderRight: '1px solid #D5D5D5',
           }}
         >
-          Гарах
-        </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              fontFamily: 'Arial, Helvetica, sans-serif',
+              fontSize: '11px',
+              color: Colors.textBlack,
+              ml: 2,
+            }}
+          >
+            Сайн байна уу С.Хулан
+          </Typography>
+          <IconExpandMore />
+        </Box>
+        <Box
+          sx={{
+            width: 80,
+            height: 23,
+            borderLeft: '1px solid #D5D5D5',
+            borderRight: '1px solid #D5D5D5',
+            mr: 2,
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography
+            sx={{
+              color: Colors.textBlack,
+              fontFamily: 'Arial, Helvetica, sans-serif',
+              fontSize: '11px',
+              textTransform: 'initial',
+            }}
+          >
+            Гарах
+          </Typography>
+        </Box>
       </Box>
     </Box>
   )
