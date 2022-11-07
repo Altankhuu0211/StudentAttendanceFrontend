@@ -35,51 +35,45 @@ export default createTheme({
     },
   },
   typography: {
-    fontFamily: 'Roboto',
-    // h1: {
-    //   fontSize: 28,
-    //   fontWeight: 600,
-    // },
-    // h2: {
-    //   fontSize: 22,
-    //   fontWeight: 500,
-    // },
-    // h3: {
-    //   fontSize: 24,
-    //   lineHeight: '32px',
-    //   fontWeight: 700,
-    // },
-    // h4: {
-    //   fontSize: 16,
-    //   fontWeight: 600,
-    //   lineHeight: '24px',
-    // },
-    // h5: {
-    //   fontSize: 20,
-    //   fontWeight: 700,
-    //   lineHeight: '24px',
-    // },
-    // h6: {
-    //   fontSize: 16,
-    //   fontWeight: 600,
-    //   lineHeight: '20px',
-    // },
-    // body1: {
-    //   fontSize: 16,
-    //   fontWeight: 400,
-    //   lineHeight: '28px',
-    // },
-    // body2: {
-    //   fontSize: 14,
-    //   lineHeight: '16px',
-    //   fontWeight: 400,
-    // },
-    // overline: {
-    //   fontSize: '14px',
-    //   lineHeight: '22px',
-    //   fontWeight: 400,
-    //   textTransform: 'initial',
-    // },
+    fontFamily: 'Arial, Helvetica, sans-serif',
+    h1: {
+      fontSize: 28,
+      fontWeight: 600,
+    },
+    h2: {
+      fontSize: 24,
+      fontWeight: 500,
+    },
+    h3: {
+      fontSize: 22,
+      fontWeight: 700,
+    },
+    h4: {
+      fontSize: 20,
+      fontWeight: 600,
+    },
+    h5: {
+      fontSize: 18,
+      fontWeight: 700,
+    },
+    h6: {
+      fontSize: 16,
+      fontWeight: 600,
+    },
+    body1: {
+      fontSize: 12,
+      fontWeight: 400,
+    },
+    body2: {
+      fontSize: 11,
+      fontWeight: 400,
+    },
+    overline: {
+      fontSize: '14px',
+      lineHeight: '22px',
+      fontWeight: 400,
+      textTransform: 'initial',
+    },
   },
 })
 

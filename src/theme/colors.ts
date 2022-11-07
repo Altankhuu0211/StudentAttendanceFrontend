@@ -1,7 +1,9 @@
 const Colors = {
-  primary: '#FFCB05', //must be your primary color
+  primary: '#587597',
   mainBlack: '#050E1E',
-  cardBg: '#F7F8FA', //form bgcolor
+  mainWhite: '#FFFFFF',
+  cardBg: '#E9E9E9',
+  textBlack: '#333333',
 }
 
 export default Colors
