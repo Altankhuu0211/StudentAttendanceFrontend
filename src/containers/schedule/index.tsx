@@ -19,7 +19,7 @@ import { tableCellClasses } from '@mui/material/TableCell'
 
 // constants
 import { PART_TIME, WEEKDAY, CLASS_TYPE } from '@constants/common'
-moment.locale('mn')
+
 type Props = {}
 
 const ScheduleContainer: React.FC<Props> = () => {

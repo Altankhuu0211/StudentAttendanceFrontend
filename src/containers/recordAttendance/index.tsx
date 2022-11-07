@@ -26,10 +26,9 @@ import {
   Paper,
 } from '@mui/material'
 import { tableCellClasses } from '@mui/material/TableCell'
+import { ATTENDANCE_STATUS } from '@constants/common'
 
 // constants
-
-moment.locale('mn')
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -50,11 +49,11 @@ const StyledTableRow = styled(TableRow)(() => ({
 type Props = {}
 
 const RecordAttendanceContainer: React.FC<Props> = () => {
-  const [selectSubject, setSelectSubject] = useState('')
-  const [selectLecture, setSelectLecture] = useState('')
-  const [selectSeminar, setSelectSeminar] = useState('')
-  const [selectLaboratory, setSelectLaboratory] = useState('')
-  const [selectAssignment, setSelectAssignment] = useState('')
+  const [selectSubject, setSelectSubject] = useState('none')
+  const [selectLecture, setSelectLecture] = useState('none')
+  const [selectSeminar, setSelectSeminar] = useState('none')
+  const [selectLaboratory, setSelectLaboratory] = useState('none')
+  const [selectAssignment, setSelectAssignment] = useState('none')
 
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)
@@ -93,6 +92,13 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const handleClick = () => {
     setSearchText('')
+  }
+
+  const handleChangeStatus = (
+    event: SelectChangeEvent<string>,
+    index: number
+  ) => {
+    console.log(event.target.value, index)
   }
 
   useEffect(() => {
@@ -180,7 +186,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             <Typography
               variant="body2"
               sx={{
-                color: 'yellow',
+                color: 'cyan',
                 whiteSpace: 'pre-line',
                 textAlign: 'center',
               }}
@@ -305,6 +311,78 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     )
   }
 
+  const renderFilterPanel = () => {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          p: 2,
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          color: 'white',
+          borderTop: '1px solid black',
+          borderRight: '1px solid black',
+          borderLeft: '1px solid black',
+        }}
+      >
+        <Select
+          value={selectSubject}
+          onChange={handleSelectSubject}
+          fullWidth
+          sx={{ mr: 1.5 }}
+        >
+          <MenuItem value="none" disabled>
+            {'Хичээл сонгоно уу'}
+          </MenuItem>
+          <MenuItem value="F.IT20">{'F.IT202 Веб зохиомж'}</MenuItem>
+        </Select>
+        <Select
+          value={selectLecture}
+          onChange={handleSelectLecture}
+          fullWidth
+          sx={{ mr: 1.5 }}
+        >
+          <MenuItem value="none" disabled>
+            {'Лекцийн цагаа сонгоно уу'}
+          </MenuItem>
+          <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
+        </Select>
+        <Select
+          value={selectSeminar}
+          onChange={handleSelectSeminar}
+          fullWidth
+          sx={{ mr: 1.5 }}
+        >
+          <MenuItem value="none" disabled>
+            {'Семинарын цагаа сонгоно уу'}
+          </MenuItem>
+          <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
+        </Select>
+        <Select
+          value={selectLaboratory}
+          onChange={handleSelectLaboratory}
+          fullWidth
+          sx={{ mr: 1.5 }}
+        >
+          <MenuItem value="none" disabled>
+            {'Лабораторын цагаа сонгоно уу'}
+          </MenuItem>
+          <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
+        </Select>
+        <Select
+          value={selectAssignment}
+          onChange={handleSelectAssignment}
+          fullWidth
+        >
+          <MenuItem value="none" disabled>
+            {'Бие даалтын цагаа сонгоно уу'}
+          </MenuItem>
+          <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
+        </Select>
+      </Box>
+    )
+  }
+
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
       <Box
@@ -314,33 +392,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
       >
         {renderDate()}
         {renderInfoPanel()}
-        <Box
-          sx={{
-            display: 'flex',
-            p: 2,
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            color: 'white',
-            borderTop: '1px solid black',
-            borderRight: '1px solid black',
-            borderLeft: '1px solid black',
-          }}
-        >
-          <Select
-            value={selectSubject}
-            onChange={handleSelectSubject}
-            sx={{
-              '& fieldset': {
-                border: 'none',
-              },
-            }}
-          >
-            <MenuItem value="" disabled>
-              {'Хичээл сонгоно уу'}
-            </MenuItem>
-            <MenuItem value="F.IT20">{'F.IT202 Веб зохиомж'}</MenuItem>
-          </Select>
-        </Box>
+        {renderFilterPanel()}
         <TableContainer component={Paper}>
           <Table aria-label="caption table" sx={{ width: '100%' }}>
             <TableHead>
@@ -372,7 +424,31 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                   <StyledTableCell align="left">
                     {v.student_name}
                   </StyledTableCell>
-                  <StyledTableCell align="center">{v.status}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Select
+                      value={ATTENDANCE_STATUS[v.status]}
+                      sx={{
+                        '& fieldset': {
+                          border: 'none',
+                        },
+                        color:
+                          ATTENDANCE_STATUS[v.status] === 'Ирээгүй'
+                            ? 'red'
+                            : ATTENDANCE_STATUS[v.status] === 'Ирсэн'
+                            ? 'green'
+                            : 'cyan',
+                      }}
+                      onChange={(e) => handleChangeStatus(e, i)}
+                    >
+                      {ATTENDANCE_STATUS.map((item, i) => {
+                        return (
+                          <MenuItem value={item} key={i}>
+                            {item}
+                          </MenuItem>
+                        )
+                      })}
+                    </Select>
+                  </StyledTableCell>
                   <StyledTableCell align="center">{v.time}</StyledTableCell>
                 </StyledTableRow>
               ))}
@@ -403,13 +479,13 @@ const response = {
       {
         student_id: 'B190910801',
         student_name: 'Tamir Naranbaatar',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        status: 3, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
         time: '08:02',
       },
       {
         student_id: 'B190910801',
         student_name: 'Tamir Naranbaatar',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        status: 0, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
         time: '08:02',
       },
     ],
