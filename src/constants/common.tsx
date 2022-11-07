@@ -97,3 +97,5 @@ export const CLASS_TYPE = [
     color: '#F7CBAC',
   },
 ]
+
+export const ATTENDANCE_STATUS = ['Ирээгүй', 'Ирсэн', 'Чөлөөтэй', 'Өвчтэй']

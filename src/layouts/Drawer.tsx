@@ -34,14 +34,14 @@ export default function ResponsiveDrawer(props: Props) {
       <Divider />
       <List>
         {['Нүүр', 'Багш', 'Хичээл', 'Ирц бүртгэл'].map((text, index) => (
-          <>
+          <div key={index}>
             <ListItem key={text} disablePadding>
               <ListItemButton sx={{ bgcolor: '#587597' }}>
                 <ListItemText primary={text} sx={{ color: '#FFFFFF' }} />
               </ListItemButton>
             </ListItem>
             <Divider />
-          </>
+          </div>
         ))}
       </List>
     </>
