@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import _ from 'lodash'
+import { useRouter } from 'next/router'
 
 import moment from 'moment'
 
@@ -54,6 +55,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   const [selectSeminar, setSelectSeminar] = useState('none')
   const [selectLaboratory, setSelectLaboratory] = useState('none')
   const [selectAssignment, setSelectAssignment] = useState('none')
+  const router = useRouter()
 
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)
@@ -80,6 +82,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const handleBeginRegister = () => {
     console.log('begin register button clicked ...')
+    router.push('/screen-3')
   }
 
   const handleReport = () => {
@@ -273,7 +276,10 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
               >
                 Ирцийн бүртгэл эхлүүлэх
               </Button>
-              <Button variant="contained" onClick={handleReport}>
+              <Button
+                variant="contained"
+                onClick={() => router.push('/screen-3')}
+              >
                 ТАЙЛАН
               </Button>
             </Box>
@@ -472,20 +478,93 @@ const response = {
     attendance: [
       {
         student_id: 'B190910801',
-        student_name: 'Tamir Naranbaatar',
+        student_name: 'Student name',
         status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
         time: '08:02',
       },
       {
         student_id: 'B190910801',
-        student_name: 'Tamir Naranbaatar',
-        status: 3, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
         time: '08:02',
       },
       {
         student_id: 'B190910801',
-        student_name: 'Tamir Naranbaatar',
-        status: 0, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        time: '08:02',
+      },
+      {
+        student_id: 'B190910801',
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        time: '08:02',
+      },
+      {
+        student_id: 'B190910801',
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        time: '08:02',
+      },
+      {
+        student_id: 'B190910801',
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        time: '08:02',
+      },
+      {
+        student_id: 'B190910801',
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        time: '08:02',
+      },
+      {
+        student_id: 'B190910801',
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        time: '08:02',
+      },
+      {
+        student_id: 'B190910801',
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        time: '08:02',
+      },
+      {
+        student_id: 'B190910801',
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        time: '08:02',
+      },
+      {
+        student_id: 'B190910801',
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        time: '08:02',
+      },
+
+      {
+        student_id: 'B190910801',
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        time: '08:02',
+      },
+      {
+        student_id: 'B190910801',
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        time: '08:02',
+      },
+      {
+        student_id: 'B190910801',
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+        time: '08:02',
+      },
+      {
+        student_id: 'B190910801',
+        student_name: 'Student name',
+        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
         time: '08:02',
       },
     ],

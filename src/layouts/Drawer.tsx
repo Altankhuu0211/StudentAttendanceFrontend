@@ -46,7 +46,7 @@ const MenuDrawer: React.FC<Props> = () => {
           >
             <IconHome sx={{ fontSize: '18px' }} />
             <Typography variant="body2" sx={{ color: Colors.textBlack }}>
-              B190910805
+              J.SW301
             </Typography>
           </Box>
           <Box

@@ -19,12 +19,15 @@ import { tableCellClasses } from '@mui/material/TableCell'
 
 // constants
 import { PART_TIME, WEEKDAY, CLASS_TYPE } from '@constants/common'
+import { useRouter } from 'next/router'
 
 type Props = {}
 
 const ScheduleContainer: React.FC<Props> = () => {
+  const router = useRouter()
   const handleSubjectClick = (subject: any) => {
     console.log(subject)
+    router.push('/screen-2')
   }
 
   const StyledTableCell = styled(TableCell)(() => ({

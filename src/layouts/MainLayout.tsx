@@ -21,7 +21,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             width: { sm: `calc(100% - 240px)` },
           }}
         >
-          <Toolbar />
           {children}
         </Box>
       </Box>
