@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
-
+import { useQuery } from 'react-query'
 import moment from 'moment'
 
 // components
@@ -22,9 +22,9 @@ import {
   Paper,
 } from '@mui/material'
 import { tableCellClasses } from '@mui/material/TableCell'
+import Loading from '@components/Loading'
 import { ATTENDANCE_STATUS } from '@constants/common'
-
-// constants
+import { fetchReport } from '@services/index'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -50,6 +50,24 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
   const [selectSeminar, setSelectSeminar] = useState('none')
   const [selectLaboratory, setSelectLaboratory] = useState('none')
   const [selectAssignment, setSelectAssignment] = useState('none')
+  const payload = {
+    teacher_id: 'J.SW10',
+    subject_id: 'F.CS101',
+    class_type: 'Лекц',
+    schedule_time: '4-1',
+  }
+  const { status: repordStatus, data: repordData } = useQuery(
+    ['attendance-report', payload],
+    () => {
+      return fetchReport(payload)
+    }
+  )
+
+  if (repordStatus != 'success') {
+    return <Loading />
+  }
+
+  const response = repordData?.data
 
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)
@@ -203,6 +221,9 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
                   Оюутны код
                 </StyledTableCell>
                 <StyledTableCell variant="head" align="center">
+                  Оюутны овог
+                </StyledTableCell>
+                <StyledTableCell variant="head" align="center">
                   Оюутны нэр
                 </StyledTableCell>
                 {_.range(1, 17).map((val, id) => {
@@ -218,13 +239,16 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
               </StyledTableRow>
             </TableHead>
             <TableBody>
-              {response?.data?.map((v, i) => (
+              {response?.map((v, i) => (
                 <StyledTableRow key={i}>
                   <StyledTableCell align="center">
                     {v.student_id}
                   </StyledTableCell>
                   <StyledTableCell align="left">
-                    {v.student_name}
+                    {v.student_lname}
+                  </StyledTableCell>
+                  <StyledTableCell align="left">
+                    {v.student_fname}
                   </StyledTableCell>
                   {_.range(1, 17).map((val) => {
                     if (
@@ -330,422 +354,3 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
 }
 
 export default ViewAttendanceContainer
-
-const response = {
-  data: [
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 1',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 0, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 2',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 3,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 5,
-          status: 2, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 3, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 1',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 0, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 2',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 3,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 5,
-          status: 2, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 3, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 1',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 0, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 2',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 3,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 5,
-          status: 2, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 3, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 1',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 0, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 2',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 3,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 5,
-          status: 2, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 3, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 1',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 0, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 2',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 3,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 5,
-          status: 2, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 3, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 1',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 0, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 2',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 3,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 5,
-          status: 2, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 3, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 1',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 0, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 2',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 3,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 5,
-          status: 2, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 3, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 1',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 0, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 2',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 3,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 5,
-          status: 2, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 3, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 1',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 0, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-    {
-      student_id: 'B190910801',
-      student_name: 'Student 2',
-      attendance: [
-        {
-          week: 1,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 2,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 3,
-          status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        {
-          week: 5,
-          status: 2, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-        //...
-        {
-          week: 16,
-          status: 3, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        },
-      ],
-    },
-  ],
-}

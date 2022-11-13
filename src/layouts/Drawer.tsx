@@ -30,7 +30,6 @@ const MenuDrawer: React.FC<Props> = () => {
       <Box
         sx={{
           bgcolor: Colors.mainWhite,
-          // boxShadow: '10px 10px #cccccc',
           display: 'flex',
           alignItems: 'center',
         }}
@@ -106,6 +105,7 @@ const MenuDrawer: React.FC<Props> = () => {
           variant="permanent"
           sx={{
             display: { xs: 'none', sm: 'block' },
+            position: 'fixed',
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,

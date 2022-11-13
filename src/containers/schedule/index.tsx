@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-
+import { useQuery } from 'react-query'
 import moment from 'moment'
 
 // components
@@ -16,15 +16,31 @@ import {
   Paper,
 } from '@mui/material'
 import { tableCellClasses } from '@mui/material/TableCell'
+import Loading from '@components/Loading'
 
 // constants
 import { PART_TIME, WEEKDAY, CLASS_TYPE } from '@constants/common'
 import { useRouter } from 'next/router'
+import { fetchSchedule } from '@services/index'
 
 type Props = {}
 
 const ScheduleContainer: React.FC<Props> = () => {
   const router = useRouter()
+
+  const { status: scheduleStatus, data: scheduleData } = useQuery(
+    ['teacher-schedule', 'J.SW10'],
+    () => {
+      return fetchSchedule('J.SW10')
+    }
+  )
+
+  if (scheduleStatus != 'success') {
+    return <Loading />
+  }
+
+  const response = scheduleData?.data
+
   const handleSubjectClick = (subject: any) => {
     console.log(subject)
     router.push('/screen-2')
@@ -106,7 +122,7 @@ const ScheduleContainer: React.FC<Props> = () => {
                   {_.range(0, 7).map((_val, idx) => {
                     return (
                       <StyledTableCell align="center">
-                        {response?.data[idx]?.subjects.map((subject, index) => {
+                        {response[idx]?.subjects.map((subject, index) => {
                           return (
                             subject.part_time === v.number && (
                               <Box
@@ -137,7 +153,7 @@ const ScheduleContainer: React.FC<Props> = () => {
                                   {subject.name}
                                 </Typography>
                                 <Typography variant="body2">
-                                  {subject.class_type}
+                                  {subject.class_type} №{subject.class_number}
                                 </Typography>
                               </Box>
                             )
@@ -179,109 +195,3 @@ const ScheduleContainer: React.FC<Props> = () => {
 }
 
 export default ScheduleContainer
-
-const response = {
-  data: [
-    {
-      weekday: 'Mon',
-      subjects: [
-        {
-          code: 'F.CS101',
-          name: 'Програмчлалын үндэс',
-          class_type: 'Лекц',
-          part_time: 1,
-        },
-      ],
-    },
-    {
-      weekday: 'Tue',
-      subjects: [
-        {
-          code: 'F.CS101',
-          name: 'Програмчлалын үндэс',
-          class_type: 'Семинар',
-          part_time: 1,
-        },
-        {
-          code: 'F.CS101',
-          name: 'Програмчлалын үндэс',
-          class_type: 'Лекц',
-          part_time: 6,
-        },
-      ],
-    },
-    {
-      weekday: 'Wed',
-      subjects: [
-        {
-          code: 'F.CS101',
-          name: 'Програмчлалын үндэс',
-          class_type: 'Бие даалт',
-          part_time: 1,
-        },
-        {
-          code: 'F.CS101',
-          name: 'Програмчлалын үндэс',
-          class_type: 'Лекц',
-          part_time: 6,
-        },
-      ],
-    },
-    {
-      weekday: 'Thu',
-      subjects: [
-        {
-          code: 'F.CS101',
-          name: 'Програмчлалын үндэс',
-          class_type: 'Лаб',
-          part_time: 2,
-        },
-        {
-          code: 'F.CS101',
-          name: 'Програмчлалын үндэс',
-          class_type: 'Лекц',
-          part_time: 6,
-        },
-      ],
-    },
-    {
-      weekday: 'Fri',
-      subjects: [
-        {
-          code: 'F.CS101',
-          name: 'Програмчлалын үндэс',
-          class_type: 'Лекц',
-          part_time: 1,
-        },
-        {
-          code: 'F.CS101',
-          name: 'Програмчлалын үндэс',
-          class_type: 'Лекц',
-          part_time: 6,
-        },
-      ],
-    },
-    {
-      weekday: 'Sat',
-      subjects: [
-        {
-          code: 'F.CS101',
-          name: 'Програмчлалын үндэс',
-          class_type: 'Лекц',
-          part_time: 4,
-        },
-      ],
-    },
-    {
-      weekday: 'Sun',
-      subjects: [
-        {
-          code: 'F.CS101',
-          name: 'Програмчлалын үндэс',
-          class_type: 'Лекц',
-          part_time: 6,
-        },
-      ],
-    },
-  ],
-}

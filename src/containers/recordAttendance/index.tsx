@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
-
 import moment from 'moment'
+import { useQuery } from 'react-query'
 
 // components
 import {
@@ -27,9 +27,9 @@ import {
   Paper,
 } from '@mui/material'
 import { tableCellClasses } from '@mui/material/TableCell'
+import Loading from '@components/Loading'
 import { ATTENDANCE_STATUS } from '@constants/common'
-
-// constants
+import { fetchRecordance } from '@services/index'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -79,6 +79,31 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const [searchText, setSearchText] = useState('')
   const [showClearIcon, setShowClearIcon] = useState(false)
+  const payload = {
+    teacher_id: 'J.SW10',
+    subject_id: 'F.CS101',
+    class_type: 'Лекц',
+    schedule_time: '4-1',
+    date: '2022-10-02',
+  }
+
+  const { status: recordStatus, data: recordData } = useQuery(
+    ['student-attendance', payload],
+    () => {
+      return fetchRecordance(payload)
+    }
+  )
+
+  useEffect(() => {
+    if (!searchText) setShowClearIcon(false)
+    if (searchText.length === 1) setShowClearIcon(true)
+  }, [searchText])
+
+  if (recordStatus != 'success') {
+    return <Loading />
+  }
+
+  const response = recordData?.data
 
   const handleBeginRegister = () => {
     console.log('begin register button clicked ...')
@@ -103,11 +128,6 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   ) => {
     console.log(event.target.value, index)
   }
-
-  useEffect(() => {
-    if (!searchText) setShowClearIcon(false)
-    if (searchText.length === 1) setShowClearIcon(true)
-  }, [searchText])
 
   const renderDate = () => {
     return (
@@ -172,7 +192,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             }}
           >
             <Typography variant="body2" sx={{ color: 'black' }}>
-              Нийт оюутан: {response?.data?.total_students}
+              Нийт оюутан: {response?.total_students}
             </Typography>
           </Box>
           <Box
@@ -195,7 +215,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
               }}
             >
               {`Нэмэлт 
-            ${response?.data?.total_sick + response?.data?.total_free}`}
+            ${response?.total_sick + response?.total_free}`}
             </Typography>
           </Box>
           <Box
@@ -219,7 +239,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
               }}
             >
               {`Ирээгүй
-            ${response?.data?.total_absent}`}
+            ${response?.total_absent}`}
             </Typography>
           </Box>
           <Box
@@ -241,7 +261,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
               }}
             >
               {`Ирсэн 
-            ${response?.data?.total_present}`}
+            ${response?.total_present}`}
             </Typography>
           </Box>
         </Box>
@@ -411,6 +431,9 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                   Оюутны код
                 </StyledTableCell>
                 <StyledTableCell variant="head" align="center">
+                  Оюутны овог
+                </StyledTableCell>
+                <StyledTableCell variant="head" align="center">
                   Оюутны нэр
                 </StyledTableCell>
                 <StyledTableCell variant="head" align="center">
@@ -422,13 +445,16 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
               </StyledTableRow>
             </TableHead>
             <TableBody>
-              {response?.data?.attendance.map((v, i) => (
+              {response?.attendance.map((v, i) => (
                 <StyledTableRow key={i}>
                   <StyledTableCell align="center">
                     {v.student_id}
                   </StyledTableCell>
                   <StyledTableCell align="left">
-                    {v.student_name}
+                    {v.student_lname}
+                  </StyledTableCell>
+                  <StyledTableCell align="left">
+                    {v.student_fname}
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <Select
@@ -467,106 +493,3 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 }
 
 export default RecordAttendanceContainer
-
-const response = {
-  data: {
-    total_students: 80,
-    total_absent: 10,
-    total_present: 60,
-    total_sick: 2,
-    total_free: 8,
-    attendance: [
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-      {
-        student_id: 'B190910801',
-        student_name: 'Student name',
-        status: 1, //0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-        time: '08:02',
-      },
-    ],
-  },
-}
