@@ -6,12 +6,10 @@ import { t } from 'i18next'
 import {
   Box,
   Divider,
-  Drawer,
   List,
   ListItem,
   ListItemText,
   ListItemButton,
-  Toolbar,
   Typography,
 } from '@mui/material'
 
@@ -22,6 +20,7 @@ import {
   AccountBox as IconAccount,
   List as IconList,
 } from '@mui/icons-material'
+import { PageRoutes } from '@constants/routes.constants'
 
 const drawerWidth = 218
 
@@ -31,12 +30,12 @@ const MenuDrawer: React.FC<Props> = () => {
   const router = useRouter()
   const drawer = (
     <>
-      <Toolbar sx={{ height: 40 }} />
       <Box
         sx={{
-          bgcolor: Colors.mainWhite,
           display: 'flex',
           alignItems: 'center',
+          borderRight: `1px solid ${Colors.lineGrey}`,
+          boxShadow: `inset 0 0 5px #ccc`,
         }}
       >
         <IconAccount sx={{ fontSize: '90px' }} />
@@ -85,12 +84,12 @@ const MenuDrawer: React.FC<Props> = () => {
             <ListItem key={text} disablePadding>
               <ListItemButton
                 sx={{
-                  bgcolor: '#587597',
-                  '&:hover': { bgcolor: '#23527c', cursor: 'pointer' },
+                  bgcolor: Colors.primary,
+                  '&:hover': { bgcolor: Colors.menu_hover },
                 }}
-                onClick={() => router.push('/')}
+                onClick={() => router.push('#')}
               >
-                <IconList sx={{ color: '#F4F4F4', mr: 1 }} />
+                <IconList sx={{ color: Colors.lightWhite, mr: 1 }} />
                 <ListItemText
                   primary={text}
                   sx={{
@@ -108,16 +107,16 @@ const MenuDrawer: React.FC<Props> = () => {
         <ListItem disablePadding>
           <ListItemButton
             sx={{
-              bgcolor: '#587597',
-              '&:hover': { bgcolor: '#23527c', cursor: 'pointer' },
+              bgcolor: Colors.menu_hover,
+              '&:hover': { bgcolor: Colors.menu_hover },
             }}
-            onClick={() => router.push('/home')}
+            onClick={() => router.push(PageRoutes.HOME)}
           >
-            <IconList sx={{ color: '#F4F4F4', mr: 1 }} />
+            <IconList sx={{ color: Colors.lightWhite, mr: 1 }} />
             <ListItemText
               primary="Ирц бүртгэл"
               sx={{
-                color: '#FFFFFF',
+                color: Colors.mainWhite,
                 fontFamily: 'Arial, Helvetica, sans-serif',
                 fontSize: '10px',
                 textTransform: 'uppercase',
@@ -130,22 +129,12 @@ const MenuDrawer: React.FC<Props> = () => {
   )
 
   return (
-    <Box sx={{ display: 'flex', zIndex: -1 }}>
-      <Box component="nav" sx={{ width: drawerWidth }}>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            position: 'fixed',
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
+    <Box sx={{ display: 'flex' }}>
+      <Box
+        component="nav"
+        sx={{ width: drawerWidth, bgcolor: Colors.lightWhite }}
+      >
+        {drawer}
       </Box>
     </Box>
   )

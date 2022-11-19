@@ -9,6 +9,7 @@ export default {
     copyright: '© 2022 Мэдээллийн технологийн төв',
     start: 'Ирц бүртгэл эхлүүлэх',
     report: 'Тайлан',
+    save: 'Хадгалах',
     student_code: 'Оюутны код',
     student_fname: 'Оюутны овог',
     student_lname: 'Оюутны нэр',
@@ -27,6 +28,7 @@ export default {
     laborator: 'Лабораторын цагаа сонгоно уу',
     seminar: 'Семинарын цагаа сонгоно уу',
     assignment: 'Бие даалтын цагаа сонгоно уу',
+    date: 'Огноо сонгох',
   },
   alert: {
     success: 'Амжилттай.',

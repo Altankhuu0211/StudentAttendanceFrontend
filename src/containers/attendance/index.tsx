@@ -28,6 +28,8 @@ import {
   TableContainer,
   Paper,
 } from '@mui/material'
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { tableCellClasses } from '@mui/material/TableCell'
 import Loading from '@components/Loading'
 import { ATTENDANCE_STATUS } from '@constants/common'
@@ -52,6 +54,7 @@ const StyledTableRow = styled(TableRow)(() => ({
 type Props = {}
 
 const RecordAttendanceContainer: React.FC<Props> = () => {
+  const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [selectSubject, setSelectSubject] = useState('none')
   const [selectLecture, setSelectLecture] = useState('none')
   const [selectSeminar, setSelectSeminar] = useState('none')
@@ -113,6 +116,11 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   }
 
   const handleReport = () => {
+    console.log('report button clicked ...')
+    router.push('/report')
+  }
+
+  const handleEditStatus = () => {
     console.log('report button clicked ...')
     router.push('/report')
   }
@@ -270,65 +278,58 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
           }}
         >
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'flex-end',
+              width: '100%',
+              mb: 2,
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                width: '100%',
-                mb: 2,
-              }}
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{ mr: 2, bgcolor: Colors.btn }}
+              onClick={handleBeginRegister}
             >
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{ mr: 2, bgcolor: Colors.btn }}
-                onClick={handleBeginRegister}
-              >
-                {`${t('common.start')}`}
-              </Button>
-              <Button variant="contained" onClick={handleReport}>
-                {`${t('common.report')}`}
-              </Button>
-            </Box>
-            <Box sx={{ width: '100%' }}>
-              <TextField
-                size="small"
-                variant="outlined"
-                onChange={handleChange}
-                value={searchText}
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <IconSearch />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment
-                      position="end"
-                      style={{
-                        display: showClearIcon ? 'flex' : 'none',
-                        cursor: 'pointer',
-                      }}
-                      onClick={handleClick}
-                    >
-                      <IconClear />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Box>
+              {`${t('common.start')}`}
+            </Button>
+            <Button variant="contained" onClick={handleReport}>
+              {`${t('common.report')}`}
+            </Button>
+          </Box>
+          <Box sx={{ width: '100%' }}>
+            <TextField
+              size="small"
+              variant="outlined"
+              onChange={handleChange}
+              value={searchText}
+              fullWidth
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconSearch />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment
+                    position="end"
+                    style={{
+                      display: showClearIcon ? 'flex' : 'none',
+                      cursor: 'pointer',
+                    }}
+                    onClick={handleClick}
+                  >
+                    <IconClear />
+                  </InputAdornment>
+                ),
+              }}
+            />
           </Box>
         </Box>
       </Box>
@@ -393,16 +394,16 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           </MenuItem>
           <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
         </Select>
-        <Select
-          value={selectAssignment}
-          onChange={handleSelectAssignment}
-          fullWidth
-        >
-          <MenuItem value="none" disabled>
-            {`${t('selection.assignment')}`}
-          </MenuItem>
-          <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
-        </Select>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            label={`${t('selection.date')}`}
+            value={selectedDate}
+            onChange={(newValue) => {
+              setSelectedDate(newValue)
+            }}
+            renderInput={(params) => <TextField fullWidth {...params} />}
+          />
+        </LocalizationProvider>
       </Box>
     )
   }
@@ -485,6 +486,11 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 3 }}>
+          <Button variant="contained" onClick={handleEditStatus}>
+            {`${t('common.save')}`}
+          </Button>
+        </Box>
       </Box>
     </Box>
   )
