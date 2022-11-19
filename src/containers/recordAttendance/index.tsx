@@ -216,8 +216,8 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                 textAlign: 'center',
               }}
             >
-              {`Нэмэлт 
-            ${response?.total_sick + response?.total_free}`}
+              {`${t('common.others')}`}:{' '}
+              {response?.total_sick + response?.total_free}
             </Typography>
           </Box>
           <Box
@@ -240,8 +240,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                 textAlign: 'center',
               }}
             >
-              {`Ирээгүй
-            ${response?.total_absent}`}
+              {`${t('common.absent')}`}: {response?.total_absent}
             </Typography>
           </Box>
           <Box
@@ -262,8 +261,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                 textAlign: 'center',
               }}
             >
-              {`Ирсэн 
-            ${response?.total_present}`}
+              {`${t('common.present')}`}: {response?.total_present}
             </Typography>
           </Box>
         </Box>
@@ -357,7 +355,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           sx={{ mr: 1.5 }}
         >
           <MenuItem value="none" disabled>
-            {'Хичээл сонгоно уу'}
+            {`${t('selection.lesson')}`}
           </MenuItem>
           <MenuItem value="F.IT20">{'F.IT202 Веб зохиомж'}</MenuItem>
         </Select>
@@ -368,7 +366,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           sx={{ mr: 1.5 }}
         >
           <MenuItem value="none" disabled>
-            {'Лекцийн цагаа сонгоно уу'}
+            {`${t('selection.lecture')}`}
           </MenuItem>
           <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
         </Select>
@@ -379,7 +377,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           sx={{ mr: 1.5 }}
         >
           <MenuItem value="none" disabled>
-            {'Семинарын цагаа сонгоно уу'}
+            {`${t('selection.seminar')}`}
           </MenuItem>
           <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
         </Select>
@@ -390,7 +388,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           sx={{ mr: 1.5 }}
         >
           <MenuItem value="none" disabled>
-            {'Лабораторын цагаа сонгоно уу'}
+            {`${t('selection.laborator')}`}
           </MenuItem>
           <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
         </Select>
@@ -400,7 +398,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           fullWidth
         >
           <MenuItem value="none" disabled>
-            {'Бие даалтын цагаа сонгоно уу'}
+            {`${t('selection.assignment')}`}
           </MenuItem>
           <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
         </Select>

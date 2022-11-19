@@ -1,5 +1,6 @@
 import React from 'react'
 import Colors from '@theme/colors'
+import { t } from 'i18next'
 
 // components
 import { Box, Typography, Divider, TextField, Button } from '@mui/material'
@@ -33,7 +34,7 @@ const LoginContainer: React.FC<Props> = () => {
             textTransform: 'uppercase',
           }}
         >
-          МОНГОЛ УЛСЫН ТЕХНОЛОГИЙН ИХ СУРГУУЛЬ
+          {`${t('common.shutis')}`}
         </Typography>
       </Box>
       <Box
@@ -55,7 +56,7 @@ const LoginContainer: React.FC<Props> = () => {
             textTransform: 'uppercase',
           }}
         >
-          Багшийн веб
+          {`${t('common.web_teacher')}`}
         </Typography>
         <Divider sx={{ width: '270px', my: 2 }} />
         <TextField
@@ -70,7 +71,7 @@ const LoginContainer: React.FC<Props> = () => {
           fullWidth
           sx={{ my: 4, color: '#08158e', bgcolor: '#FFC20E', fontWeight: 700 }}
         >
-          Нэвтрэх
+          {`${t('common.login')}`}
         </Button>
         <img src="/img/login.png" style={{ objectFit: 'cover' }} />
       </Box>
@@ -83,7 +84,7 @@ const LoginContainer: React.FC<Props> = () => {
         }}
       >
         <Typography sx={{ color: Colors.mainWhite, fontSize: '14px' }}>
-          © 2022 Мэдээллийн технологийн төв
+          {`${t('common.copyright')}`}
         </Typography>
       </Box>
     </Box>

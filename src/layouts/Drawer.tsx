@@ -1,6 +1,8 @@
 import * as React from 'react'
 import Colors from '@theme/colors'
 import { useRouter } from 'next/router'
+import { t } from 'i18next'
+
 import {
   Box,
   Divider,
@@ -60,7 +62,7 @@ const MenuDrawer: React.FC<Props> = () => {
           >
             <IconLock sx={{ fontSize: '18px' }} />
             <Typography variant="body2" sx={{ color: Colors.textBlack }}>
-              Нууц үг солих
+              {`${t('common.change_password')}`}
             </Typography>
           </Box>
           <Box
@@ -72,7 +74,7 @@ const MenuDrawer: React.FC<Props> = () => {
           >
             <IconPower sx={{ fontSize: '18px' }} />
             <Typography variant="body2" sx={{ color: Colors.textBlack }}>
-              Гарах
+              {`${t('common.logout')}`}
             </Typography>
           </Box>
         </Box>

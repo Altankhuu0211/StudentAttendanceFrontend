@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import { useQuery } from 'react-query'
 import moment from 'moment'
+import { t } from 'i18next'
 
 // components
 import { Box, Typography } from '@mui/material'
@@ -99,7 +100,7 @@ const ScheduleContainer: React.FC<Props> = () => {
             <TableHead>
               <StyledTableRow>
                 <StyledTableCell variant="head" align="center">
-                  Хичээлийн цаг
+                  {`${t('common.class_time')}`}
                 </StyledTableCell>
                 {WEEKDAY.map((v, i) => {
                   return (

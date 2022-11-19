@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import _ from 'lodash'
 import { useQuery } from 'react-query'
 import moment from 'moment'
+import { t } from 'i18next'
 
 // components
 import {
@@ -149,7 +150,7 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
           sx={{ mr: 1.5 }}
         >
           <MenuItem value="none" disabled>
-            {'Хичээл сонгоно уу'}
+            {`${t('selection.lesson')}`}
           </MenuItem>
           <MenuItem value="F.IT20">{'F.IT202 Веб зохиомж'}</MenuItem>
         </Select>
@@ -160,7 +161,7 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
           sx={{ mr: 1.5 }}
         >
           <MenuItem value="none" disabled>
-            {'Лекцийн цагаа сонгоно уу'}
+            {`${t('selection.lecture')}`}
           </MenuItem>
           <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
         </Select>
@@ -171,7 +172,7 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
           sx={{ mr: 1.5 }}
         >
           <MenuItem value="none" disabled>
-            {'Семинарын цагаа сонгоно уу'}
+            {`${t('selection.seminar')}`}
           </MenuItem>
           <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
         </Select>
@@ -182,7 +183,7 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
           sx={{ mr: 1.5 }}
         >
           <MenuItem value="none" disabled>
-            {'Лабораторын цагаа сонгоно уу'}
+            {`${t('selection.laborator')}`}
           </MenuItem>
           <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
         </Select>
@@ -192,7 +193,7 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
           fullWidth
         >
           <MenuItem value="none" disabled>
-            {'Бие даалтын цагаа сонгоно уу'}
+            {`${t('selection.assignment')}`}
           </MenuItem>
           <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
         </Select>
@@ -218,13 +219,13 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
                   align="center"
                   sx={{ width: 150 }}
                 >
-                  Оюутны код
+                  {`${t('common.student_code')}`}
                 </StyledTableCell>
                 <StyledTableCell variant="head" align="center">
-                  Оюутны овог
+                  {`${t('common.student_lname')}`}
                 </StyledTableCell>
                 <StyledTableCell variant="head" align="center">
-                  Оюутны нэр
+                  {`${t('common.student_fname')}`}
                 </StyledTableCell>
                 {_.range(1, 17).map((val, id) => {
                   return (
@@ -234,7 +235,7 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
                   )
                 })}
                 <StyledTableCell variant="head" align="center">
-                  Нийт ирц
+                  {`${t('common.total_attendance')}`}
                 </StyledTableCell>
               </StyledTableRow>
             </TableHead>
@@ -318,7 +319,7 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
             >
               <Box sx={{ bgcolor: 'green', width: 30, height: 30 }} />
               <Typography variant="body2" sx={{ ml: 1 }}>
-                Ирсэн
+                {`${t('common.present')}`}
               </Typography>
             </Box>
 
@@ -331,7 +332,7 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
             >
               <Box sx={{ bgcolor: 'red', width: 30, height: 30 }} />
               <Typography variant="body2" sx={{ ml: 1 }}>
-                Ирээгүй
+                {`${t('common.absent')}`}
               </Typography>
             </Box>
             <Box
@@ -343,7 +344,7 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
             >
               <Box sx={{ bgcolor: 'cyan', width: 30, height: 30 }} />
               <Typography variant="body2" sx={{ ml: 1 }}>
-                Бусад
+                {`${t('selection.others')}`}
               </Typography>
             </Box>
           </Box>

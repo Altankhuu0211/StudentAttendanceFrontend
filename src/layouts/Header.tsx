@@ -1,14 +1,9 @@
 import React from 'react'
 import Colors from '@theme/colors'
+import { t } from 'i18next'
 
 // components
-import {
-  Box,
-  Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { ExpandMore as IconExpandMore } from '@mui/icons-material'
 
 export type Props = {}
@@ -47,7 +42,7 @@ const Header: React.FC<Props> = () => {
                 lineheight: '10px',
               }}
             >
-              ШИНЖЛЭХ УХААН ТЕХНОЛОГИЙН ИХ СУРГУУЛЬ
+              {`${t('common.shutis')}`}
             </Typography>
           </Box>
         </Box>
@@ -103,7 +98,7 @@ const Header: React.FC<Props> = () => {
               textTransform: 'initial',
             }}
           >
-            Гарах
+            {`${t('common.logout')}`}
           </Typography>
         </Box>
       </Box>
