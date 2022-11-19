@@ -1,6 +1,21 @@
 import { api } from '@utils/axios'
 import { URI } from '@constants/uri.constants'
 
+export const login = (teacherLogin) => {
+  return api({
+    url: URI.LOGIN,
+    method: 'POST',
+    data: JSON.stringify(teacherLogin),
+  })
+}
+
+export const logout = () => {
+  return api({
+    url: URI.LOGOUT,
+    method: 'POST',
+  })
+}
+
 export const fetchSchedule = (
   teacher_id: string // 'J.SW10'
 ) => {

@@ -1,15 +1,14 @@
 import { createTheme } from '@mui/material/styles'
 import { red } from '@mui/material/colors'
-import Colors from './colors'
 
 // Create a theme instance.
 export default createTheme({
   palette: {
     primary: {
-      main: '#FFCB05', //must be your primary color
+      main: '#587597',
     },
     secondary: {
-      main: '#000000', //must be your secondary color
+      main: '#305497',
     },
     error: {
       main: red.A400,

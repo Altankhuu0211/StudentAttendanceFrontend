@@ -2,7 +2,7 @@
 export default {
   common: {
     shutis: 'МОНГОЛ УЛСЫН ТЕХНОЛОГИЙН ИХ СУРГУУЛЬ',
-    web_teacher: 'Багшийн веб',
+    web_teacher: 'Багшийн вэб',
     login: 'Нэвтрэх',
     change_password: 'Нууц үг солих',
     logout: 'Гарах',
@@ -27,5 +27,9 @@ export default {
     laborator: 'Лабораторын цагаа сонгоно уу',
     seminar: 'Семинарын цагаа сонгоно уу',
     assignment: 'Бие даалтын цагаа сонгоно уу',
+  },
+  alert: {
+    success: 'Амжилттай.',
+    failed: 'Алдаа гарлаа.',
   },
 }
