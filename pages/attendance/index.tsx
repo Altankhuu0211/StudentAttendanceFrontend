@@ -1,14 +1,14 @@
 import * as React from 'react'
 import MainLayout from '@layouts/MainLayout'
-import RecordAttendanceContainer from '@containers/recordAttendance'
+import AttendanceContainer from '@containers/attendance'
 import type { NextPage } from 'next'
 
-const Home: NextPage = () => {
+const AttendancePage: NextPage = () => {
   return (
     <MainLayout>
-      <RecordAttendanceContainer />
+      <AttendanceContainer />
     </MainLayout>
   )
 }
 
-export default Home
+export default AttendancePage

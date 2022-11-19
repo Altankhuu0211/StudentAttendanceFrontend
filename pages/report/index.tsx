@@ -1,14 +1,14 @@
 import * as React from 'react'
 import MainLayout from '@layouts/MainLayout'
-import ViewAttendanceContainer from '@containers/viewAttendance'
+import ReportContainer from '@containers/report'
 import type { NextPage } from 'next'
 
-const Home: NextPage = () => {
+const ReportPage: NextPage = () => {
   return (
     <MainLayout>
-      <ViewAttendanceContainer />
+      <ReportContainer />
     </MainLayout>
   )
 }
 
-export default Home
+export default ReportPage

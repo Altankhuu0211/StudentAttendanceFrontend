@@ -45,7 +45,7 @@ const StyledTableRow = styled(TableRow)(() => ({
 
 type Props = {}
 
-const ViewAttendanceContainer: React.FC<Props> = () => {
+const ReportContainer: React.FC<Props> = () => {
   const [selectSubject, setSelectSubject] = useState('none')
   const [selectLecture, setSelectLecture] = useState('none')
   const [selectSeminar, setSelectSeminar] = useState('none')
@@ -354,4 +354,4 @@ const ViewAttendanceContainer: React.FC<Props> = () => {
   )
 }
 
-export default ViewAttendanceContainer
+export default ReportContainer
