@@ -1,5 +1,6 @@
 import { createTheme } from '@mui/material/styles'
 import { red } from '@mui/material/colors'
+import Colors from './colors'
 
 // Create a theme instance.
 export default createTheme({
@@ -30,6 +31,55 @@ export default createTheme({
       styleOverrides: {
         contained: {
           //styles
+        },
+      },
+    },
+    MuiTable: {
+      styleOverrides: {
+        root: {
+          // backgroundColor: Colors.mainWhite,
+          // boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.05)',
+          // minWidth: '900px',
+        },
+      },
+    },
+    MuiTableHead: {
+      styleOverrides: {
+        root: {
+          // backgroundColor: Colors.mainBlack,
+          // minWidth: '900px',
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          // lineHeight: '20px',
+          // textAlign: 'left',
+          // wordBreak: 'break-all',
+          // maxWidth: '200px',
+          // padding: '10px',
+        },
+        head: {
+          // color: Colors.mainBlack,
+          // textAlign: 'left',
+          // fontWeight: '700',
+          // fontSize: '14px',
+          // lineHeight: '20px',
+        },
+      },
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        // root: { height: '60px' },
+      },
+    },
+    MuiTableBody: {
+      styleOverrides: {
+        root: {
+          // border: '1px solid rgba(0, 0, 0, 0.05)',
+          // boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.05)',
+          // minWidth: '900px',
         },
       },
     },

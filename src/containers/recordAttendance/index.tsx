@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { useRouter } from 'next/router'
 import moment from 'moment'
 import { useQuery } from 'react-query'
+import { t } from 'i18next'
 
 // components
 import {
@@ -112,6 +113,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const handleReport = () => {
     console.log('report button clicked ...')
+    router.push('/screen-3')
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -154,7 +156,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             {moment().format('ll')}
           </Typography>
           <Typography variant="body2">
-            Хичээлийн 7 дугаар долоо хоног
+            {`${t('common.week_number')}`}
           </Typography>
         </Box>
       </Box>
@@ -192,7 +194,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             }}
           >
             <Typography variant="body2" sx={{ color: 'black' }}>
-              Нийт оюутан: {response?.total_students}
+              {`${t('common.total_student')}`}: {response?.total_students}
             </Typography>
           </Box>
           <Box
@@ -294,13 +296,10 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                 sx={{ mr: 2, bgcolor: 'orange' }}
                 onClick={handleBeginRegister}
               >
-                Ирцийн бүртгэл эхлүүлэх
+                {`${t('common.start')}`}
               </Button>
-              <Button
-                variant="contained"
-                onClick={() => router.push('/screen-3')}
-              >
-                ТАЙЛАН
+              <Button variant="contained" onClick={handleReport}>
+                {`${t('common.report')}`}
               </Button>
             </Box>
             <Box sx={{ width: '100%' }}>
@@ -428,19 +427,19 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                   align="center"
                   sx={{ width: 150 }}
                 >
-                  Оюутны код
+                  {`${t('common.student_code')}`}
                 </StyledTableCell>
                 <StyledTableCell variant="head" align="center">
-                  Оюутны овог
+                  {`${t('common.student_lname')}`}
                 </StyledTableCell>
                 <StyledTableCell variant="head" align="center">
-                  Оюутны нэр
+                  {`${t('common.student_fname')}`}
                 </StyledTableCell>
                 <StyledTableCell variant="head" align="center">
-                  Төлөв
+                  {`${t('common.status')}`}
                 </StyledTableCell>
                 <StyledTableCell variant="head" align="center">
-                  Цаг
+                  {`${t('common.arrival_time')}`}
                 </StyledTableCell>
               </StyledTableRow>
             </TableHead>

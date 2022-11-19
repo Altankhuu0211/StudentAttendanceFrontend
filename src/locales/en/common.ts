@@ -3,6 +3,14 @@ export default {
   common: {
     home: 'Home',
     submit: 'Submit',
+    start: 'Start',
+    report: 'Report',
+    student_fname: 'Student firstname',
+    student_lname: 'Student lastname',
+    arrival_time: 'Arrival time',
+    student_code: 'Student code',
+    status: 'Arrival status',
+    total_student: 'Total student',
   },
   validation: {
     email_format: 'Please check your email',

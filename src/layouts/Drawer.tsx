@@ -1,5 +1,6 @@
 import * as React from 'react'
 import Colors from '@theme/colors'
+import { useRouter } from 'next/router'
 import {
   Box,
   Divider,
@@ -17,6 +18,7 @@ import {
   Lock as IconLock,
   PowerSettingsNew as IconPower,
   AccountBox as IconAccount,
+  List as IconList,
 } from '@mui/icons-material'
 
 const drawerWidth = 218
@@ -24,6 +26,7 @@ const drawerWidth = 218
 export type Props = {}
 
 const MenuDrawer: React.FC<Props> = () => {
+  const router = useRouter()
   const drawer = (
     <>
       <Toolbar sx={{ height: 40 }} />
@@ -74,12 +77,18 @@ const MenuDrawer: React.FC<Props> = () => {
           </Box>
         </Box>
       </Box>
-
       <List sx={{ mt: -1 }}>
-        {['Нүүр', 'Багш', 'Хичээл', 'Ирц бүртгэл'].map((text, index) => (
+        {['Нүүр', 'Багш', 'Хичээл'].map((text, index) => (
           <div key={index}>
             <ListItem key={text} disablePadding>
-              <ListItemButton sx={{ bgcolor: '#587597' }}>
+              <ListItemButton
+                sx={{
+                  bgcolor: '#587597',
+                  '&:hover': { bgcolor: '#23527c', cursor: 'pointer' },
+                }}
+                onClick={() => router.push('/')}
+              >
+                <IconList sx={{ color: '#F4F4F4', mr: 1 }} />
                 <ListItemText
                   primary={text}
                   sx={{
@@ -94,6 +103,26 @@ const MenuDrawer: React.FC<Props> = () => {
             <Divider />
           </div>
         ))}
+        <ListItem disablePadding>
+          <ListItemButton
+            sx={{
+              bgcolor: '#587597',
+              '&:hover': { bgcolor: '#23527c', cursor: 'pointer' },
+            }}
+            onClick={() => router.push('/home')}
+          >
+            <IconList sx={{ color: '#F4F4F4', mr: 1 }} />
+            <ListItemText
+              primary="Ирц бүртгэл"
+              sx={{
+                color: '#FFFFFF',
+                fontFamily: 'Arial, Helvetica, sans-serif',
+                fontSize: '10px',
+                textTransform: 'uppercase',
+              }}
+            />
+          </ListItemButton>
+        </ListItem>
       </List>
     </>
   )

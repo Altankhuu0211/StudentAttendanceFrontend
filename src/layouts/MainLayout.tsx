@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Toolbar } from '@mui/material'
+import { Box } from '@mui/material'
 import Header from '@layouts/Header'
 import Drawer from '@layouts/Drawer'
 
@@ -11,7 +11,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <Box component="main">
       <Header />
-
       <Box sx={{ display: 'flex' }}>
         <Drawer />
         <Box

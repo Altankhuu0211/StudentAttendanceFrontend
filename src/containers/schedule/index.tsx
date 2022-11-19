@@ -65,7 +65,7 @@ const ScheduleContainer: React.FC<Props> = () => {
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
       <Box
         sx={{
-          width: 1200,
+          maxWidth: 1200,
         }}
       >
         <Box
@@ -118,7 +118,7 @@ const ScheduleContainer: React.FC<Props> = () => {
             <TableBody>
               {PART_TIME.map((v, i) => (
                 <StyledTableRow key={i}>
-                  <StyledTableCell align="center">{`${v.number}-р пар: ${v.time_interval}`}</StyledTableCell>
+                  <StyledTableCell align="center">{`${v.number}-р цаг: ${v.time_interval}`}</StyledTableCell>
                   {_.range(0, 7).map((_val, idx) => {
                     return (
                       <StyledTableCell align="center">
