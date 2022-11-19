@@ -8,7 +8,7 @@ export default createTheme({
       main: '#587597',
     },
     secondary: {
-      main: '#305497',
+      main: '#23527c',
     },
     error: {
       main: red.A400,
@@ -57,7 +57,8 @@ export default createTheme({
           // textAlign: 'left',
           // wordBreak: 'break-all',
           // maxWidth: '200px',
-          // padding: '10px',
+          paddingTop: 0,
+          paddingBottom: 0,
         },
         head: {
           // color: Colors.mainBlack,

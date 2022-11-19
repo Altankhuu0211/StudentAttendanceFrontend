@@ -21,6 +21,7 @@ export default {
     present: 'Ирсэн',
     class_time: 'Хичээлийн цаг',
     total_attendance: 'Нийт ирц',
+    welcome: 'Сайн байна уу,',
   },
   selection: {
     lesson: 'Хичээл сонгоно уу',

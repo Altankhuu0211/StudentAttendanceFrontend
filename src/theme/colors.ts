@@ -1,6 +1,7 @@
 const Colors = {
   primary: '#587597',
-  secondary: '#305497',
+  secondary: '#23527c',
+  secondBlue: '#305497',
   mainBlue: '#051D88',
   mainBlack: '#050E1E',
   mainWhite: '#FFFFFF',
@@ -13,7 +14,6 @@ const Colors = {
   others: 'orange',
   table_grey: '#EEEEF7',
   btn: '#FFC20E',
-  menu_hover: '#23527c',
   lineGrey: '#EAEAEA',
 }
 

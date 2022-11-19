@@ -12,7 +12,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <Box component="main">
       <Header />
-      <Box sx={{ display: 'flex', bgcolor: Colors.lightWhite }}>
+      <Box
+        sx={{ display: 'flex', bgcolor: Colors.lightWhite, minHeight: '100vh' }}
+      >
         <Drawer />
         <Box
           sx={{

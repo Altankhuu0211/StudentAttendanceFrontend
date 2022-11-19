@@ -4,11 +4,17 @@ import { t } from 'i18next'
 
 // components
 import { Box, Typography } from '@mui/material'
-import { ExpandMore as IconExpandMore } from '@mui/icons-material'
+import {
+  ExpandMore as IconExpandMore,
+  PowerSettingsNew as IconPower,
+} from '@mui/icons-material'
+import { useRouter } from 'next/router'
+import { PageRoutes } from '@constants/routes.constants'
 
 export type Props = {}
 
 const Header: React.FC<Props> = () => {
+  const router = useRouter()
   return (
     <Box component="header">
       <Box
@@ -30,7 +36,7 @@ const Header: React.FC<Props> = () => {
               style={{ objectFit: 'cover' }}
             />
           </Box>
-          <Box sx={{ width: 180 }}>
+          <Box sx={{ width: 178 }}>
             <Typography
               variant="body2"
               sx={{
@@ -63,7 +69,6 @@ const Header: React.FC<Props> = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             width: 218,
-            // borderRight: '1px solid #D5D5D5',
           }}
         >
           <Typography
@@ -75,21 +80,25 @@ const Header: React.FC<Props> = () => {
               ml: 2,
             }}
           >
-            Сайн байна уу С.Хулан
+            {`${t('common.welcome')}`} С.ХУЛАН
           </Typography>
           <IconExpandMore />
         </Box>
         <Box
           sx={{
-            width: 80,
-            height: 23,
+            width: 70,
+            height: 22,
             borderLeft: '1px solid #D5D5D5',
             borderRight: '1px solid #D5D5D5',
-            mr: 2,
+            mr: 3,
             display: 'flex',
             justifyContent: 'center',
+            '&:hover': { bgcolor: '#E6E6E6', cursor: 'pointer' },
+            pt: 0.3,
           }}
+          onClick={() => router.push(PageRoutes.LOGIN)}
         >
+          <IconPower sx={{ fontSize: '16px', mr: 0.2 }} />
           <Typography
             sx={{
               color: Colors.textBlack,

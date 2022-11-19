@@ -72,7 +72,14 @@ const MenuDrawer: React.FC<Props> = () => {
             }}
           >
             <IconPower sx={{ fontSize: '18px' }} />
-            <Typography variant="body2" sx={{ color: Colors.textBlack }}>
+            <Typography
+              variant="body2"
+              sx={{
+                color: Colors.textBlack,
+                '&:hover': { textDecoration: 'underline', cursor: 'pointer' },
+              }}
+              onClick={() => router.push(PageRoutes.LOGIN)}
+            >
               {`${t('common.logout')}`}
             </Typography>
           </Box>
@@ -85,7 +92,7 @@ const MenuDrawer: React.FC<Props> = () => {
               <ListItemButton
                 sx={{
                   bgcolor: Colors.primary,
-                  '&:hover': { bgcolor: Colors.menu_hover },
+                  '&:hover': { bgcolor: Colors.secondary },
                 }}
                 onClick={() => router.push('#')}
               >
@@ -107,8 +114,8 @@ const MenuDrawer: React.FC<Props> = () => {
         <ListItem disablePadding>
           <ListItemButton
             sx={{
-              bgcolor: Colors.menu_hover,
-              '&:hover': { bgcolor: Colors.menu_hover },
+              bgcolor: Colors.secondary,
+              '&:hover': { bgcolor: Colors.secondary },
             }}
             onClick={() => router.push(PageRoutes.HOME)}
           >

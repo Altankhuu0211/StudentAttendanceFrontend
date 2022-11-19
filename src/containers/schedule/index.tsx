@@ -51,10 +51,12 @@ const ScheduleContainer: React.FC<Props> = () => {
   const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
       border: '1px solid black',
+      padding: '14px',
     },
     [`&.${tableCellClasses.body}`]: {
       fontSize: 14,
       border: '1px solid black',
+      padding: '14px',
     },
   }))
 
@@ -76,7 +78,7 @@ const ScheduleContainer: React.FC<Props> = () => {
             height: 70,
             justifyContent: 'center',
             alignItems: 'center',
-            bgcolor: Colors.secondary,
+            bgcolor: Colors.secondBlue,
             color: Colors.mainWhite,
           }}
         >
@@ -100,7 +102,14 @@ const ScheduleContainer: React.FC<Props> = () => {
           <Table aria-label="caption table" sx={{ width: 1200 }}>
             <TableHead>
               <StyledTableRow>
-                <StyledTableCell variant="head" align="center">
+                <StyledTableCell
+                  variant="head"
+                  align="center"
+                  sx={{
+                    bgcolor: Colors.secondBlue,
+                    color: Colors.mainWhite,
+                  }}
+                >
                   {`${t('common.class_time')}`}
                 </StyledTableCell>
                 {WEEKDAY.map((v, i) => {
@@ -110,7 +119,7 @@ const ScheduleContainer: React.FC<Props> = () => {
                       variant="head"
                       align="center"
                       sx={{
-                        bgcolor: Colors.secondary,
+                        bgcolor: Colors.secondBlue,
                         color: Colors.mainWhite,
                       }}
                     >
@@ -139,7 +148,7 @@ const ScheduleContainer: React.FC<Props> = () => {
                                       ? va.color
                                       : null
                                   }),
-                                  m: '-16px',
+                                  m: '-14px',
                                   cursor: 'pointer',
                                   opacity: 1,
                                   transition: '0.3s',
@@ -178,8 +187,8 @@ const ScheduleContainer: React.FC<Props> = () => {
               <Box
                 sx={{
                   bgcolor: value.color,
-                  width: 150,
-                  height: 50,
+                  width: 127,
+                  height: 40,
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
