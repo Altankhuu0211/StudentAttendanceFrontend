@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { useQuery } from 'react-query'
 import moment from 'moment'
 import { t } from 'i18next'
+import Colors from '@theme/colors'
 
 // components
 import { Box, Typography } from '@mui/material'
@@ -44,7 +45,7 @@ const ScheduleContainer: React.FC<Props> = () => {
 
   const handleSubjectClick = (subject: any) => {
     console.log(subject)
-    router.push('/screen-2')
+    router.push('/attendance')
   }
 
   const StyledTableCell = styled(TableCell)(() => ({
@@ -59,7 +60,7 @@ const ScheduleContainer: React.FC<Props> = () => {
 
   const StyledTableRow = styled(TableRow)(() => ({
     '&:nth-of-type(even)': {
-      backgroundColor: '#EEEEF7',
+      backgroundColor: Colors.table_grey,
     },
   }))
   return (
@@ -75,8 +76,8 @@ const ScheduleContainer: React.FC<Props> = () => {
             height: 70,
             justifyContent: 'center',
             alignItems: 'center',
-            bgcolor: '#305497',
-            color: 'white',
+            bgcolor: Colors.secondary,
+            color: Colors.mainWhite,
           }}
         >
           <Box
@@ -108,7 +109,10 @@ const ScheduleContainer: React.FC<Props> = () => {
                       key={i}
                       variant="head"
                       align="center"
-                      sx={{ bgcolor: '#305497', color: 'white' }}
+                      sx={{
+                        bgcolor: Colors.secondary,
+                        color: Colors.mainWhite,
+                      }}
                     >
                       {v.name}
                     </StyledTableCell>
@@ -185,7 +189,7 @@ const ScheduleContainer: React.FC<Props> = () => {
                   fontSize: 14,
                 }}
               >
-                {`${value.type}ын цагууд`}
+                {`${value.type}`}
               </Box>
             )
           })}

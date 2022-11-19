@@ -1,4 +1,6 @@
-export const NAMERoutes = {
+export const PageRoutes = {
   HOME: '/home',
-  TERMS_AND_CONDITIONS: '#',
+  ATTENDANCE: '/attendance',
+  REPORT: '/report',
+  LOGIN: '/login',
 }

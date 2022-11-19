@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { useQuery } from 'react-query'
 import moment from 'moment'
 import { t } from 'i18next'
+import Colors from '@theme/colors'
 
 // components
 import {
@@ -39,7 +40,7 @@ const StyledTableCell = styled(TableCell)(() => ({
 
 const StyledTableRow = styled(TableRow)(() => ({
   '&:nth-of-type(even)': {
-    backgroundColor: '#EEEEF7',
+    backgroundColor: Colors.table_grey,
   },
 }))
 
@@ -105,8 +106,8 @@ const ReportContainer: React.FC<Props> = () => {
           height: 70,
           justifyContent: 'center',
           alignItems: 'center',
-          bgcolor: '#305497',
-          color: 'white',
+          bgcolor: Colors.secondary,
+          color: Colors.mainWhite,
           border: '1px solid black',
         }}
       >
@@ -137,7 +138,7 @@ const ReportContainer: React.FC<Props> = () => {
           p: 2,
           alignItems: 'center',
           justifyContent: 'space-between',
-          color: 'white',
+          color: Colors.mainWhite,
           borderTop: '1px solid black',
           borderRight: '1px solid black',
           borderLeft: '1px solid black',
@@ -270,14 +271,14 @@ const ReportContainer: React.FC<Props> = () => {
                                 return att.week === val ? att.status : ''
                               })
                               .includes(1)
-                              ? 'green'
+                              ? Colors.present
                               : v.attendance
                                   .map((att) => {
                                     return att.week === val ? att.status : ''
                                   })
                                   .includes(0)
-                              ? 'red'
-                              : 'cyan',
+                              ? Colors.absent
+                              : Colors.others,
                           }}
                         />
                       )
@@ -317,7 +318,7 @@ const ReportContainer: React.FC<Props> = () => {
                 mr: 2,
               }}
             >
-              <Box sx={{ bgcolor: 'green', width: 30, height: 30 }} />
+              <Box sx={{ bgcolor: Colors.present, width: 30, height: 30 }} />
               <Typography variant="body2" sx={{ ml: 1 }}>
                 {`${t('common.present')}`}
               </Typography>
@@ -330,7 +331,7 @@ const ReportContainer: React.FC<Props> = () => {
                 mr: 2,
               }}
             >
-              <Box sx={{ bgcolor: 'red', width: 30, height: 30 }} />
+              <Box sx={{ bgcolor: Colors.absent, width: 30, height: 30 }} />
               <Typography variant="body2" sx={{ ml: 1 }}>
                 {`${t('common.absent')}`}
               </Typography>
@@ -342,9 +343,9 @@ const ReportContainer: React.FC<Props> = () => {
                 mr: 2,
               }}
             >
-              <Box sx={{ bgcolor: 'cyan', width: 30, height: 30 }} />
+              <Box sx={{ bgcolor: Colors.others, width: 30, height: 30 }} />
               <Typography variant="body2" sx={{ ml: 1 }}>
-                {`${t('selection.others')}`}
+                {`${t('common.others')}`}
               </Typography>
             </Box>
           </Box>

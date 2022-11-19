@@ -21,7 +21,7 @@ const LoginContainer: React.FC<Props> = () => {
       <Box
         sx={{
           width: '100vw',
-          bgcolor: '#051D88',
+          bgcolor: Colors.mainBlue,
           display: 'flex',
           justifyContent: 'center',
         }}
@@ -50,7 +50,7 @@ const LoginContainer: React.FC<Props> = () => {
       >
         <Typography
           sx={{
-            color: '#08158e',
+            color: Colors.textBlue,
             fontSize: '20px',
             fontWeight: 700,
             textTransform: 'uppercase',
@@ -69,7 +69,12 @@ const LoginContainer: React.FC<Props> = () => {
         <Button
           variant="contained"
           fullWidth
-          sx={{ my: 4, color: '#08158e', bgcolor: '#FFC20E', fontWeight: 700 }}
+          sx={{
+            my: 4,
+            color: Colors.textBlue,
+            bgcolor: Colors.btn,
+            fontWeight: 700,
+          }}
         >
           {`${t('common.login')}`}
         </Button>
@@ -78,7 +83,7 @@ const LoginContainer: React.FC<Props> = () => {
       <Box
         sx={{
           width: '100vw',
-          bgcolor: '#051D88',
+          bgcolor: Colors.mainBlue,
           display: 'flex',
           justifyContent: 'center',
         }}

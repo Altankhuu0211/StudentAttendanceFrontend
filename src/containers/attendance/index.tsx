@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import moment from 'moment'
 import { useQuery } from 'react-query'
 import { t } from 'i18next'
+import Colors from '@theme/colors'
 
 // components
 import {
@@ -44,7 +45,7 @@ const StyledTableCell = styled(TableCell)(() => ({
 
 const StyledTableRow = styled(TableRow)(() => ({
   '&:nth-of-type(even)': {
-    backgroundColor: '#EEEEF7',
+    backgroundColor: Colors.table_grey,
   },
 }))
 
@@ -108,12 +109,12 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const handleBeginRegister = () => {
     console.log('begin register button clicked ...')
-    router.push('/screen-3')
+    router.push('/report')
   }
 
   const handleReport = () => {
     console.log('report button clicked ...')
-    router.push('/screen-3')
+    router.push('/report')
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -139,8 +140,8 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           height: 70,
           justifyContent: 'center',
           alignItems: 'center',
-          bgcolor: '#305497',
-          color: 'white',
+          bgcolor: Colors.secondary,
+          color: Colors.mainWhite,
           border: '1px solid black',
         }}
       >
@@ -156,7 +157,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             {moment().format('ll')}
           </Typography>
           <Typography variant="body2">
-            {`${t('common.week_number')}`}
+            Хичээлийн 7 дугаар долоо хоног
           </Typography>
         </Box>
       </Box>
@@ -171,7 +172,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           p: 2,
           alignItems: 'center',
           justifyContent: 'space-between',
-          color: 'white',
+          color: Colors.mainWhite,
           borderRight: '1px solid black',
           borderLeft: '1px solid black',
         }}
@@ -193,7 +194,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
               height: 70,
             }}
           >
-            <Typography variant="body2" sx={{ color: 'black' }}>
+            <Typography variant="body2" sx={{ color: Colors.mainBlack }}>
               {`${t('common.total_student')}`}: {response?.total_students}
             </Typography>
           </Box>
@@ -211,7 +212,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             <Typography
               variant="body2"
               sx={{
-                color: 'cyan',
+                color: Colors.others,
                 whiteSpace: 'pre-line',
                 textAlign: 'center',
               }}
@@ -235,7 +236,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             <Typography
               variant="body2"
               sx={{
-                color: 'red',
+                color: Colors.absent,
                 whiteSpace: 'pre-line',
                 textAlign: 'center',
               }}
@@ -256,7 +257,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             <Typography
               variant="body2"
               sx={{
-                color: 'green',
+                color: Colors.present,
                 whiteSpace: 'pre-line',
                 textAlign: 'center',
               }}
@@ -291,7 +292,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
               <Button
                 variant="contained"
                 fullWidth
-                sx={{ mr: 2, bgcolor: 'orange' }}
+                sx={{ mr: 2, bgcolor: Colors.btn }}
                 onClick={handleBeginRegister}
               >
                 {`${t('common.start')}`}
@@ -342,7 +343,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           p: 2,
           alignItems: 'center',
           justifyContent: 'space-between',
-          color: 'white',
+          color: Colors.mainWhite,
           borderTop: '1px solid black',
           borderRight: '1px solid black',
           borderLeft: '1px solid black',
@@ -462,10 +463,10 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                         },
                         color:
                           ATTENDANCE_STATUS[v.status] === 'Ирээгүй'
-                            ? 'red'
+                            ? Colors.absent
                             : ATTENDANCE_STATUS[v.status] === 'Ирсэн'
-                            ? 'green'
-                            : 'cyan',
+                            ? Colors.present
+                            : Colors.others,
                       }}
                       onChange={(e) => handleChangeStatus(e, i)}
                     >
