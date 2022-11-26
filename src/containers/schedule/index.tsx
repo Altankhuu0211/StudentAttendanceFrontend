@@ -23,7 +23,7 @@ import Loading from '@components/Loading'
 // constants
 import { PART_TIME, WEEKDAY, CLASS_TYPE } from '@constants/common'
 import { useRouter } from 'next/router'
-import { fetchSchedule } from '@services/index'
+import { fetchSchedule, getSemesterWeek } from '@services/index'
 
 type Props = {}
 
@@ -31,15 +31,24 @@ const ScheduleContainer: React.FC<Props> = () => {
   const router = useRouter()
 
   const { status: scheduleStatus, data: scheduleData } = useQuery(
-    ['teacher-schedule', 'J.SW10'],
+    ['teacher-schedule', 'B.ES48'],
     () => {
-      return fetchSchedule('J.SW10')
+      return fetchSchedule('B.ES48')
     }
   )
 
-  if (scheduleStatus != 'success') {
+  const { status: weekStatus, data: weekData } = useQuery(
+    'semester-week',
+    () => {
+      return getSemesterWeek()
+    }
+  )
+
+  if (scheduleStatus != 'success' || weekStatus != 'success') {
     return <Loading />
   }
+
+  console.log('::', scheduleData)
 
   const response = scheduleData?.data
 
@@ -94,7 +103,7 @@ const ScheduleContainer: React.FC<Props> = () => {
               {moment().format('ll')}
             </Typography>
             <Typography variant="body2">
-              Хичээлийн 7 дугаар долоо хоног
+              {`Хичээлийн ${weekData}-р долоо хоног`}
             </Typography>
           </Box>
         </Box>

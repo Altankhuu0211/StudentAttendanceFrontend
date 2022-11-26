@@ -26,7 +26,7 @@ import {
 import { tableCellClasses } from '@mui/material/TableCell'
 import Loading from '@components/Loading'
 import { ATTENDANCE_STATUS } from '@constants/common'
-import { fetchReport } from '@services/index'
+import { fetchReport, getSemesterWeek } from '@services/index'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -65,7 +65,14 @@ const ReportContainer: React.FC<Props> = () => {
     }
   )
 
-  if (repordStatus != 'success') {
+  const { status: weekStatus, data: weekData } = useQuery(
+    'semester-week',
+    () => {
+      return getSemesterWeek()
+    }
+  )
+
+  if (repordStatus != 'success' || weekStatus != 'success') {
     return <Loading />
   }
 
@@ -123,7 +130,7 @@ const ReportContainer: React.FC<Props> = () => {
             {moment().format('ll')}
           </Typography>
           <Typography variant="body2">
-            Хичээлийн 7 дугаар долоо хоног
+            {`Хичээлийн ${weekData}-р долоо хоног`}
           </Typography>
         </Box>
       </Box>

@@ -16,11 +16,57 @@ export const logout = () => {
   })
 }
 
+export const getSemesterWeek = () => {
+  // return api({ url: URI.GET_SEMESTER_WEEK })
+  return 13
+}
+
+export const getLessonSchedule = (
+  teacher_id: string // 'J.SW10'
+) => {
+  // return api({
+  //   url: URI.GET_LESSON_LIST,
+  //   params: { teacher_id: teacher_id },
+  // })
+  return {
+    data: [
+      {
+        id: 'F.CS101',
+        name: 'Програмчлалын үндэс',
+        lecture: ['2-5'],
+        seminar: [],
+        laborator: ['1-4', '1-5'],
+      },
+      {
+        id: 'F.CS102',
+        name: 'Алгоритмын үндэс',
+        lecture: ['2-6'],
+        seminar: ['1-3'],
+        laborator: ['3-4', '3-5'],
+      },
+      {
+        id: 'F.CS103',
+        name: 'Инженерийн эдийн засаг',
+        lecture: ['2-7'],
+        seminar: [],
+        laborator: ['1-1', '1-2'],
+      },
+      {
+        id: 'F.CS104',
+        name: 'Дискрет бүтэц',
+        lecture: ['4-1'],
+        seminar: ['2-3'],
+        laborator: ['5-1', '5-2'],
+      },
+    ],
+  }
+}
+
 export const fetchSchedule = (
   teacher_id: string // 'J.SW10'
 ) => {
   // return api({
-  //   url: URI.GET_RECORDANCE,
+  //   url: URI.GET_SCHEDULE,
   //   params: { teacher_id: teacher_id },
   // })
   return {
@@ -277,7 +323,7 @@ export const fetchReport = (params: {
   schedule_time: string // '4-1' (4дэх өдрийн 1-р цаг)
 }) => {
   // return api({
-  //   url: URI.GET_RECORDANCE,
+  //   url: URI.GET_REPORT,
   //   params: { q: params },
   // })
   return {

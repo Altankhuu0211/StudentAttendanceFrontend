@@ -33,7 +33,11 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { tableCellClasses } from '@mui/material/TableCell'
 import Loading from '@components/Loading'
 import { ATTENDANCE_STATUS } from '@constants/common'
-import { fetchRecordance } from '@services/index'
+import {
+  fetchRecordance,
+  getLessonSchedule,
+  getSemesterWeek,
+} from '@services/index'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -62,26 +66,6 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   const [selectAssignment, setSelectAssignment] = useState('none')
   const router = useRouter()
 
-  const handleSelectSubject = (event: SelectChangeEvent) => {
-    setSelectSubject(event.target.value)
-  }
-
-  const handleSelectLecture = (event: SelectChangeEvent) => {
-    setSelectLecture(event.target.value)
-  }
-
-  const handleSelectSeminar = (event: SelectChangeEvent) => {
-    setSelectSeminar(event.target.value)
-  }
-
-  const handleSelectLaboratory = (event: SelectChangeEvent) => {
-    setSelectLaboratory(event.target.value)
-  }
-
-  const handleSelectAssignment = (event: SelectChangeEvent) => {
-    setSelectAssignment(event.target.value)
-  }
-
   const [searchText, setSearchText] = useState('')
   const [showClearIcon, setShowClearIcon] = useState(false)
   const payload = {
@@ -99,16 +83,63 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     }
   )
 
+  const { status: lessonStatus, data: lessonData } = useQuery(
+    ['lesson-schedule', 'J.SW10'],
+    () => {
+      return getLessonSchedule('J.SW10')
+    }
+  )
+
+  const { status: weekStatus, data: weekData } = useQuery(
+    'semester-week',
+    () => {
+      return getSemesterWeek()
+    }
+  )
+
   useEffect(() => {
     if (!searchText) setShowClearIcon(false)
     if (searchText.length === 1) setShowClearIcon(true)
   }, [searchText])
 
-  if (recordStatus != 'success') {
+  if (
+    recordStatus != 'success' ||
+    weekStatus != 'success' ||
+    lessonStatus != 'success'
+  ) {
     return <Loading />
   }
 
   const response = recordData?.data
+  const lesson = lessonData?.data
+  let selectDefault = 'none'
+
+  const handleSelectSubject = (event: SelectChangeEvent) => {
+    setSelectSubject(event.target.value)
+    lesson.map((item) => {
+      if (item.id == selectSubject) {
+        selectDefault = item.lecture[0]
+        console.log('default:', selectDefault)
+      }
+    })
+    setSelectLecture(selectDefault)
+  }
+
+  const handleSelectLecture = (event: SelectChangeEvent) => {
+    setSelectLecture(event.target.value)
+  }
+
+  const handleSelectSeminar = (event: SelectChangeEvent) => {
+    setSelectSeminar(event.target.value)
+  }
+
+  const handleSelectLaboratory = (event: SelectChangeEvent) => {
+    setSelectLaboratory(event.target.value)
+  }
+
+  const handleSelectAssignment = (event: SelectChangeEvent) => {
+    setSelectAssignment(event.target.value)
+  }
 
   const handleBeginRegister = () => {
     console.log('begin register button clicked ...')
@@ -140,6 +171,8 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     console.log(event.target.value, index)
   }
 
+  console.log('selectedSubject:', selectSubject)
+
   const renderDate = () => {
     return (
       <Box
@@ -165,7 +198,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             {moment().format('ll')}
           </Typography>
           <Typography variant="body2">
-            Хичээлийн 7 дугаар долоо хоног
+            {`Хичээлийн ${weekData}-р долоо хоног`}
           </Typography>
         </Box>
       </Box>
@@ -359,7 +392,13 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           <MenuItem value="none" disabled>
             {`${t('selection.lesson')}`}
           </MenuItem>
-          <MenuItem value="F.IT20">{'F.IT202 Веб зохиомж'}</MenuItem>
+          {lesson.map((item) => {
+            return (
+              <MenuItem key={item.id} value={item.id}>
+                {item.name}
+              </MenuItem>
+            )
+          })}
         </Select>
         <Select
           value={selectLecture}
@@ -370,7 +409,16 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           <MenuItem value="none" disabled>
             {`${t('selection.lecture')}`}
           </MenuItem>
-          <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
+          {lesson.map((item) => {
+            if (item.id == selectSubject)
+              return item.lecture.map((val) => {
+                return (
+                  <MenuItem key={val} value={val}>
+                    {val}
+                  </MenuItem>
+                )
+              })
+          })}
         </Select>
         <Select
           value={selectSeminar}
@@ -381,7 +429,16 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           <MenuItem value="none" disabled>
             {`${t('selection.seminar')}`}
           </MenuItem>
-          <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
+          {lesson.map((item) => {
+            if (item.id == selectSubject)
+              return item.seminar.map((val) => {
+                return (
+                  <MenuItem key={val} value={val}>
+                    {val}
+                  </MenuItem>
+                )
+              })
+          })}
         </Select>
         <Select
           value={selectLaboratory}
@@ -392,7 +449,16 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           <MenuItem value="none" disabled>
             {`${t('selection.laborator')}`}
           </MenuItem>
-          <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
+          {lesson.map((item) => {
+            if (item.id == selectSubject)
+              return item.laborator.map((val) => {
+                return (
+                  <MenuItem key={val} value={val}>
+                    {val}
+                  </MenuItem>
+                )
+              })
+          })}
         </Select>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
