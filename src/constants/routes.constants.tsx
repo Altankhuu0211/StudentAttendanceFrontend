@@ -3,4 +3,5 @@ export const PageRoutes = {
   ATTENDANCE: '/attendance',
   REPORT: '/report',
   LOGIN: '/login',
+  FORM: '/form',
 }

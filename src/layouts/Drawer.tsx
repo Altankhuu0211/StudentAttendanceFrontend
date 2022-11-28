@@ -49,7 +49,7 @@ const MenuDrawer: React.FC<Props> = () => {
           >
             <IconHome sx={{ fontSize: '18px' }} />
             <Typography variant="body2" sx={{ color: Colors.textBlack }}>
-              J.SW301
+              J.SW10
             </Typography>
           </Box>
           <Box
@@ -100,7 +100,7 @@ const MenuDrawer: React.FC<Props> = () => {
                 <ListItemText
                   primary={text}
                   sx={{
-                    color: '#FFFFFF',
+                    color: Colors.mainWhite,
                     fontFamily: 'Arial, Helvetica, sans-serif',
                     fontSize: '10px',
                     textTransform: 'uppercase',
@@ -114,7 +114,12 @@ const MenuDrawer: React.FC<Props> = () => {
         <ListItem disablePadding>
           <ListItemButton
             sx={{
-              bgcolor: Colors.secondary,
+              bgcolor:
+                router.pathname == PageRoutes.HOME ||
+                router.pathname == PageRoutes.ATTENDANCE ||
+                router.pathname == PageRoutes.REPORT
+                  ? Colors.secondary
+                  : Colors.primary,
               '&:hover': { bgcolor: Colors.secondary },
             }}
             onClick={() => router.push(PageRoutes.HOME)}
@@ -122,6 +127,30 @@ const MenuDrawer: React.FC<Props> = () => {
             <IconList sx={{ color: Colors.lightWhite, mr: 1 }} />
             <ListItemText
               primary="Ирц бүртгэл"
+              sx={{
+                color: Colors.mainWhite,
+                fontFamily: 'Arial, Helvetica, sans-serif',
+                fontSize: '10px',
+                textTransform: 'uppercase',
+              }}
+            />
+          </ListItemButton>
+        </ListItem>
+        <Divider />
+        <ListItem disablePadding>
+          <ListItemButton
+            sx={{
+              bgcolor:
+                router.pathname == PageRoutes.FORM
+                  ? Colors.secondary
+                  : Colors.primary,
+              '&:hover': { bgcolor: Colors.secondary },
+            }}
+            onClick={() => router.push(PageRoutes.FORM)}
+          >
+            <IconList sx={{ color: Colors.lightWhite, mr: 1 }} />
+            <ListItemText
+              primary="Оюутны үнэмлэхний дугаар бүртгэх"
               sx={{
                 color: Colors.mainWhite,
                 fontFamily: 'Arial, Helvetica, sans-serif',

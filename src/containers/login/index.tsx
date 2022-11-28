@@ -41,17 +41,19 @@ const LoginContainer: React.FC<Props> = () => {
   } = methods
   const { onSubmitHandler } = useLogin()
   const onSubmit = () => {
-    onSubmitHandler(getValues()).then((data) => {
-      if (data?.status == 200) {
-        setOpenSuccess(true)
-        router.push(PageRoutes.HOME)
-        // const localStorage = require('localStorage'),
-        // authorization = { token: data.headers.authorization }
-        // localStorage.setItem('token', JSON.stringify(authorization))
-      } else {
-        setOpenFailed(true)
-      }
-    })
+    router.push(PageRoutes.HOME)
+    // onSubmitHandler(getValues()).then((data) => {
+    //   if (data?.status == 200) {
+    //     setOpenSuccess(true)
+    //     router.push(PageRoutes.HOME)
+    //     // const localStorage = require('localStorage'),
+    //     // authorization = { token: data.headers.authorization }
+    //     // localStorage.setItem('token', JSON.stringify(authorization))
+    //   } else {
+    //     setOpenFailed(true)
+
+    //   }
+    // })
   }
 
   return (

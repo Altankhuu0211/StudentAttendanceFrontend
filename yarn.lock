@@ -3007,6 +3007,7 @@ next@latest:
     react-pdf: ^5.7.2
     react-query: ^3.39.1
     react-slick: ^0.29.0
+    react-sticky-box: ^1.0.2
     react-virtualized: ^9.22.3
     slick-carousel: ^1.8.1
     typescript: latest
@@ -3435,6 +3436,17 @@ react-dom@latest:
   languageName: node
   linkType: hard
 
+"react-sticky-box@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "react-sticky-box@npm:1.0.2"
+  dependencies:
+    resize-observer-polyfill: ^1.5.1
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 60ddc90ff2bc8c0597f8de8ca8f287dc20eff0f4d484225f35e426937cc5af223913a57efd63b68afbdbccae97be89416b01823977d21325ac96681277f719ca
+  languageName: node
+  linkType: hard
+
 "react-transition-group@npm:^2.2.1":
   version: 2.9.0
   resolution: "react-transition-group@npm:2.9.0"
@@ -3550,7 +3562,7 @@ react@latest:
   languageName: node
   linkType: hard
 
-"resize-observer-polyfill@npm:^1.5.0":
+"resize-observer-polyfill@npm:^1.5.0, resize-observer-polyfill@npm:^1.5.1":
   version: 1.5.1
   resolution: "resize-observer-polyfill@npm:1.5.1"
   checksum: 57e7f79489867b00ba43c9c051524a5c8f162a61d5547e99333549afc23e15c44fd43f2f318ea0261ea98c0eb3158cca261e6f48d66e1ed1cd1f340a43977094

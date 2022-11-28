@@ -11,6 +11,7 @@ export default {
     report: 'Тайлан',
     save: 'Хадгалах',
     student_code: 'Оюутны код',
+    chip_number: 'Оюутны үнэмлэхний дугаар',
     student_fname: 'Оюутны овог',
     student_lname: 'Оюутны нэр',
     arrival_time: 'Цаг',
@@ -34,5 +35,8 @@ export default {
   alert: {
     success: 'Амжилттай.',
     failed: 'Алдаа гарлаа.',
+  },
+  form: {
+    title: 'Оюутны үнэмлэхний дугаар бүртгэх',
   },
 }
