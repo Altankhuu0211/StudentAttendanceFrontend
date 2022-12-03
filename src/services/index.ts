@@ -189,8 +189,7 @@ export const fetchSchedule = (
 
 export const fetchStudentList = () => {
   // return api({
-  //   url: URI.GET_RECORDANCE,
-  //   params: { q: params },
+  //   url: URI.GET_STUDENTS_LIST,
   // })
   return {
     data: [
@@ -382,9 +381,8 @@ export const fetchRecordance = (params: {
   teacher_id: string // 'J.SW10'
   subject_id: string // 'F.CS101'
   class_type: string // 'Лекц'
-  weekday: number // 1 (Даваа)
-  part_time: number // 2 (2-р цаг)
-  date: string // '2022-10-02'
+  schedule_time: string // '2-3'
+  semester_week: number // 7
 }) => {
   // return api({
   //   url: URI.GET_RECORDANCE,
@@ -392,6 +390,7 @@ export const fetchRecordance = (params: {
   // })
   return {
     data: {
+      date: '2022-11-24',
       total_students: 80,
       total_absent: 10,
       total_present: 60,
@@ -2090,9 +2089,8 @@ export const postStudentStatusEdited = (params: {
   teacher_id: string // 'J.SW10'
   subject_id: string // 'F.CS101'
   class_type: string // 'Лекц'
-  weekday: number // 4 /Пүрэв/
-  part_time: number // 1 /1-р цаг/
-  date: string // '2022-11-10'
+  schedule_time: string // '1-4'
+  semester_week: number // 14
   student_id: string // 'B190910001'
   status_updated: number // 0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
 }) => {
