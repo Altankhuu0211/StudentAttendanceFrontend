@@ -4,8 +4,9 @@ export const URI = {
   DOMAIN,
   LOGIN: '/teacher/login',
   LOGOUT: '/teacher/logout',
-  GET_RECORDANCE: '/teacher/recordance',
+  GET_CLASS_ATTENDANCE: '/teacher/class-attendance',
   GET_SCHEDULE: '/teacher/schedule',
-  GET_REPORT: '/teacher/report',
+  GET_REPORT: '/teacher/class-attendance-report',
   GET_SEMESTER_WEEK: '/teacher/semester-week',
+  POST_ATTENDANCE_EDITED: '/teacher/attendance-edited',
 }

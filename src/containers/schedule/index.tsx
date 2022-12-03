@@ -50,10 +50,11 @@ const ScheduleContainer: React.FC<Props> = () => {
 
   console.log('::', scheduleData)
 
-  const response = scheduleData?.data
+  const response = scheduleData?.data?.data
 
-  const handleSubjectClick = (subject: any) => {
-    console.log(subject)
+  //TODO: params damjuulah
+  const handleSubjectClick = (subject: any, weekday: number) => {
+    console.log(subject, weekday)
     router.push('/attendance')
   }
 
@@ -145,12 +146,17 @@ const ScheduleContainer: React.FC<Props> = () => {
                   {_.range(0, 7).map((_val, idx) => {
                     return (
                       <StyledTableCell align="center">
-                        {response[idx]?.subjects.map((subject, index) => {
+                        {response[idx]?.Subjects.map((subject, index) => {
                           return (
                             subject.part_time === v.number && (
                               <Box
                                 key={index}
-                                onClick={() => handleSubjectClick(subject)}
+                                onClick={() =>
+                                  handleSubjectClick(
+                                    subject,
+                                    response[idx]?.weekday
+                                  )
+                                }
                                 sx={{
                                   bgcolor: CLASS_TYPE.map((va) => {
                                     return va.type === subject.class_type

@@ -64,6 +64,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   const [selectSeminar, setSelectSeminar] = useState('none')
   const [selectLaboratory, setSelectLaboratory] = useState('none')
   const [selectAssignment, setSelectAssignment] = useState('none')
+
   const router = useRouter()
 
   const [searchText, setSearchText] = useState('')
@@ -72,7 +73,8 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     teacher_id: 'J.SW10',
     subject_id: 'F.CS101',
     class_type: 'Лекц',
-    schedule_time: '4-1',
+    weekday: 4,
+    part_time: 1,
     date: '2022-10-02',
   }
 
@@ -166,9 +168,9 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const handleChangeStatus = (
     event: SelectChangeEvent<string>,
-    index: number
+    student_id: string
   ) => {
-    console.log(event.target.value, index)
+    console.log('edited:', event.target.value, student_id)
   }
 
   console.log('selectedSubject:', selectSubject)
@@ -488,11 +490,10 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           <Table aria-label="caption table" sx={{ width: '100%' }}>
             <TableHead>
               <StyledTableRow>
-                <StyledTableCell
-                  variant="head"
-                  align="center"
-                  sx={{ width: 150 }}
-                >
+                <StyledTableCell variant="head" align="center">
+                  {`№`}
+                </StyledTableCell>
+                <StyledTableCell variant="head" align="center">
                   {`${t('common.student_code')}`}
                 </StyledTableCell>
                 <StyledTableCell variant="head" align="center">
@@ -512,6 +513,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             <TableBody>
               {response?.attendance.map((v, i) => (
                 <StyledTableRow key={i}>
+                  <StyledTableCell align="center">{i + 1}</StyledTableCell>
                   <StyledTableCell align="center">
                     {v.student_id}
                   </StyledTableCell>
@@ -523,19 +525,20 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <Select
-                      value={ATTENDANCE_STATUS[v.status]}
+                      defaultValue={ATTENDANCE_STATUS[v.status]}
+                      // value={ATTENDANCE_STATUS[v.status]}
                       sx={{
                         '& fieldset': {
                           border: 'none',
                         },
-                        color:
-                          ATTENDANCE_STATUS[v.status] === 'Ирээгүй'
-                            ? Colors.absent
-                            : ATTENDANCE_STATUS[v.status] === 'Ирсэн'
-                            ? Colors.present
-                            : Colors.others,
+                        // color:
+                        //   ATTENDANCE_STATUS[v.status] === 'Ирээгүй'
+                        //     ? Colors.absent
+                        //     : ATTENDANCE_STATUS[v.status] === 'Ирсэн'
+                        //     ? Colors.present
+                        //     : Colors.others,
                       }}
-                      onChange={(e) => handleChangeStatus(e, i)}
+                      onChange={(e) => handleChangeStatus(e, v.student_id)}
                     >
                       {ATTENDANCE_STATUS.map((item, i) => {
                         return (

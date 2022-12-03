@@ -65,10 +65,10 @@ export const getLessonSchedule = (
 export const fetchSchedule = (
   teacher_id: string // 'J.SW10'
 ) => {
-  // return api({
-  //   url: URI.GET_SCHEDULE,
-  //   params: { teacher_id: teacher_id },
-  // })
+  return api({
+    url: URI.GET_SCHEDULE,
+    params: { teacher_id: teacher_id },
+  })
   return {
     data: [
       {
@@ -382,7 +382,8 @@ export const fetchRecordance = (params: {
   teacher_id: string // 'J.SW10'
   subject_id: string // 'F.CS101'
   class_type: string // 'Лекц'
-  schedule_time: string // '4-1' (4дэх өдрийн 1-р цаг)
+  weekday: number // 1 (Даваа)
+  part_time: number // 2 (2-р цаг)
   date: string // '2022-10-02'
 }) => {
   // return api({
@@ -2083,4 +2084,21 @@ export const fetchReport = (params: {
       },
     ],
   }
+}
+
+export const postStudentStatusEdited = (params: {
+  teacher_id: string // 'J.SW10'
+  subject_id: string // 'F.CS101'
+  class_type: string // 'Лекц'
+  weekday: number // 4 /Пүрэв/
+  part_time: number // 1 /1-р цаг/
+  date: string // '2022-11-10'
+  student_id: string // 'B190910001'
+  status_updated: number // 0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
+}) => {
+  return api({
+    url: URI.POST_ATTENDANCE_EDITED,
+    method: 'POST',
+    data: JSON.stringify(params),
+  })
 }
