@@ -2,7 +2,7 @@ const DOMAIN = process.env.NEXT_PUBLIC_API
 
 export const URI = {
   DOMAIN,
-  LOGIN: '/teacher/login',
+  LOGIN: '/user/login',
   LOGOUT: '/teacher/logout',
   GET_CLASS_ATTENDANCE: '/teacher/class-attendance',
   GET_SCHEDULE: '/teacher/schedule',

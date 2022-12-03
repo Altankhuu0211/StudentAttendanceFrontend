@@ -547,12 +547,12 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                         '& fieldset': {
                           border: 'none',
                         },
-                        // color:
-                        //   ATTENDANCE_STATUS[v.status] === 'Ирээгүй'
-                        //     ? Colors.absent
-                        //     : ATTENDANCE_STATUS[v.status] === 'Ирсэн'
-                        //     ? Colors.present
-                        //     : Colors.others,
+                        color:
+                          ATTENDANCE_STATUS[v.status] === 'Ирээгүй'
+                            ? Colors.absent
+                            : ATTENDANCE_STATUS[v.status] === 'Ирсэн'
+                            ? Colors.present
+                            : Colors.others,
                       }}
                       onChange={(e) => handleChangeStatus(e, v.student_id)}
                     >
