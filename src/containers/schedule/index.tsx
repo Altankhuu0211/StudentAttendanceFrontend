@@ -24,6 +24,7 @@ import Loading from '@components/Loading'
 import { PART_TIME, WEEKDAY, CLASS_TYPE } from '@constants/common'
 import { useRouter } from 'next/router'
 import { fetchSchedule, getSemesterWeek } from '@services/index'
+import { PageRoutes } from '@constants/routes.constants'
 
 type Props = {}
 
@@ -55,7 +56,7 @@ const ScheduleContainer: React.FC<Props> = () => {
   //TODO: params damjuulah
   const handleSubjectClick = (subject: any, weekday: number) => {
     console.log(subject, weekday)
-    router.push('/attendance')
+    router.push(PageRoutes.ATTENDANCE)
   }
 
   const StyledTableCell = styled(TableCell)(() => ({
