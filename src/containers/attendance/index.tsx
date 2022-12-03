@@ -32,7 +32,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { tableCellClasses } from '@mui/material/TableCell'
 import Loading from '@components/Loading'
-import { ATTENDANCE_STATUS, CLASS_TYPE } from '@constants/common'
+import { ATTENDANCE_STATUS, CLASS_TYPE, SEMESTER_WEEK } from '@constants/common'
 import {
   fetchRecordance,
   getLessonSchedule,
@@ -100,8 +100,8 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     teacher_id: 'J.SW10',
     subject_id: 'F.CS101',
     class_type: 'Лекц',
-    schedule_time: '2-3',
-    semester_week: 15,
+    schedule_time: '4-1',
+    semester_week: 14,
   }
 
   const { status: recordStatus, data: recordData } = useQuery(
@@ -512,7 +512,24 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                 })
             })}
         </Select>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <Select
+          value={selectLaboratory}
+          onChange={handleSelectLaboratory}
+          fullWidth
+          sx={{ mr: 1.5 }}
+        >
+          <MenuItem value="none" disabled>
+            {`${t('selection.semester_week')}`}
+          </MenuItem>
+          {SEMESTER_WEEK.map((item, idx) => {
+            return (
+              <MenuItem key={idx + 1} value={item}>
+                {item}
+              </MenuItem>
+            )
+          })}
+        </Select>
+        {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             label={`${t('selection.date')}`}
             value={selectedDate}
@@ -521,7 +538,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             }}
             renderInput={(params) => <TextField fullWidth {...params} />}
           />
-        </LocalizationProvider>
+        </LocalizationProvider> */}
       </Box>
     )
   }

@@ -25,6 +25,7 @@ import { PART_TIME, WEEKDAY, CLASS_TYPE } from '@constants/common'
 import { useRouter } from 'next/router'
 import { fetchSchedule, getSemesterWeek } from '@services/index'
 import { combineScheduleTime } from '@utils/common'
+import { PageRoutes } from '@constants/routes.constants'
 
 type Props = {}
 
@@ -61,7 +62,7 @@ const ScheduleContainer: React.FC<Props> = () => {
     }
     delete paramData.part_time
     router.push({
-      pathname: '/attendance',
+      pathname: PageRoutes.ATTENDANCE,
       query: { data: JSON.stringify(paramData) },
     })
   }
