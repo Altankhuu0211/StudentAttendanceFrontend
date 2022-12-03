@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import _ from 'lodash'
 import { useQuery } from 'react-query'
 import moment from 'moment'
@@ -24,6 +24,7 @@ import Loading from '@components/Loading'
 import { PART_TIME, WEEKDAY, CLASS_TYPE } from '@constants/common'
 import { useRouter } from 'next/router'
 import { fetchSchedule, getSemesterWeek } from '@services/index'
+import { combineScheduleTime } from '@utils/common'
 import { PageRoutes } from '@constants/routes.constants'
 
 type Props = {}
@@ -34,7 +35,7 @@ const ScheduleContainer: React.FC<Props> = () => {
   const { status: scheduleStatus, data: scheduleData } = useQuery(
     ['teacher-schedule', 'B.ES48'],
     () => {
-      return fetchSchedule('B.ES48')
+      return fetchSchedule({ teacher_id: 'B.ES48' })
     }
   )
 
@@ -53,10 +54,17 @@ const ScheduleContainer: React.FC<Props> = () => {
 
   const response = scheduleData?.data?.data
 
-  //TODO: params damjuulah
   const handleSubjectClick = (subject: any, weekday: number) => {
-    console.log(subject, weekday)
-    router.push(PageRoutes.ATTENDANCE)
+    let paramData = subject
+    paramData = {
+      ...paramData,
+      schedule_time: combineScheduleTime(paramData.part_time, weekday),
+    }
+    delete paramData.part_time
+    router.push({
+      pathname: PageRoutes.ATTENDANCE,
+      query: { data: JSON.stringify(paramData) },
+    })
   }
 
   const StyledTableCell = styled(TableCell)(() => ({
@@ -146,7 +154,7 @@ const ScheduleContainer: React.FC<Props> = () => {
                   <StyledTableCell align="center">{`${v.number}-р цаг: ${v.time_interval}`}</StyledTableCell>
                   {_.range(0, 7).map((_val, idx) => {
                     return (
-                      <StyledTableCell align="center">
+                      <StyledTableCell key={idx * 10 + i} align="center">
                         {response[idx]?.Subjects.map((subject, index) => {
                           return (
                             subject.part_time === v.number && (
@@ -198,9 +206,10 @@ const ScheduleContainer: React.FC<Props> = () => {
           </Table>
         </TableContainer>
         <Box sx={{ display: 'flex', mt: 2, justifyContent: 'flex-end' }}>
-          {CLASS_TYPE.map((value) => {
+          {CLASS_TYPE.map((value, i) => {
             return (
               <Box
+                key={i}
                 sx={{
                   bgcolor: value.color,
                   width: 127,
