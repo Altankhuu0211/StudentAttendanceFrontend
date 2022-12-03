@@ -1,5 +1,12 @@
 import { api } from '@utils/axios'
 import { URI } from '@constants/uri.constants'
+import {
+  Schedule,
+  LessonSchedule,
+  Recordance,
+  StudentStatusEdited,
+  Report,
+} from '@constants/types'
 
 export const login = (teacherLogin) => {
   return api({
@@ -21,12 +28,10 @@ export const getSemesterWeek = () => {
   return 13
 }
 
-export const getLessonSchedule = (
-  teacher_id: string // 'J.SW10'
-) => {
+export const getLessonSchedule = (params: LessonSchedule) => {
   // return api({
   //   url: URI.GET_LESSON_LIST,
-  //   params: { teacher_id: teacher_id },
+  //   params: { teacher_id: params.teacher_id },
   // })
   return {
     data: [
@@ -35,7 +40,7 @@ export const getLessonSchedule = (
         name: 'Програмчлалын үндэс',
         lecture: ['2-5'],
         seminar: [],
-        laborator: ['1-4', '1-5'],
+        laborator: ['1-4', '1-5', '2-2'],
       },
       {
         id: 'F.CS102',
@@ -62,12 +67,10 @@ export const getLessonSchedule = (
   }
 }
 
-export const fetchSchedule = (
-  teacher_id: string // 'J.SW10'
-) => {
+export const fetchSchedule = (params: Schedule) => {
   return api({
     url: URI.GET_SCHEDULE,
-    params: { teacher_id: teacher_id },
+    params: { teacher_id: params.teacher_id },
   })
   return {
     data: [
@@ -377,13 +380,7 @@ export const fetchStudentList = () => {
   }
 }
 
-export const fetchRecordance = (params: {
-  teacher_id: string // 'J.SW10'
-  subject_id: string // 'F.CS101'
-  class_type: string // 'Лекц'
-  schedule_time: string // '2-3'
-  semester_week: number // 7
-}) => {
+export const fetchRecordance = (params: Recordance) => {
   // return api({
   //   url: URI.GET_RECORDANCE,
   //   params: { q: params },
@@ -507,12 +504,7 @@ export const fetchRecordance = (params: {
   }
 }
 
-export const fetchReport = (params: {
-  teacher_id: string // 'J.SW10'
-  subject_id: string // 'F.CS101'
-  class_type: string // 'Лекц'
-  schedule_time: string // '4-1' (4дэх өдрийн 1-р цаг)
-}) => {
+export const fetchReport = (params: Report) => {
   // return api({
   //   url: URI.GET_REPORT,
   //   params: { q: params },
@@ -2085,15 +2077,7 @@ export const fetchReport = (params: {
   }
 }
 
-export const postStudentStatusEdited = (params: {
-  teacher_id: string // 'J.SW10'
-  subject_id: string // 'F.CS101'
-  class_type: string // 'Лекц'
-  schedule_time: string // '1-4'
-  semester_week: number // 14
-  student_id: string // 'B190910001'
-  status_updated: number // 0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
-}) => {
+export const postStudentStatusEdited = (params: StudentStatusEdited) => {
   return api({
     url: URI.POST_ATTENDANCE_EDITED,
     method: 'POST',

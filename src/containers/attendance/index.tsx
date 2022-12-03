@@ -32,12 +32,13 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { tableCellClasses } from '@mui/material/TableCell'
 import Loading from '@components/Loading'
-import { ATTENDANCE_STATUS } from '@constants/common'
+import { ATTENDANCE_STATUS, CLASS_TYPE } from '@constants/common'
 import {
   fetchRecordance,
   getLessonSchedule,
   getSemesterWeek,
 } from '@services/index'
+import { Recordance } from '@constants/types'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -58,24 +59,49 @@ const StyledTableRow = styled(TableRow)(() => ({
 type Props = {}
 
 const RecordAttendanceContainer: React.FC<Props> = () => {
+  const router = useRouter()
+
+  const [defaultValues, setDefaultValues] = useState<
+    | {
+        class_type: string
+        code: string
+        name: string
+        schedule_time: string
+      }
+    | undefined
+  >(undefined)
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [selectSubject, setSelectSubject] = useState('none')
   const [selectLecture, setSelectLecture] = useState('none')
   const [selectSeminar, setSelectSeminar] = useState('none')
   const [selectLaboratory, setSelectLaboratory] = useState('none')
-  const [selectAssignment, setSelectAssignment] = useState('none')
-
-  const router = useRouter()
-
   const [searchText, setSearchText] = useState('')
   const [showClearIcon, setShowClearIcon] = useState(false)
-  const payload = {
+
+  useEffect(() => {
+    if (router.isReady) {
+      console.log(JSON.parse(String(router.query.data)))
+      setDefaultValues(JSON.parse(String(router.query.data)))
+    }
+  }, [router])
+
+  useEffect(() => {
+    if (!searchText) setShowClearIcon(false)
+    if (searchText.length === 1) setShowClearIcon(true)
+  }, [searchText])
+
+  const payload: {
+    teacher_id: string
+    subject_id: string
+    class_type: string
+    schedule_time: string
+    semester_week: number
+  } = {
     teacher_id: 'J.SW10',
     subject_id: 'F.CS101',
     class_type: 'Лекц',
-    weekday: 4,
-    part_time: 1,
-    date: '2022-10-02',
+    schedule_time: '2-3',
+    semester_week: 15,
   }
 
   const { status: recordStatus, data: recordData } = useQuery(
@@ -88,7 +114,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   const { status: lessonStatus, data: lessonData } = useQuery(
     ['lesson-schedule', 'J.SW10'],
     () => {
-      return getLessonSchedule('J.SW10')
+      return getLessonSchedule({ teacher_id: 'J.SW10' })
     }
   )
 
@@ -99,32 +125,42 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     }
   )
 
-  useEffect(() => {
-    if (!searchText) setShowClearIcon(false)
-    if (searchText.length === 1) setShowClearIcon(true)
-  }, [searchText])
-
-  if (
-    recordStatus != 'success' ||
-    weekStatus != 'success' ||
-    lessonStatus != 'success'
-  ) {
-    return <Loading />
-  }
-
   const response = recordData?.data
   const lesson = lessonData?.data
   let selectDefault = 'none'
 
+  useEffect(() => {
+    if (defaultValues && lesson) {
+      console.log('lesson', lesson, defaultValues.code)
+      const defaultLesson = _.find(lesson, function (v) {
+        return v.id === defaultValues.code
+      })
+      if (defaultLesson) {
+        setSelectSubject(defaultLesson.id)
+        if (defaultValues.class_type === CLASS_TYPE[0].type) {
+          setSelectLecture(defaultValues.schedule_time)
+        } else if (defaultValues.class_type === CLASS_TYPE[1].type) {
+          setSelectLaboratory(defaultValues.schedule_time)
+        } else {
+          setSelectSeminar(defaultValues.schedule_time)
+        }
+      }
+    }
+  }, [defaultValues, lesson])
+
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)
-    lesson.map((item) => {
-      if (item.id == selectSubject) {
-        selectDefault = item.lecture[0]
-        console.log('default:', selectDefault)
-      }
-    })
+    console.log(lesson)
+    lesson &&
+      lesson.map((item) => {
+        if (item.id == event.target.value) {
+          setSelectLecture(selectDefault)
+          selectDefault = item.lecture[0]
+          console.log('default:', selectDefault)
+        }
+      })
     setSelectLecture(selectDefault)
+    // To do on change run fetchRecordance
   }
 
   const handleSelectLecture = (event: SelectChangeEvent) => {
@@ -137,10 +173,6 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const handleSelectLaboratory = (event: SelectChangeEvent) => {
     setSelectLaboratory(event.target.value)
-  }
-
-  const handleSelectAssignment = (event: SelectChangeEvent) => {
-    setSelectAssignment(event.target.value)
   }
 
   const handleBeginRegister = () => {
@@ -172,8 +204,6 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   ) => {
     console.log('edited:', event.target.value, student_id)
   }
-
-  console.log('selectedSubject:', selectSubject)
 
   const renderDate = () => {
     return (
@@ -261,7 +291,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
               }}
             >
               {`${t('common.others')}`}:{' '}
-              {response?.total_sick + response?.total_free}
+              {Number(response?.total_sick) + Number(response?.total_free)}
             </Typography>
           </Box>
           <Box
@@ -389,78 +419,98 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           value={selectSubject}
           onChange={handleSelectSubject}
           fullWidth
-          sx={{ mr: 1.5 }}
+          sx={{
+            mr: 1.5,
+            fontWeight: selectSubject != 'none' ? 700 : 400,
+            color: selectSubject != 'none' ? 'black' : 'grey',
+          }}
         >
           <MenuItem value="none" disabled>
             {`${t('selection.lesson')}`}
           </MenuItem>
-          {lesson.map((item) => {
-            return (
-              <MenuItem key={item.id} value={item.id}>
-                {item.name}
-              </MenuItem>
-            )
-          })}
+          {lesson &&
+            lesson.map((item) => {
+              return (
+                <MenuItem key={item.id} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              )
+            })}
         </Select>
         <Select
           value={selectLecture}
           onChange={handleSelectLecture}
           fullWidth
-          sx={{ mr: 1.5 }}
+          sx={{
+            mr: 1.5,
+            fontWeight: selectLecture != 'none' ? 700 : 400,
+            color: selectLecture != 'none' ? 'black' : 'grey',
+          }}
         >
           <MenuItem value="none" disabled>
             {`${t('selection.lecture')}`}
           </MenuItem>
-          {lesson.map((item) => {
-            if (item.id == selectSubject)
-              return item.lecture.map((val) => {
-                return (
-                  <MenuItem key={val} value={val}>
-                    {val}
-                  </MenuItem>
-                )
-              })
-          })}
+          {lesson &&
+            lesson.map((item) => {
+              if (item.id == selectSubject)
+                return item.lecture.map((val) => {
+                  return (
+                    <MenuItem key={val} value={val}>
+                      {val}
+                    </MenuItem>
+                  )
+                })
+            })}
         </Select>
         <Select
           value={selectSeminar}
           onChange={handleSelectSeminar}
           fullWidth
-          sx={{ mr: 1.5 }}
+          sx={{
+            mr: 1.5,
+            fontWeight: selectSeminar != 'none' ? 700 : 400,
+            color: selectSeminar != 'none' ? 'black' : 'grey',
+          }}
         >
           <MenuItem value="none" disabled>
             {`${t('selection.seminar')}`}
           </MenuItem>
-          {lesson.map((item) => {
-            if (item.id == selectSubject)
-              return item.seminar.map((val) => {
-                return (
-                  <MenuItem key={val} value={val}>
-                    {val}
-                  </MenuItem>
-                )
-              })
-          })}
+          {lesson &&
+            lesson.map((item) => {
+              if (item.id == selectSubject)
+                return item.seminar.map((val) => {
+                  return (
+                    <MenuItem key={val} value={val}>
+                      {val}
+                    </MenuItem>
+                  )
+                })
+            })}
         </Select>
         <Select
           value={selectLaboratory}
           onChange={handleSelectLaboratory}
           fullWidth
-          sx={{ mr: 1.5 }}
+          sx={{
+            mr: 1.5,
+            fontWeight: selectLaboratory != 'none' ? 700 : 400,
+            color: selectLaboratory != 'none' ? 'black' : 'grey',
+          }}
         >
           <MenuItem value="none" disabled>
             {`${t('selection.laborator')}`}
           </MenuItem>
-          {lesson.map((item) => {
-            if (item.id == selectSubject)
-              return item.laborator.map((val) => {
-                return (
-                  <MenuItem key={val} value={val}>
-                    {val}
-                  </MenuItem>
-                )
-              })
-          })}
+          {lesson &&
+            lesson.map((item) => {
+              if (item.id == selectSubject)
+                return item.laborator.map((val) => {
+                  return (
+                    <MenuItem key={val} value={val}>
+                      {val}
+                    </MenuItem>
+                  )
+                })
+            })}
         </Select>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
@@ -475,6 +525,14 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
       </Box>
     )
   }
+
+  if (
+    _.isEmpty(defaultValues) ||
+    recordStatus != 'success' ||
+    weekStatus != 'success' ||
+    lessonStatus != 'success'
+  )
+    return <Loading />
 
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
