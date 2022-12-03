@@ -28,8 +28,6 @@ import {
   TableContainer,
   Paper,
 } from '@mui/material'
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { tableCellClasses } from '@mui/material/TableCell'
 import Loading from '@components/Loading'
 import { ATTENDANCE_STATUS, CLASS_TYPE, SEMESTER_WEEK } from '@constants/common'
@@ -38,7 +36,6 @@ import {
   getLessonSchedule,
   getSemesterWeek,
 } from '@services/index'
-import { Recordance } from '@constants/types'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -70,11 +67,11 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
       }
     | undefined
   >(undefined)
-  const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [selectSubject, setSelectSubject] = useState('none')
   const [selectLecture, setSelectLecture] = useState('none')
   const [selectSeminar, setSelectSeminar] = useState('none')
   const [selectLaboratory, setSelectLaboratory] = useState('none')
+  const [selectSemesterWeek, setSelectSemesterWeek] = useState('none')
   const [searchText, setSearchText] = useState('')
   const [showClearIcon, setShowClearIcon] = useState(false)
 
@@ -148,6 +145,12 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     }
   }, [defaultValues, lesson])
 
+  useEffect(() => {
+    if (weekData) {
+      setSelectSemesterWeek(String(weekData))
+    }
+  }, [weekData])
+
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)
     console.log(lesson)
@@ -173,6 +176,10 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const handleSelectLaboratory = (event: SelectChangeEvent) => {
     setSelectLaboratory(event.target.value)
+  }
+
+  const handleSelectSemesterWeek = (event: SelectChangeEvent) => {
+    setSelectSemesterWeek(event.target.value)
   }
 
   const handleBeginRegister = () => {
@@ -513,17 +520,17 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             })}
         </Select>
         <Select
-          value={selectLaboratory}
-          onChange={handleSelectLaboratory}
+          value={selectSemesterWeek}
+          onChange={handleSelectSemesterWeek}
           fullWidth
           sx={{ mr: 1.5 }}
         >
-          <MenuItem value="none" disabled>
+          <MenuItem value={0} disabled>
             {`${t('selection.semester_week')}`}
           </MenuItem>
           {SEMESTER_WEEK.map((item, idx) => {
             return (
-              <MenuItem key={idx + 1} value={item}>
+              <MenuItem key={idx + 1} value={String(idx + 1)}>
                 {item}
               </MenuItem>
             )

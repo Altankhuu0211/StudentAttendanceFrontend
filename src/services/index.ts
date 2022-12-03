@@ -25,7 +25,7 @@ export const logout = () => {
 
 export const getSemesterWeek = () => {
   // return api({ url: URI.GET_SEMESTER_WEEK })
-  return 13
+  return 5
 }
 
 export const getLessonSchedule = (params: LessonSchedule) => {
