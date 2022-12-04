@@ -38,6 +38,7 @@ import {
 } from '@services/index'
 import { PageRoutes } from '@constants/routes.constants'
 import { getFromStorage } from '@utils/common'
+import { LessonsProps, RecordanceProps } from '@constants/types'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -59,7 +60,12 @@ type Props = {}
 
 const RecordAttendanceContainer: React.FC<Props> = () => {
   const router = useRouter()
-  const teacher_id = getFromStorage('user_code')
+  const [teacherCode, setTeacherCode] = useState<string>('')
+
+  useEffect(() => {
+    setTeacherCode(getFromStorage('user_code') || '')
+  }, [])
+
   const [defaultValues, setDefaultValues] = useState<
     | {
         class_type: string
@@ -76,18 +82,6 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   const [selectSemesterWeek, setSelectSemesterWeek] = useState('none')
   const [searchText, setSearchText] = useState('')
   const [showClearIcon, setShowClearIcon] = useState(false)
-
-  useEffect(() => {
-    if (router.isReady) {
-      console.log(JSON.parse(String(router.query.data)))
-      setDefaultValues(JSON.parse(String(router.query.data)))
-    }
-  }, [router])
-
-  useEffect(() => {
-    if (!searchText) setShowClearIcon(false)
-    if (searchText.length === 1) setShowClearIcon(true)
-  }, [searchText])
 
   const payload: {
     teacher_id: string
@@ -111,27 +105,57 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   )
 
   const { status: lessonStatus, data: lessonData } = useQuery(
-    ['lesson-schedule', teacher_id],
+    ['lesson-schedule', teacherCode],
     () => {
-      return getLessonSchedule({ teacher_id: teacher_id })
+      return getLessonSchedule({ teacher_id: teacherCode })
     }
   )
 
-  const { status: recordStatus, data: recordData } = useQuery(
-    ['student-attendance', payload],
-    () => {
-      return fetchRecordance(payload)
-    }
+  const {
+    status: recordStatus,
+    data: recordData,
+    refetch: recordanceRefetch,
+  } = useQuery(['student-attendance', payload], () => {
+    return fetchRecordance(payload)
+  })
+
+  const [record, setRecord] = useState<RecordanceProps | undefined>(undefined)
+  const [lesson, setLesson] = useState<LessonsProps>([])
+  const [semesterWeek, setSemesterWeek] = useState<undefined | number>(
+    undefined
   )
 
-  const response = recordData?.data?.data
-  const lesson = lessonData?.data?.data
-  const semester_week = weekData?.data?.data
-  let selectDefault = 'none'
+  useEffect(() => {
+    if (recordData) {
+      setRecord(recordData?.data?.data)
+    }
+  }, [recordData])
+
+  useEffect(() => {
+    if (lessonData) {
+      setLesson(lessonData?.data?.data)
+    }
+  }, [lessonData])
+
+  useEffect(() => {
+    if (weekData) {
+      setSemesterWeek(weekData?.data?.data)
+    }
+  }, [weekData])
+
+  useEffect(() => {
+    if (router.isReady) {
+      setDefaultValues(JSON.parse(String(router.query.data)))
+    }
+  }, [router])
+
+  useEffect(() => {
+    if (!searchText) setShowClearIcon(false)
+    if (searchText.length === 1) setShowClearIcon(true)
+  }, [searchText])
 
   useEffect(() => {
     if (defaultValues && lesson) {
-      console.log('lesson', lesson, defaultValues.code)
       const defaultLesson = _.find(lesson, function (v) {
         return v.id === defaultValues.code
       })
@@ -149,10 +173,10 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   }, [defaultValues, lesson])
 
   useEffect(() => {
-    if (semester_week) {
-      setSelectSemesterWeek(String(semester_week))
+    if (semesterWeek) {
+      setSelectSemesterWeek(String(semesterWeek))
     }
-  }, [semester_week])
+  }, [semesterWeek])
 
   if (
     _.isEmpty(defaultValues) ||
@@ -164,45 +188,47 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)
-    console.log(lesson)
+    let selectDefault = 'none'
     lesson &&
       lesson.map((item) => {
         if (item.id == event.target.value) {
           setSelectLecture(selectDefault)
           selectDefault = item.lecture[0]
-          console.log('default:', selectDefault)
         }
       })
     setSelectLecture(selectDefault)
     setSelectLab('none')
     setSelectSeminar('none')
-    // To do on change run fetchRecordance
+    recordanceRefetch()
   }
 
   const handleSelectLecture = (event: SelectChangeEvent) => {
     setSelectLecture(event.target.value)
     setSelectSeminar('none')
     setSelectLab('none')
+    recordanceRefetch()
   }
 
   const handleSelectSeminar = (event: SelectChangeEvent) => {
     setSelectSeminar(event.target.value)
     setSelectLecture('none')
     setSelectLab('none')
+    recordanceRefetch()
   }
 
   const handleSelectLab = (event: SelectChangeEvent) => {
     setSelectLab(event.target.value)
     setSelectSeminar('none')
     setSelectLecture('none')
+    recordanceRefetch()
   }
 
   const handleSelectSemesterWeek = (event: SelectChangeEvent) => {
     setSelectSemesterWeek(event.target.value)
+    recordanceRefetch()
   }
 
   const handleBeginRegister = () => {
-    console.log('begin register button clicked ...')
     router.push('/report')
   }
 
@@ -230,10 +256,6 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
       pathname: PageRoutes.REPORT,
       query: { data: JSON.stringify(paramData) },
     })
-  }
-
-  const handleEditStatus = () => {
-    console.log('save button clicked ...')
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -276,7 +298,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             {moment().format('ll')}
           </Typography>
           <Typography variant="body2">
-            {`Хичээлийн ${semester_week}-р долоо хоног`}
+            {`Хичээлийн ${semesterWeek}-р долоо хоног`}
           </Typography>
         </Box>
       </Box>
@@ -314,7 +336,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             }}
           >
             <Typography variant="body2" sx={{ color: Colors.mainBlack }}>
-              {`${t('common.total_student')}`}: {response?.total_students}
+              {`${t('common.total_student')}`}: {record?.total_students || ''}
             </Typography>
           </Box>
           <Box
@@ -337,7 +359,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
               }}
             >
               {`${t('common.others')}`}:{' '}
-              {Number(response?.total_sick) + Number(response?.total_free)}
+              {Number(record?.total_sick) + Number(record?.total_free)}
             </Typography>
           </Box>
           <Box
@@ -360,7 +382,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                 textAlign: 'center',
               }}
             >
-              {`${t('common.absent')}`}: {response?.total_absent}
+              {`${t('common.absent')}`}: {record?.total_absent}
             </Typography>
           </Box>
           <Box
@@ -381,7 +403,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                 textAlign: 'center',
               }}
             >
-              {`${t('common.present')}`}: {response?.total_present}
+              {`${t('common.present')}`}: {record?.total_present}
             </Typography>
           </Box>
         </Box>
@@ -569,7 +591,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           }}
         >
           <MenuItem value={0} disabled>
-            {`${t('selection.semester_week')}`}
+            {`${t('selection.semesterWeek')}`}
           </MenuItem>
           {SEMESTER_WEEK.map((item, idx) => {
             return (
@@ -652,7 +674,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
               </StyledTableRow>
             </TableHead>
             <TableBody>
-              {response?.attendance.map((v, i) => (
+              {record?.attendance.map((v, i) => (
                 <StyledTableRow key={i}>
                   <StyledTableCell align="center">{i + 1}</StyledTableCell>
                   <StyledTableCell align="left">{v.student_id}</StyledTableCell>
@@ -694,11 +716,6 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 3 }}>
-          <Button variant="contained" onClick={handleEditStatus}>
-            {`${t('common.save')}`}
-          </Button>
-        </Box>
       </Box>
     </Box>
   )

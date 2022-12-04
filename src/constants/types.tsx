@@ -36,3 +36,31 @@ export type StudentChipNumber = {
   student_id: string // 'B190910801'
   chip_number: string // '011201230'
 }
+
+export type LessonProps = {
+  id: string
+  name: string
+  laborator: string[] | []
+  lecture: string[] | []
+  seminar: string[] | []
+}
+
+export type LessonsProps = LessonProps[] | []
+
+export type StudentProps = {
+  status: number
+  student_fname: string
+  student_id: string
+  student_lname: string
+  time: null | string
+  updated_at: string
+}
+
+export type RecordanceProps = {
+  attendance: StudentProps[]
+  total_absent: number
+  total_free: number
+  total_present: number
+  total_sick: number
+  total_students: number
+}

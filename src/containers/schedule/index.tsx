@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import _ from 'lodash'
 import { useQuery } from 'react-query'
 import moment from 'moment'
@@ -31,13 +31,17 @@ import { getFromStorage } from '@utils/common'
 type Props = {}
 
 const ScheduleContainer: React.FC<Props> = () => {
-  const teacher_code = getFromStorage('user_code')
   const router = useRouter()
+  const [teacherCode, setTeacherCode] = useState<string>('')
+
+  useEffect(() => {
+    setTeacherCode(getFromStorage('user_code') || '')
+  }, [])
 
   const { status: scheduleStatus, data: scheduleData } = useQuery(
-    ['teacher-schedule', teacher_code],
+    ['teacher-schedule', teacherCode],
     () => {
-      return fetchSchedule({ teacher_id: teacher_code })
+      return fetchSchedule({ teacher_id: teacherCode })
     }
   )
 
@@ -160,48 +164,49 @@ const ScheduleContainer: React.FC<Props> = () => {
                   {_.range(0, 5).map((_val, idx) => {
                     return (
                       <StyledTableCell key={idx * 10 + i} align="center">
-                        {response[idx]?.Subjects.map((subject, index) => {
-                          return (
-                            subject.part_time === v.number && (
-                              <Box
-                                key={index}
-                                onClick={() =>
-                                  handleSubjectClick(
-                                    subject,
-                                    response[idx]?.weekday
-                                  )
-                                }
-                                sx={{
-                                  bgcolor: CLASS_TYPE.map((va) => {
-                                    return va.type === subject.class_type
-                                      ? va.color
-                                      : null
-                                  }),
-                                  m: '-14px',
-                                  cursor: 'pointer',
-                                  opacity: 1,
-                                  transition: '0.3s',
-                                  '&:hover': {
-                                    opacity: 0.7,
-                                  },
-                                }}
-                              >
-                                <Typography
-                                  variant="body2"
-                                  sx={{ fontWeight: 600 }}
+                        {response[idx] &&
+                          response[idx]?.Subjects.map((subject, index) => {
+                            return (
+                              subject.part_time === v.number && (
+                                <Box
+                                  key={index}
+                                  onClick={() =>
+                                    handleSubjectClick(
+                                      subject,
+                                      response[idx]?.weekday
+                                    )
+                                  }
+                                  sx={{
+                                    bgcolor: CLASS_TYPE.map((va) => {
+                                      return va.type === subject.class_type
+                                        ? va.color
+                                        : null
+                                    }),
+                                    m: '-14px',
+                                    cursor: 'pointer',
+                                    opacity: 1,
+                                    transition: '0.3s',
+                                    '&:hover': {
+                                      opacity: 0.7,
+                                    },
+                                  }}
                                 >
-                                  {subject.code}
-                                </Typography>
-                                <Typography variant="body2">
-                                  {subject.name}
-                                </Typography>
-                                <Typography variant="body2">
-                                  {subject.class_type} №{subject.class_number}
-                                </Typography>
-                              </Box>
+                                  <Typography
+                                    variant="body2"
+                                    sx={{ fontWeight: 600 }}
+                                  >
+                                    {subject.code}
+                                  </Typography>
+                                  <Typography variant="body2">
+                                    {subject.name}
+                                  </Typography>
+                                  <Typography variant="body2">
+                                    {subject.class_type} №{subject.class_number}
+                                  </Typography>
+                                </Box>
+                              )
                             )
-                          )
-                        })}
+                          })}
                       </StyledTableCell>
                     )
                   })}

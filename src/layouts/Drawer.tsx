@@ -1,16 +1,16 @@
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 import Colors from '@theme/colors'
 import { useRouter } from 'next/router'
 import { t } from 'i18next'
 
 import {
   Box,
-  Divider,
   List,
   ListItem,
   ListItemText,
   ListItemButton,
   Typography,
+  ListItemIcon,
 } from '@mui/material'
 
 import {
@@ -30,6 +30,11 @@ export type Props = {}
 const MenuDrawer: React.FC<Props> = () => {
   const permission = getFromStorage('permission')
   const router = useRouter()
+  const [userCode, setUserCode] = useState<string>('')
+
+  useEffect(() => {
+    setUserCode(getFromStorage('user_code') || '')
+  }, [])
 
   const onSubmitHandler = () => {
     setToStorage('user_code', undefined)
@@ -60,7 +65,7 @@ const MenuDrawer: React.FC<Props> = () => {
           >
             <IconHome sx={{ fontSize: '18px' }} />
             <Typography variant="body2" sx={{ color: Colors.textBlack }}>
-              {getFromStorage('user_code')}
+              {userCode}
             </Typography>
           </Box>
           <Box
@@ -83,6 +88,7 @@ const MenuDrawer: React.FC<Props> = () => {
             }}
           >
             <IconPower sx={{ fontSize: '18px' }} />
+
             <Typography
               variant="body2"
               sx={{
@@ -96,87 +102,98 @@ const MenuDrawer: React.FC<Props> = () => {
           </Box>
         </Box>
       </Box>
-      <List sx={{ mt: -1 }}>
-        {permission == '3'
-          ? ['Нүүр', 'Багш', 'Хичээл'].map((text, index) => (
-              <div key={index}>
-                <ListItem key={text} disablePadding>
-                  <ListItemButton
-                    sx={{
-                      bgcolor: Colors.primary,
-                      '&:hover': { bgcolor: Colors.secondary },
-                    }}
-                    onClick={() => router.push('#')}
-                  >
+      <Box>
+        <List sx={{ mt: -1 }}>
+          {permission == '3' &&
+            ['Нүүр', 'Багш', 'Хичээл'].map((text, index) => (
+              <ListItem
+                key={index}
+                disablePadding
+                sx={{ borderBottom: '1px solid white' }}
+              >
+                <ListItemButton
+                  sx={{
+                    bgcolor: Colors.primary,
+                    '&:hover': { bgcolor: Colors.secondary },
+                  }}
+                  onClick={() => router.push('#')}
+                >
+                  <ListItemIcon>
                     <IconList sx={{ color: Colors.lightWhite, mr: 1 }} />
-                    <ListItemText
-                      primary={text}
-                      sx={{
-                        color: Colors.mainWhite,
-                        fontFamily: 'Arial, Helvetica, sans-serif',
-                        fontSize: '10px',
-                        textTransform: 'uppercase',
-                      }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-                <Divider />
-              </div>
-            ))
-          : undefined}
-        {permission == '3' ? (
-          <ListItem disablePadding>
-            <ListItemButton
-              sx={{
-                bgcolor:
-                  router.pathname == PageRoutes.HOME ||
-                  router.pathname == PageRoutes.ATTENDANCE ||
-                  router.pathname == PageRoutes.REPORT
-                    ? Colors.secondary
-                    : Colors.primary,
-                '&:hover': { bgcolor: Colors.secondary },
-              }}
-              onClick={() => router.push(PageRoutes.HOME)}
-            >
-              <IconList sx={{ color: Colors.lightWhite, mr: 1 }} />
-              <ListItemText
-                primary="Ирц бүртгэл"
+                  </ListItemIcon>
+
+                  <ListItemText
+                    primary={text}
+                    sx={{
+                      color: Colors.mainWhite,
+                      fontFamily: 'Arial, Helvetica, sans-serif',
+                      fontSize: '10px',
+                      textTransform: 'uppercase',
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          {permission == '3' && (
+            <ListItem disablePadding>
+              <ListItemButton
                 sx={{
-                  color: Colors.mainWhite,
-                  fontFamily: 'Arial, Helvetica, sans-serif',
-                  fontSize: '10px',
-                  textTransform: 'uppercase',
+                  bgcolor:
+                    router.pathname == PageRoutes.HOME ||
+                    router.pathname == PageRoutes.ATTENDANCE ||
+                    router.pathname == PageRoutes.REPORT
+                      ? Colors.secondary
+                      : Colors.primary,
+                  '&:hover': { bgcolor: Colors.secondary },
                 }}
-              />
-            </ListItemButton>
-          </ListItem>
-        ) : undefined}
-        {permission == '2' ? (
-          <ListItem disablePadding>
-            <ListItemButton
-              sx={{
-                bgcolor:
-                  router.pathname == PageRoutes.FORM
-                    ? Colors.secondary
-                    : Colors.primary,
-                '&:hover': { bgcolor: Colors.secondary },
-              }}
-              onClick={() => router.push(PageRoutes.FORM)}
-            >
-              <IconList sx={{ color: Colors.lightWhite, mr: 1 }} />
-              <ListItemText
-                primary="Оюутны үнэмлэхний дугаар бүртгэх"
+                onClick={() => router.push(PageRoutes.HOME)}
+              >
+                <ListItemIcon>
+                  <IconList sx={{ color: Colors.lightWhite, mr: 1 }} />
+                </ListItemIcon>
+
+                <ListItemText
+                  primary="Ирц бүртгэл"
+                  sx={{
+                    color: Colors.mainWhite,
+                    fontFamily: 'Arial, Helvetica, sans-serif',
+                    fontSize: '10px',
+                    textTransform: 'uppercase',
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          )}
+          {permission == '2' && (
+            <ListItem disablePadding>
+              <ListItemButton
                 sx={{
-                  color: Colors.mainWhite,
-                  fontFamily: 'Arial, Helvetica, sans-serif',
-                  fontSize: '10px',
-                  textTransform: 'uppercase',
+                  bgcolor:
+                    router.pathname == PageRoutes.FORM
+                      ? Colors.secondary
+                      : Colors.primary,
+                  '&:hover': { bgcolor: Colors.secondary },
                 }}
-              />
-            </ListItemButton>
-          </ListItem>
-        ) : undefined}
-      </List>
+                onClick={() => router.push(PageRoutes.FORM)}
+              >
+                <ListItemIcon>
+                  <IconList sx={{ color: Colors.lightWhite, mr: 1 }} />
+                </ListItemIcon>
+
+                <ListItemText
+                  primary="Оюутны үнэмлэхний дугаар бүртгэх"
+                  sx={{
+                    color: Colors.mainWhite,
+                    fontFamily: 'Arial, Helvetica, sans-serif',
+                    fontSize: '10px',
+                    textTransform: 'uppercase',
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          )}
+        </List>
+      </Box>
     </>
   )
 

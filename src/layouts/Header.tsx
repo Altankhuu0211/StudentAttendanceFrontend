@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Colors from '@theme/colors'
 import { t } from 'i18next'
 
@@ -16,6 +16,11 @@ export type Props = {}
 
 const Header: React.FC<Props> = () => {
   const router = useRouter()
+  const [userName, setUserName] = useState<string>('')
+
+  useEffect(() => {
+    setUserName(getFromStorage('user_fname') || '')
+  }, [])
 
   const onSubmitHandler = () => {
     setToStorage('user_code', undefined)
@@ -91,7 +96,7 @@ const Header: React.FC<Props> = () => {
             }}
           >
             {`${t('common.welcome')} `}
-            {getFromStorage('user_fname')}
+            {userName}
           </Typography>
           <IconExpandMore />
         </Box>
