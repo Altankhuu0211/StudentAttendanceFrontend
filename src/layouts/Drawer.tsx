@@ -32,7 +32,7 @@ const MenuDrawer: React.FC<Props> = () => {
   const router = useRouter()
 
   const onSubmitHandler = () => {
-    setToStorage('teacher_code', undefined)
+    setToStorage('user_code', undefined)
     setToStorage('token', undefined)
     setToStorage('user_name', undefined)
     setToStorage('permission', undefined)
@@ -60,7 +60,7 @@ const MenuDrawer: React.FC<Props> = () => {
           >
             <IconHome sx={{ fontSize: '18px' }} />
             <Typography variant="body2" sx={{ color: Colors.textBlack }}>
-              {getFromStorage('teacher_code')}
+              {getFromStorage('user_code')}
             </Typography>
           </Box>
           <Box

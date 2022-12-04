@@ -1,11 +1,13 @@
 import axios from 'axios'
 import { URI } from '@constants/uri.constants'
+import { getFromStorage } from './common'
 
 // const client = axios.create({ baseURL: 'http://localhost:8000' })
 const client = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',
+    Authorization: `Bearer ${getFromStorage('token')}`,
   },
   baseURL: URI.DOMAIN,
 })

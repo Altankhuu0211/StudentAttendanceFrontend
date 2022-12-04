@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   common: {
-    shutis: 'МОНГОЛ УЛСЫН ШИНЖЛЭХ УХААН ТЕХНОЛОГИЙН ИХ СУРГУУЛЬ',
+    shutis: 'ШИНЖЛЭХ УХААН ТЕХНОЛОГИЙН ИХ СУРГУУЛЬ',
     web_teacher: 'ШУТИС - МХТС',
     login: 'Нэвтрэх',
     change_password: 'Нууц үг солих',

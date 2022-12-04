@@ -37,6 +37,7 @@ import {
   getSemesterWeek,
 } from '@services/index'
 import { PageRoutes } from '@constants/routes.constants'
+import { getFromStorage } from '@utils/common'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -58,7 +59,7 @@ type Props = {}
 
 const RecordAttendanceContainer: React.FC<Props> = () => {
   const router = useRouter()
-
+  const teacher_id = getFromStorage('user_code')
   const [defaultValues, setDefaultValues] = useState<
     | {
         class_type: string
@@ -91,15 +92,15 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   const payload: {
     teacher_id: string
     subject_id: string
-    class_type: string
-    schedule_time: string
+    week_day: number
+    part_time: number
     semester_week: number
   } = {
-    teacher_id: 'J.SW10',
+    teacher_id: 'B.ES48',
     subject_id: 'F.CS101',
-    class_type: 'Лекц',
-    schedule_time: '4-1',
-    semester_week: 14,
+    week_day: 2,
+    part_time: 5,
+    semester_week: 15,
   }
 
   const { status: weekStatus, data: weekData } = useQuery(
@@ -110,9 +111,9 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   )
 
   const { status: lessonStatus, data: lessonData } = useQuery(
-    ['lesson-schedule', 'J.SW10'],
+    ['lesson-schedule', teacher_id],
     () => {
-      return getLessonSchedule({ teacher_id: 'J.SW10' })
+      return getLessonSchedule({ teacher_id: teacher_id })
     }
   )
 
@@ -123,8 +124,8 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     }
   )
 
-  const response = recordData?.data
-  const lesson = lessonData?.data
+  const response = recordData?.data?.data
+  const lesson = lessonData?.data?.data
   const semester_week = weekData?.data?.data
   let selectDefault = 'none'
 
@@ -606,22 +607,46 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           <Table aria-label="caption table" sx={{ width: '100%' }}>
             <TableHead>
               <StyledTableRow>
-                <StyledTableCell variant="head" align="center">
+                <StyledTableCell
+                  variant="head"
+                  align="center"
+                  sx={{ width: 50 }}
+                >
                   {`№`}
                 </StyledTableCell>
-                <StyledTableCell variant="head" align="center">
+                <StyledTableCell
+                  variant="head"
+                  align="center"
+                  sx={{ width: 250 }}
+                >
                   {`${t('common.student_code')}`}
                 </StyledTableCell>
-                <StyledTableCell variant="head" align="center">
+                <StyledTableCell
+                  variant="head"
+                  align="center"
+                  sx={{ width: 250 }}
+                >
                   {`${t('common.student_lname')}`}
                 </StyledTableCell>
-                <StyledTableCell variant="head" align="center">
+                <StyledTableCell
+                  variant="head"
+                  align="center"
+                  sx={{ width: 250 }}
+                >
                   {`${t('common.student_fname')}`}
                 </StyledTableCell>
-                <StyledTableCell variant="head" align="center">
+                <StyledTableCell
+                  variant="head"
+                  align="center"
+                  sx={{ width: 200 }}
+                >
                   {`${t('common.status')}`}
                 </StyledTableCell>
-                <StyledTableCell variant="head" align="center">
+                <StyledTableCell
+                  variant="head"
+                  align="center"
+                  sx={{ width: 200 }}
+                >
                   {`${t('common.arrival_time')}`}
                 </StyledTableCell>
               </StyledTableRow>
@@ -630,9 +655,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
               {response?.attendance.map((v, i) => (
                 <StyledTableRow key={i}>
                   <StyledTableCell align="center">{i + 1}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {v.student_id}
-                  </StyledTableCell>
+                  <StyledTableCell align="left">{v.student_id}</StyledTableCell>
                   <StyledTableCell align="left">
                     {v.student_lname}
                   </StyledTableCell>

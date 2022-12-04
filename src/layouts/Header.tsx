@@ -18,7 +18,7 @@ const Header: React.FC<Props> = () => {
   const router = useRouter()
 
   const onSubmitHandler = () => {
-    setToStorage('teacher_code', undefined)
+    setToStorage('user_code', undefined)
     setToStorage('token', undefined)
     setToStorage('user_name', undefined)
     setToStorage('permission', undefined)
@@ -91,7 +91,7 @@ const Header: React.FC<Props> = () => {
             }}
           >
             {`${t('common.welcome')} `}
-            {getFromStorage('user_name')}
+            {getFromStorage('user_fname')}
           </Typography>
           <IconExpandMore />
         </Box>

@@ -31,7 +31,7 @@ import { getFromStorage } from '@utils/common'
 type Props = {}
 
 const ScheduleContainer: React.FC<Props> = () => {
-  const teacher_code = getFromStorage('teacher_code')
+  const teacher_code = getFromStorage('user_code')
   const router = useRouter()
 
   const { status: scheduleStatus, data: scheduleData } = useQuery(
@@ -52,9 +52,7 @@ const ScheduleContainer: React.FC<Props> = () => {
     return <Loading />
   }
 
-  console.log('::', scheduleData)
-
-  const response = scheduleData?.data
+  const response = scheduleData?.data?.data
   const semester_week = weekData?.data?.data
 
   const handleSubjectClick = (subject: any, weekday: number) => {
@@ -162,7 +160,7 @@ const ScheduleContainer: React.FC<Props> = () => {
                   {_.range(0, 5).map((_val, idx) => {
                     return (
                       <StyledTableCell key={idx * 10 + i} align="center">
-                        {response[idx]?.subjects.map((subject, index) => {
+                        {response[idx]?.Subjects.map((subject, index) => {
                           return (
                             subject.part_time === v.number && (
                               <Box

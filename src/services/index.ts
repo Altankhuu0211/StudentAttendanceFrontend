@@ -28,10 +28,10 @@ export const getSemesterWeek = () => {
 }
 
 export const getLessonSchedule = (params: LessonSchedule) => {
-  // return api({
-  //   url: URI.GET_LESSON_LIST,
-  //   params: { teacher_id: params.teacher_id },
-  // })
+  return api({
+    url: URI.GET_LESSON_LIST,
+    params: { teacher_id: params.teacher_id },
+  })
   return {
     data: [
       {
@@ -67,10 +67,10 @@ export const getLessonSchedule = (params: LessonSchedule) => {
 }
 
 export const fetchSchedule = (params: Schedule) => {
-  // return api({
-  //   url: URI.GET_SCHEDULE,
-  //   params: { teacher_id: params.teacher_id },
-  // })
+  return api({
+    url: URI.GET_SCHEDULE,
+    params: { teacher_id: params.teacher_id },
+  })
   return {
     data: [
       {
@@ -406,10 +406,10 @@ export const fetchStudentList = () => {
 }
 
 export const fetchRecordance = (params: Recordance) => {
-  // return api({
-  //   url: URI.GET_RECORDANCE,
-  //   params: { q: params },
-  // })
+  return api({
+    url: URI.GET_CLASS_ATTENDANCE,
+    params: params,
+  })
   return {
     data: {
       date: '2022-11-24',

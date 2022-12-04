@@ -1,25 +1,25 @@
 //types
 export type LessonSchedule = {
-  teacher_id: string // 'J.SW10'
+  teacher_id: string | null | undefined
 }
 
 export type Schedule = {
-  teacher_id: string | null | undefined // 'J.SW10'
+  teacher_id: string | null | undefined
 }
 
 export type Recordance = {
-  teacher_id: string // 'J.SW10'
-  subject_id: string // 'F.CS101'
-  class_type: string // 'Лекц'
-  schedule_time: string // '2-3'
-  semester_week: number // 7
+  teacher_id: string
+  subject_id: string
+  week_day: number
+  part_time: number
+  semester_week: number
 }
 
 export type Report = {
   teacher_id: string // 'J.SW10'
   subject_id: string // 'F.CS101'
   class_type: string // 'Лекц'
-  schedule_time: string // '4-1' (4дэх өдрийн 1-р цаг)
+  schedule_time: string // '4-1'
 }
 
 export type StudentStatusEdited = {
