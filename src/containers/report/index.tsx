@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 import { useQuery } from 'react-query'
 import moment from 'moment'
 import { t } from 'i18next'
 import Colors from '@theme/colors'
+import { useRouter } from 'next/router'
 
 // components
 import {
@@ -30,6 +31,7 @@ import {
   getSemesterWeek,
   getLessonSchedule,
 } from '@services/index'
+import { CLASS_TYPE } from '@constants/common'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -50,10 +52,27 @@ const StyledTableRow = styled(TableRow)(() => ({
 type Props = {}
 
 const ReportContainer: React.FC<Props> = () => {
+  const router = useRouter()
+  const [defaultValues, setDefaultValues] = useState<
+    | {
+        class_type: string
+        code: string
+        schedule_time: string
+      }
+    | undefined
+  >(undefined)
   const [selectSubject, setSelectSubject] = useState('none')
   const [selectLecture, setSelectLecture] = useState('none')
   const [selectSeminar, setSelectSeminar] = useState('none')
   const [selectLab, setSelectLab] = useState('none')
+
+  useEffect(() => {
+    if (router.isReady) {
+      console.log(JSON.parse(String(router.query.data)))
+      setDefaultValues(JSON.parse(String(router.query.data)))
+    }
+  }, [router])
+
   const payload = {
     teacher_id: 'J.SW10',
     subject_id: 'F.CS101',
@@ -82,6 +101,30 @@ const ReportContainer: React.FC<Props> = () => {
     }
   )
 
+  const response = repordData?.data
+  const semester_week = weekData?.data?.data
+  const lesson = lessonData?.data
+  let selectDefault = 'none'
+
+  useEffect(() => {
+    if (defaultValues && lesson) {
+      console.log('lesson', lesson, defaultValues.code)
+      const defaultLesson = _.find(lesson, function (v) {
+        return v.id === defaultValues.code
+      })
+      if (defaultLesson) {
+        setSelectSubject(defaultLesson.id)
+        if (defaultValues.class_type === CLASS_TYPE[0].type) {
+          setSelectLecture(defaultValues.schedule_time)
+        } else if (defaultValues.class_type === CLASS_TYPE[1].type) {
+          setSelectLab(defaultValues.schedule_time)
+        } else {
+          setSelectSeminar(defaultValues.schedule_time)
+        }
+      }
+    }
+  }, [defaultValues, lesson])
+
   if (
     repordStatus != 'success' ||
     weekStatus != 'success' ||
@@ -89,11 +132,6 @@ const ReportContainer: React.FC<Props> = () => {
   ) {
     return <Loading />
   }
-
-  const response = repordData?.data
-  const semester_week = weekData?.data?.data
-  const lesson = lessonData?.data
-  let selectDefault = 'none'
 
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)

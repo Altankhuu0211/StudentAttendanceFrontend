@@ -36,6 +36,7 @@ import {
   getLessonSchedule,
   getSemesterWeek,
 } from '@services/index'
+import { PageRoutes } from '@constants/routes.constants'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -205,13 +206,33 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   }
 
   const handleReport = () => {
-    console.log('report button clicked ...')
-    router.push('/report')
+    // const [exp_weekday, exp_parttime] = _.split('4-2', '-')
+    let class_type = CLASS_TYPE[0].type
+    let schedule_time = selectLecture
+    if (selectLecture != 'none') {
+      class_type = CLASS_TYPE[0].type
+      schedule_time = selectLecture
+    } else if (selectLab != 'none') {
+      class_type = CLASS_TYPE[1].type
+      schedule_time = selectLab
+    } else {
+      class_type = CLASS_TYPE[2].type
+      schedule_time = selectSeminar
+    }
+
+    const paramData = {
+      code: selectSubject,
+      class_type: class_type,
+      schedule_time: schedule_time,
+    }
+    router.push({
+      pathname: PageRoutes.REPORT,
+      query: { data: JSON.stringify(paramData) },
+    })
   }
 
   const handleEditStatus = () => {
-    console.log('report button clicked ...')
-    router.push('/report')
+    console.log('save button clicked ...')
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
