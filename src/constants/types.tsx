@@ -31,3 +31,8 @@ export type StudentStatusEdited = {
   student_id: string // 'B190910001'
   status_updated: number // 0-ирээгүй, 1-ирсэн, 2-чөлөөтэй, 3-өвчтэй
 }
+
+export type StudentChipNumber = {
+  student_id: string // 'B190910801'
+  chip_number: string // '011201230'
+}

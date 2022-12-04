@@ -6,6 +6,7 @@ import {
   Recordance,
   StudentStatusEdited,
   Report,
+  StudentChipNumber,
 } from '@constants/types'
 
 export const login = (teacherLogin) => {
@@ -216,9 +217,9 @@ export const fetchSchedule = (params: Schedule) => {
 }
 
 export const fetchStudentList = () => {
-  // return api({
-  //   url: URI.GET_STUDENTS_LIST,
-  // })
+  return api({
+    url: URI.GET_STUDENTS_LIST,
+  })
   return {
     data: [
       {
@@ -2105,6 +2106,14 @@ export const fetchReport = (params: Report) => {
 export const postStudentStatusEdited = (params: StudentStatusEdited) => {
   return api({
     url: URI.POST_ATTENDANCE_EDITED,
+    method: 'POST',
+    data: JSON.stringify(params),
+  })
+}
+
+export const postStudentChipNumber = (params: StudentChipNumber) => {
+  return api({
+    url: URI.POST_STUDENT_CHIP_NUMBER,
     method: 'POST',
     data: JSON.stringify(params),
   })

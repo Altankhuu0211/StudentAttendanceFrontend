@@ -10,4 +10,6 @@ export const URI = {
   GET_REPORT: '/teacher/class-attendance-report',
   GET_SEMESTER_WEEK: '/teacher/semester-week',
   POST_ATTENDANCE_EDITED: '/teacher/attendance-edited',
+  GET_STUDENTS_LIST: '/student-affairs/students-list',
+  POST_STUDENT_CHIP_NUMBER: '/student-affairs/insert-student-chip-number',
 }
