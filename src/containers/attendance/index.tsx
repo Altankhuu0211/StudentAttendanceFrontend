@@ -30,6 +30,7 @@ import {
 } from '@mui/material'
 import { tableCellClasses } from '@mui/material/TableCell'
 import Loading from '@components/Loading'
+import RefModal from '@components/RefModal'
 import { ATTENDANCE_STATUS, CLASS_TYPE, SEMESTER_WEEK } from '@constants/common'
 import {
   fetchRecordance,
@@ -66,6 +67,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     setTeacherCode(getFromStorage('user_code') || '')
   }, [])
 
+  const [showModal, setShowModal] = useState<boolean>(false)
   const [defaultValues, setDefaultValues] = useState<
     | {
         class_type: string
@@ -270,6 +272,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     event: SelectChangeEvent<string>,
     student_id: string
   ) => {
+    setShowModal(true)
     console.log('edited:', event.target.value, student_id)
   }
 
@@ -625,6 +628,10 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
         {renderDate()}
         {renderInfoPanel()}
         {renderFilterPanel()}
+        <RefModal
+          showModal={showModal}
+          closeModalHandler={() => setShowModal(false)}
+        />
         <TableContainer component={Paper}>
           <Table aria-label="caption table" sx={{ width: '100%' }}>
             <TableHead>
