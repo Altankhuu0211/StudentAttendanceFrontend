@@ -23,6 +23,8 @@ export default {
     class_time: 'Хичээлийн цаг',
     total_attendance: 'Нийт ирц',
     welcome: 'Сайн байна уу,',
+    yes: 'Тийм',
+    no: 'Үгүй',
   },
   selection: {
     lesson: 'Хичээл сонгоно уу',
@@ -39,5 +41,8 @@ export default {
   },
   form: {
     title: 'Оюутны үнэмлэхний дугаар бүртгэх',
+  },
+  modal: {
+    message: 'Ирцийг засах уу?',
   },
 }
