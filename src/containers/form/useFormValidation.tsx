@@ -13,8 +13,10 @@ const useFormValidation = () => {
   const validationSchema = useMemo(
     () =>
       Yup.object().shape({
-        student_id: Yup.string().required(t('validation.required')),
-        chip_number: Yup.string().required(t('validation.required')),
+        student_id: Yup.string()
+          .required(t('validation.required'))
+          .max(10, t('validation.max_length')),
+        chip_number: Yup.number().required(t('validation.required')),
       }),
     []
   )

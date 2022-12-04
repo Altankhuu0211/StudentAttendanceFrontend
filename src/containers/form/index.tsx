@@ -53,6 +53,7 @@ const FormContainer: React.FC<Props> = () => {
   const {
     control,
     getValues,
+    setValue,
     reset,
     formState: { errors },
   } = methods
@@ -83,20 +84,21 @@ const FormContainer: React.FC<Props> = () => {
   const response = studentsData?.data?.data
 
   const onSubmit = () => {
+    setValue('student_id', studentCode)
     const payload = {
       ...getValues(),
     }
     console.log('payload:', payload)
-    // onSubmitHandler(payload).then((data) => {
-    //   if (data?.data?.success === true) {
-    //     setOpenFailed(false)
-    //     setOpenSuccess(true)
-    //     reset(initialValues)
-    //   } else {
-    //     setOpenSuccess(false)
-    //     setOpenFailed(true)
-    //   }
-    // })
+    onSubmitHandler(payload).then((data) => {
+      if (data?.data?.success === true) {
+        setOpenFailed(false)
+        setOpenSuccess(true)
+        reset(initialValues)
+      } else {
+        setOpenSuccess(false)
+        setOpenFailed(true)
+      }
+    })
   }
 
   return (
@@ -220,7 +222,7 @@ const FormContainer: React.FC<Props> = () => {
                         mb: 2,
                       }}
                       value={studentCode}
-                      error={!_.isEmpty(errors.student_id)}
+                      // error={!_.isEmpty(errors.student_id)}
                       onChange={(e) => setStudentCode(e.target.value)}
                     />
                   )}
