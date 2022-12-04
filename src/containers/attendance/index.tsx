@@ -70,7 +70,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   const [selectSubject, setSelectSubject] = useState('none')
   const [selectLecture, setSelectLecture] = useState('none')
   const [selectSeminar, setSelectSeminar] = useState('none')
-  const [selectLaboratory, setSelectLaboratory] = useState('none')
+  const [selectLab, setSelectLab] = useState('none')
   const [selectSemesterWeek, setSelectSemesterWeek] = useState('none')
   const [searchText, setSearchText] = useState('')
   const [showClearIcon, setShowClearIcon] = useState(false)
@@ -101,10 +101,10 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     semester_week: 14,
   }
 
-  const { status: recordStatus, data: recordData } = useQuery(
-    ['student-attendance', payload],
+  const { status: weekStatus, data: weekData } = useQuery(
+    'semester-week',
     () => {
-      return fetchRecordance(payload)
+      return getSemesterWeek()
     }
   )
 
@@ -115,10 +115,10 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     }
   )
 
-  const { status: weekStatus, data: weekData } = useQuery(
-    'semester-week',
+  const { status: recordStatus, data: recordData } = useQuery(
+    ['student-attendance', payload],
     () => {
-      return getSemesterWeek()
+      return fetchRecordance(payload)
     }
   )
 
@@ -138,7 +138,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
         if (defaultValues.class_type === CLASS_TYPE[0].type) {
           setSelectLecture(defaultValues.schedule_time)
         } else if (defaultValues.class_type === CLASS_TYPE[1].type) {
-          setSelectLaboratory(defaultValues.schedule_time)
+          setSelectLab(defaultValues.schedule_time)
         } else {
           setSelectSeminar(defaultValues.schedule_time)
         }
@@ -152,6 +152,14 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     }
   }, [semester_week])
 
+  if (
+    _.isEmpty(defaultValues) ||
+    recordStatus != 'success' ||
+    weekStatus != 'success' ||
+    lessonStatus != 'success'
+  )
+    return <Loading />
+
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)
     console.log(lesson)
@@ -164,19 +172,27 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
         }
       })
     setSelectLecture(selectDefault)
+    setSelectLab('none')
+    setSelectSeminar('none')
     // To do on change run fetchRecordance
   }
 
   const handleSelectLecture = (event: SelectChangeEvent) => {
     setSelectLecture(event.target.value)
+    setSelectSeminar('none')
+    setSelectLab('none')
   }
 
   const handleSelectSeminar = (event: SelectChangeEvent) => {
     setSelectSeminar(event.target.value)
+    setSelectLecture('none')
+    setSelectLab('none')
   }
 
-  const handleSelectLaboratory = (event: SelectChangeEvent) => {
-    setSelectLaboratory(event.target.value)
+  const handleSelectLab = (event: SelectChangeEvent) => {
+    setSelectLab(event.target.value)
+    setSelectSeminar('none')
+    setSelectLecture('none')
   }
 
   const handleSelectSemesterWeek = (event: SelectChangeEvent) => {
@@ -496,13 +512,13 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             })}
         </Select>
         <Select
-          value={selectLaboratory}
-          onChange={handleSelectLaboratory}
+          value={selectLab}
+          onChange={handleSelectLab}
           fullWidth
           sx={{
             mr: 1.5,
-            fontWeight: selectLaboratory != 'none' ? 700 : 400,
-            color: selectLaboratory != 'none' ? 'black' : 'grey',
+            fontWeight: selectLab != 'none' ? 700 : 400,
+            color: selectLab != 'none' ? 'black' : 'grey',
           }}
         >
           <MenuItem value="none" disabled>
@@ -524,7 +540,11 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           value={selectSemesterWeek}
           onChange={handleSelectSemesterWeek}
           fullWidth
-          sx={{ mr: 1.5 }}
+          sx={{
+            mr: 1.5,
+            fontWeight: selectSemesterWeek != 'none' ? 700 : 400,
+            color: selectSemesterWeek != 'none' ? 'black' : 'grey',
+          }}
         >
           <MenuItem value={0} disabled>
             {`${t('selection.semester_week')}`}
@@ -550,14 +570,6 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
       </Box>
     )
   }
-
-  if (
-    _.isEmpty(defaultValues) ||
-    recordStatus != 'success' ||
-    weekStatus != 'success' ||
-    lessonStatus != 'success'
-  )
-    return <Loading />
 
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>

@@ -61,7 +61,7 @@ const ScheduleContainer: React.FC<Props> = () => {
     let paramData = subject
     paramData = {
       ...paramData,
-      schedule_time: combineScheduleTime(paramData.part_time, weekday),
+      schedule_time: combineScheduleTime(weekday, paramData.part_time),
     }
     delete paramData.part_time
     router.push({

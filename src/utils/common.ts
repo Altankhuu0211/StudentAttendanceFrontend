@@ -1,5 +1,5 @@
-export const combineScheduleTime = (part_time: number, weekday: number) => {
-  return `${part_time}-${weekday}`
+export const combineScheduleTime = (weekday: number, part_time: number) => {
+  return `${weekday}-${part_time}`
 }
 
 export const setToStorage = (key, value) => {

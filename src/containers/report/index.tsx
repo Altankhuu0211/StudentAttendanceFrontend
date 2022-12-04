@@ -25,7 +25,11 @@ import {
 } from '@mui/material'
 import { tableCellClasses } from '@mui/material/TableCell'
 import Loading from '@components/Loading'
-import { fetchReport, getSemesterWeek } from '@services/index'
+import {
+  fetchReport,
+  getSemesterWeek,
+  getLessonSchedule,
+} from '@services/index'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -49,13 +53,21 @@ const ReportContainer: React.FC<Props> = () => {
   const [selectSubject, setSelectSubject] = useState('none')
   const [selectLecture, setSelectLecture] = useState('none')
   const [selectSeminar, setSelectSeminar] = useState('none')
-  const [selectLaboratory, setSelectLaboratory] = useState('none')
+  const [selectLab, setSelectLab] = useState('none')
   const payload = {
     teacher_id: 'J.SW10',
     subject_id: 'F.CS101',
     class_type: 'Лекц',
     schedule_time: '4-1',
   }
+
+  const { status: lessonStatus, data: lessonData } = useQuery(
+    ['lesson-schedule', 'J.SW10'],
+    () => {
+      return getLessonSchedule({ teacher_id: 'J.SW10' })
+    }
+  )
+
   const { status: repordStatus, data: repordData } = useQuery(
     ['attendance-report', payload],
     () => {
@@ -70,27 +82,52 @@ const ReportContainer: React.FC<Props> = () => {
     }
   )
 
-  if (repordStatus != 'success' || weekStatus != 'success') {
+  if (
+    repordStatus != 'success' ||
+    weekStatus != 'success' ||
+    lessonStatus != 'success'
+  ) {
     return <Loading />
   }
 
   const response = repordData?.data
   const semester_week = weekData?.data?.data
+  const lesson = lessonData?.data
+  let selectDefault = 'none'
 
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)
+    console.log(lesson)
+    lesson &&
+      lesson.map((item) => {
+        if (item.id == event.target.value) {
+          setSelectLecture(selectDefault)
+          selectDefault = item.lecture[0]
+          console.log('default:', selectDefault)
+        }
+      })
+    setSelectLecture(selectDefault)
+    setSelectLab('none')
+    setSelectSeminar('none')
+    // To do on change run fetchRecordance
   }
 
   const handleSelectLecture = (event: SelectChangeEvent) => {
     setSelectLecture(event.target.value)
+    setSelectSeminar('none')
+    setSelectLab('none')
   }
 
   const handleSelectSeminar = (event: SelectChangeEvent) => {
     setSelectSeminar(event.target.value)
+    setSelectLecture('none')
+    setSelectLab('none')
   }
 
-  const handleSelectLaboratory = (event: SelectChangeEvent) => {
-    setSelectLaboratory(event.target.value)
+  const handleSelectLab = (event: SelectChangeEvent) => {
+    setSelectLab(event.target.value)
+    setSelectSeminar('none')
+    setSelectLecture('none')
   }
 
   const renderDate = () => {
@@ -143,45 +180,98 @@ const ReportContainer: React.FC<Props> = () => {
           value={selectSubject}
           onChange={handleSelectSubject}
           fullWidth
-          sx={{ mr: 1.5 }}
+          sx={{
+            mr: 1.5,
+            fontWeight: selectSubject != 'none' ? 700 : 400,
+            color: selectSubject != 'none' ? 'black' : 'grey',
+          }}
         >
           <MenuItem value="none" disabled>
             {`${t('selection.lesson')}`}
           </MenuItem>
-          <MenuItem value="F.IT20">{'F.IT202 Веб зохиомж'}</MenuItem>
+          {lesson &&
+            lesson.map((item) => {
+              return (
+                <MenuItem key={item.id} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              )
+            })}
         </Select>
         <Select
           value={selectLecture}
           onChange={handleSelectLecture}
           fullWidth
-          sx={{ mr: 1.5 }}
+          sx={{
+            mr: 1.5,
+            fontWeight: selectLecture != 'none' ? 700 : 400,
+            color: selectLecture != 'none' ? 'black' : 'grey',
+          }}
         >
           <MenuItem value="none" disabled>
             {`${t('selection.lecture')}`}
           </MenuItem>
-          <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
+          {lesson &&
+            lesson.map((item) => {
+              if (item.id == selectSubject)
+                return item.lecture.map((val) => {
+                  return (
+                    <MenuItem key={val} value={val}>
+                      {val}
+                    </MenuItem>
+                  )
+                })
+            })}
         </Select>
         <Select
           value={selectSeminar}
           onChange={handleSelectSeminar}
           fullWidth
-          sx={{ mr: 1.5 }}
+          sx={{
+            mr: 1.5,
+            fontWeight: selectSeminar != 'none' ? 700 : 400,
+            color: selectSeminar != 'none' ? 'black' : 'grey',
+          }}
         >
           <MenuItem value="none" disabled>
             {`${t('selection.seminar')}`}
           </MenuItem>
-          <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
+          {lesson &&
+            lesson.map((item) => {
+              if (item.id == selectSubject)
+                return item.seminar.map((val) => {
+                  return (
+                    <MenuItem key={val} value={val}>
+                      {val}
+                    </MenuItem>
+                  )
+                })
+            })}
         </Select>
         <Select
-          value={selectLaboratory}
-          onChange={handleSelectLaboratory}
+          value={selectLab}
+          onChange={handleSelectLab}
           fullWidth
-          sx={{ mr: 1.5 }}
+          sx={{
+            mr: 1.5,
+            fontWeight: selectLab != 'none' ? 700 : 400,
+            color: selectLab != 'none' ? 'black' : 'grey',
+          }}
         >
           <MenuItem value="none" disabled>
             {`${t('selection.laborator')}`}
           </MenuItem>
-          <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
+          {lesson &&
+            lesson.map((item) => {
+              if (item.id == selectSubject)
+                return item.laborator.map((val) => {
+                  return (
+                    <MenuItem key={val} value={val}>
+                      {val}
+                    </MenuItem>
+                  )
+                })
+            })}
         </Select>
       </Box>
     )
