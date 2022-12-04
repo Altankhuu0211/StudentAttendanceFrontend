@@ -10,11 +10,21 @@ import {
 } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { PageRoutes } from '@constants/routes.constants'
+import { getFromStorage, setToStorage } from '@utils/common'
 
 export type Props = {}
 
 const Header: React.FC<Props> = () => {
   const router = useRouter()
+
+  const onSubmitHandler = () => {
+    setToStorage('teacher_code', undefined)
+    setToStorage('token', undefined)
+    setToStorage('user_name', undefined)
+    setToStorage('permission', undefined)
+    router.push(PageRoutes.LOGIN)
+  }
+
   return (
     <Box component="header">
       <Box
@@ -80,7 +90,8 @@ const Header: React.FC<Props> = () => {
               ml: 2,
             }}
           >
-            {`${t('common.welcome')}`} С.ХУЛАН
+            {`${t('common.welcome')} `}
+            {getFromStorage('user_name')}
           </Typography>
           <IconExpandMore />
         </Box>
@@ -96,7 +107,7 @@ const Header: React.FC<Props> = () => {
             '&:hover': { bgcolor: '#E6E6E6', cursor: 'pointer' },
             pt: 0.3,
           }}
-          onClick={() => router.push(PageRoutes.LOGIN)}
+          onClick={onSubmitHandler}
         >
           <IconPower sx={{ fontSize: '16px', mr: 0.2 }} />
           <Typography

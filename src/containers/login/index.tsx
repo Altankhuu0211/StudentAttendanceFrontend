@@ -42,15 +42,14 @@ const LoginContainer: React.FC<Props> = () => {
   } = methods
   const { onSubmitHandler } = useLogin()
   const onSubmit = () => {
-    router.push(PageRoutes.HOME)
     onSubmitHandler(getValues()).then((data) => {
-      console.log('data:', data)
       if (data?.status == 200) {
         setOpenSuccess(true)
+        setToStorage('token', data?.data?.token)
+        setToStorage('permission', data?.data?.result?.permission)
+        setToStorage('teacher_code', data?.data?.result?.code_)
+        setToStorage('user_name', data?.data?.result?.fname)
         router.push(PageRoutes.HOME)
-        // const localStorage = require('localStorage'),
-        // authorization = { token: data.headers.authorization }
-        // localStorage.setItem('token', JSON.stringify(authorization))
       } else {
         setOpenFailed(true)
       }
@@ -126,6 +125,14 @@ const LoginContainer: React.FC<Props> = () => {
             px: '90px',
           }}
         >
+          <Box sx={{ height: 100, mb: 3 }}>
+            <img
+              src="/img/MUST_logo.png"
+              height="100%"
+              width="100%"
+              style={{ objectFit: 'cover' }}
+            />
+          </Box>
           <Typography
             sx={{
               color: Colors.textBlue,
@@ -148,7 +155,7 @@ const LoginContainer: React.FC<Props> = () => {
                 id="username"
                 fullWidth
                 sx={{ mt: 2, mb: 4 }}
-                placeholder="Багшийн код"
+                placeholder="Нэвтрэх нэр"
                 error={!_.isEmpty(errors.username)}
               />
             )}
@@ -194,6 +201,9 @@ const LoginContainer: React.FC<Props> = () => {
               color: Colors.textBlue,
               bgcolor: Colors.btn,
               fontWeight: 700,
+              '&:hover': {
+                color: Colors.mainWhite,
+              },
             }}
             onClick={handleSubmit(onSubmit)}
           >

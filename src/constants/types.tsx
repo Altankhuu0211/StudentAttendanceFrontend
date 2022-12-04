@@ -4,7 +4,7 @@ export type LessonSchedule = {
 }
 
 export type Schedule = {
-  teacher_id: string // 'J.SW10'
+  teacher_id: string | null | undefined // 'J.SW10'
 }
 
 export type Recordance = {

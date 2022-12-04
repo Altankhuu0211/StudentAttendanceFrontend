@@ -51,7 +51,6 @@ const ReportContainer: React.FC<Props> = () => {
   const [selectLecture, setSelectLecture] = useState('none')
   const [selectSeminar, setSelectSeminar] = useState('none')
   const [selectLaboratory, setSelectLaboratory] = useState('none')
-  const [selectAssignment, setSelectAssignment] = useState('none')
   const payload = {
     teacher_id: 'J.SW10',
     subject_id: 'F.CS101',
@@ -77,6 +76,7 @@ const ReportContainer: React.FC<Props> = () => {
   }
 
   const response = repordData?.data
+  const semester_week = weekData?.data?.data
 
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)
@@ -92,10 +92,6 @@ const ReportContainer: React.FC<Props> = () => {
 
   const handleSelectLaboratory = (event: SelectChangeEvent) => {
     setSelectLaboratory(event.target.value)
-  }
-
-  const handleSelectAssignment = (event: SelectChangeEvent) => {
-    setSelectAssignment(event.target.value)
   }
 
   const handleChangeStatus = (
@@ -130,7 +126,7 @@ const ReportContainer: React.FC<Props> = () => {
             {moment().format('ll')}
           </Typography>
           <Typography variant="body2">
-            {`Хичээлийн ${weekData}-р долоо хоног`}
+            {`Хичээлийн ${semester_week}-р долоо хоног`}
           </Typography>
         </Box>
       </Box>
@@ -192,16 +188,6 @@ const ReportContainer: React.FC<Props> = () => {
         >
           <MenuItem value="none" disabled>
             {`${t('selection.laborator')}`}
-          </MenuItem>
-          <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
-        </Select>
-        <Select
-          value={selectAssignment}
-          onChange={handleSelectAssignment}
-          fullWidth
-        >
-          <MenuItem value="none" disabled>
-            {`${t('selection.assignment')}`}
           </MenuItem>
           <MenuItem value="mon-2">{'Даваа-2'}</MenuItem>
         </Select>

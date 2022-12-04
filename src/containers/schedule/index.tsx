@@ -26,16 +26,18 @@ import { useRouter } from 'next/router'
 import { fetchSchedule, getSemesterWeek } from '@services/index'
 import { combineScheduleTime } from '@utils/common'
 import { PageRoutes } from '@constants/routes.constants'
+import { getFromStorage } from '@utils/common'
 
 type Props = {}
 
 const ScheduleContainer: React.FC<Props> = () => {
+  const teacher_code = getFromStorage('teacher_code')
   const router = useRouter()
 
   const { status: scheduleStatus, data: scheduleData } = useQuery(
-    ['teacher-schedule', 'B.ES48'],
+    ['teacher-schedule', teacher_code],
     () => {
-      return fetchSchedule({ teacher_id: 'B.ES48' })
+      return fetchSchedule({ teacher_id: teacher_code })
     }
   )
 
@@ -53,6 +55,7 @@ const ScheduleContainer: React.FC<Props> = () => {
   console.log('::', scheduleData)
 
   const response = scheduleData?.data?.data
+  const semester_week = weekData?.data?.data
 
   const handleSubjectClick = (subject: any, weekday: number) => {
     let paramData = subject
@@ -113,7 +116,7 @@ const ScheduleContainer: React.FC<Props> = () => {
               {moment().format('ll')}
             </Typography>
             <Typography variant="body2">
-              {`Хичээлийн ${weekData}-р долоо хоног`}
+              {`Хичээлийн ${semester_week}-р долоо хоног`}
             </Typography>
           </Box>
         </Box>
