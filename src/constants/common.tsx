@@ -61,16 +61,16 @@ export const WEEKDAY = [
     value: 'Fri',
     name: 'Баасан',
   },
-  {
-    number: 6,
-    value: 'Sat',
-    name: 'Бямба',
-  },
-  {
-    number: 7,
-    value: 'Sun',
-    name: 'Ням',
-  },
+  // {
+  //   number: 6,
+  //   value: 'Sat',
+  //   name: 'Бямба',
+  // },
+  // {
+  //   number: 7,
+  //   value: 'Sun',
+  //   name: 'Ням',
+  // },
 ]
 
 export const CLASS_TYPE = [
@@ -79,7 +79,7 @@ export const CLASS_TYPE = [
     color: '#C5E0B3',
   },
   {
-    type: 'Лаб',
+    type: 'Лаборатор',
     color: '#BDD7EE',
   },
   {

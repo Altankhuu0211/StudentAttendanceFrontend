@@ -124,6 +124,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const response = recordData?.data
   const lesson = lessonData?.data
+  const semester_week = weekData?.data?.data
   let selectDefault = 'none'
 
   useEffect(() => {
@@ -146,10 +147,10 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   }, [defaultValues, lesson])
 
   useEffect(() => {
-    if (weekData) {
-      setSelectSemesterWeek(String(weekData))
+    if (semester_week) {
+      setSelectSemesterWeek(String(semester_week))
     }
-  }, [weekData])
+  }, [semester_week])
 
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)
@@ -237,7 +238,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             {moment().format('ll')}
           </Typography>
           <Typography variant="body2">
-            {`Хичээлийн ${weekData}-р долоо хоног`}
+            {`Хичээлийн ${semester_week}-р долоо хоног`}
           </Typography>
         </Box>
       </Box>

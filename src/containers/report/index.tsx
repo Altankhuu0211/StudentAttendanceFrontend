@@ -25,7 +25,6 @@ import {
 } from '@mui/material'
 import { tableCellClasses } from '@mui/material/TableCell'
 import Loading from '@components/Loading'
-import { ATTENDANCE_STATUS } from '@constants/common'
 import { fetchReport, getSemesterWeek } from '@services/index'
 
 const StyledTableCell = styled(TableCell)(() => ({
@@ -92,13 +91,6 @@ const ReportContainer: React.FC<Props> = () => {
 
   const handleSelectLaboratory = (event: SelectChangeEvent) => {
     setSelectLaboratory(event.target.value)
-  }
-
-  const handleChangeStatus = (
-    event: SelectChangeEvent<string>,
-    index: number
-  ) => {
-    console.log(event.target.value, index)
   }
 
   const renderDate = () => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import _ from 'lodash'
 import { useQuery } from 'react-query'
 import moment from 'moment'
@@ -54,7 +54,7 @@ const ScheduleContainer: React.FC<Props> = () => {
 
   console.log('::', scheduleData)
 
-  const response = scheduleData?.data?.data
+  const response = scheduleData?.data
   const semester_week = weekData?.data?.data
 
   const handleSubjectClick = (subject: any, weekday: number) => {
@@ -83,16 +83,18 @@ const ScheduleContainer: React.FC<Props> = () => {
   }))
 
   const StyledTableRow = styled(TableRow)(() => ({
-    '&:nth-of-type(even)': {
-      backgroundColor: Colors.table_grey,
-    },
+    // '&:nth-of-type(even)': {
+    //   backgroundColor: Colors.table_grey,
+    // },
   }))
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
       <Box
-        sx={{
-          maxWidth: 1200,
-        }}
+        sx={
+          {
+            // maxWidth: 1200,
+          }
+        }
       >
         <Box
           sx={{
@@ -130,6 +132,7 @@ const ScheduleContainer: React.FC<Props> = () => {
                   sx={{
                     bgcolor: Colors.secondBlue,
                     color: Colors.mainWhite,
+                    width: 250,
                   }}
                 >
                   {`${t('common.class_time')}`}
@@ -143,6 +146,7 @@ const ScheduleContainer: React.FC<Props> = () => {
                       sx={{
                         bgcolor: Colors.secondBlue,
                         color: Colors.mainWhite,
+                        width: 250,
                       }}
                     >
                       {v.name}
@@ -155,10 +159,10 @@ const ScheduleContainer: React.FC<Props> = () => {
               {PART_TIME.map((v, i) => (
                 <StyledTableRow key={i}>
                   <StyledTableCell align="center">{`${v.number}-р цаг: ${v.time_interval}`}</StyledTableCell>
-                  {_.range(0, 7).map((_val, idx) => {
+                  {_.range(0, 5).map((_val, idx) => {
                     return (
                       <StyledTableCell key={idx * 10 + i} align="center">
-                        {response[idx]?.Subjects.map((subject, index) => {
+                        {response[idx]?.subjects.map((subject, index) => {
                           return (
                             subject.part_time === v.number && (
                               <Box

@@ -67,124 +67,150 @@ export const getLessonSchedule = (params: LessonSchedule) => {
 }
 
 export const fetchSchedule = (params: Schedule) => {
-  return api({
-    url: URI.GET_SCHEDULE,
-    params: { teacher_id: params.teacher_id },
-  })
+  // return api({
+  //   url: URI.GET_SCHEDULE,
+  //   params: { teacher_id: params.teacher_id },
+  // })
   return {
     data: [
       {
-        weekday: 'Mon',
+        weekday: 1,
         subjects: [
           {
-            code: 'F.CS101',
-            name: 'Програмчлалын үндэс',
-            class_type: 'Лекц',
+            code: 'F.CS103',
+            name: 'Инженерийн эдийн засаг',
+            class_type: 'Лаборатор',
             part_time: 1,
             class_number: 225,
           },
-        ],
-      },
-      {
-        weekday: 'Tue',
-        subjects: [
           {
-            code: 'F.CS101',
-            name: 'Програмчлалын үндэс',
-            class_type: 'Семинар',
-            part_time: 1,
-            class_number: 110,
-          },
-          {
-            code: 'F.CS101',
-            name: 'Програмчлалын үндэс',
-            class_type: 'Лекц',
-            part_time: 6,
-            class_number: 225,
-          },
-        ],
-      },
-      {
-        weekday: 'Wed',
-        subjects: [
-          {
-            code: 'F.CS101',
-            name: 'Програмчлалын үндэс',
-            class_type: 'Бие даалт',
-            part_time: 1,
-            class_number: 117,
-          },
-          {
-            code: 'F.CS101',
-            name: 'Програмчлалын үндэс',
-            class_type: 'Лекц',
-            part_time: 6,
-            class_number: 225,
-          },
-        ],
-      },
-      {
-        weekday: 'Thu',
-        subjects: [
-          {
-            code: 'F.CS101',
-            name: 'Програмчлалын үндэс',
-            class_type: 'Лаб',
+            code: 'F.CS103',
+            name: 'Инженерийн эдийн засаг',
+            class_type: 'Лаборатор',
             part_time: 2,
-            class_number: 401,
+            class_number: 225,
           },
           {
-            code: 'F.CS101',
-            name: 'Програмчлалын үндэс',
-            class_type: 'Лекц',
-            part_time: 6,
-            class_number: 408,
-          },
-        ],
-      },
-      {
-        weekday: 'Fri',
-        subjects: [
-          {
-            code: 'F.CS101',
-            name: 'Програмчлалын үндэс',
-            class_type: 'Лекц',
-            part_time: 1,
+            code: 'F.CS102',
+            name: 'Алгоритмын үндэс',
+            class_type: 'Семинар',
+            part_time: 3,
             class_number: 225,
           },
           {
             code: 'F.CS101',
             name: 'Програмчлалын үндэс',
-            class_type: 'Лекц',
-            part_time: 6,
-            class_number: 225,
-          },
-        ],
-      },
-      {
-        weekday: 'Sat',
-        subjects: [
-          {
-            code: 'F.CS101',
-            name: 'Програмчлалын үндэс',
-            class_type: 'Лекц',
+            class_type: 'Лаборатор',
             part_time: 4,
             class_number: 225,
           },
-        ],
-      },
-      {
-        weekday: 'Sun',
-        subjects: [
           {
             code: 'F.CS101',
             name: 'Програмчлалын үндэс',
-            class_type: 'Лекц',
-            part_time: 6,
+            class_type: 'Лаборатор',
+            part_time: 5,
             class_number: 225,
           },
         ],
       },
+      {
+        weekday: 2,
+        subjects: [
+          {
+            code: 'F.CS101',
+            name: 'Програмчлалын үндэс',
+            class_type: 'Лаборатор',
+            part_time: 2,
+            class_number: 225,
+          },
+          {
+            code: 'F.CS104',
+            name: 'Дискрет бүтэц',
+            class_type: 'Семинар',
+            part_time: 3,
+            class_number: 225,
+          },
+          {
+            code: 'F.CS101',
+            name: 'Програмчлалын үндэс',
+            class_type: 'Лекц',
+            part_time: 5,
+            class_number: 110,
+          },
+          {
+            code: 'F.CS102',
+            name: 'Алгоритмын үндэс',
+            class_type: 'Лекц',
+            part_time: 6,
+            class_number: 225,
+          },
+          {
+            code: 'F.CS103',
+            name: 'Инженерийн эдийн засаг',
+            class_type: 'Лекц',
+            part_time: 7,
+            class_number: 225,
+          },
+        ],
+      },
+      {
+        weekday: 3,
+        subjects: [
+          {
+            code: 'F.CS102',
+            name: 'Алгоритмын үндэс',
+            class_type: 'Лаборатор',
+            part_time: 4,
+            class_number: 225,
+          },
+          {
+            code: 'F.CS102',
+            name: 'Алгоритмын үндэс',
+            class_type: 'Лаборатор',
+            part_time: 5,
+            class_number: 225,
+          },
+        ],
+      },
+      {
+        weekday: 4,
+        subjects: [
+          {
+            code: 'F.CS104',
+            name: 'Дискрет бүтэц',
+            class_type: 'Лекц',
+            part_time: 1,
+            class_number: 225,
+          },
+        ],
+      },
+      {
+        weekday: 5,
+        subjects: [
+          {
+            code: 'F.CS104',
+            name: 'Дискрет бүтэц',
+            class_type: 'Лаборатор',
+            part_time: 1,
+            class_number: 225,
+          },
+          {
+            code: 'F.CS104',
+            name: 'Дискрет бүтэц',
+            class_type: 'Лаборатор',
+            part_time: 2,
+            class_number: 225,
+          },
+        ],
+      },
+      // {
+      //   weekday: 6,
+      //   subjects: [],
+      // },
+      // {
+      //   weekday: 7,
+      //   subjects: [],
+      // },
     ],
   }
 }
