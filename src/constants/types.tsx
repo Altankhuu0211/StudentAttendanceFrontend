@@ -64,3 +64,11 @@ export type RecordanceProps = {
   total_sick: number
   total_students: number
 }
+
+export type RecordanceParamProps = {
+  teacher_id: string
+  subject_id: string
+  semester_week: number
+  week_day: number
+  part_time: number
+}

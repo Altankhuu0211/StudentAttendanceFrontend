@@ -39,7 +39,11 @@ import {
 } from '@services/index'
 import { PageRoutes } from '@constants/routes.constants'
 import { getFromStorage } from '@utils/common'
-import { LessonsProps, RecordanceProps } from '@constants/types'
+import {
+  LessonsProps,
+  RecordanceParamProps,
+  RecordanceProps,
+} from '@constants/types'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -81,23 +85,52 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   const [selectLecture, setSelectLecture] = useState('none')
   const [selectSeminar, setSelectSeminar] = useState('none')
   const [selectLab, setSelectLab] = useState('none')
-  const [selectSemesterWeek, setSelectSemesterWeek] = useState('none')
+  const [selectSemesterWeek, setSelectSemesterWeek] = useState('0')
   const [searchText, setSearchText] = useState('')
   const [showClearIcon, setShowClearIcon] = useState(false)
-
-  const payload: {
-    teacher_id: string
-    subject_id: string
-    week_day: number
-    part_time: number
-    semester_week: number
-  } = {
+  const [recordanceParam, setRecordanceParam] = useState<RecordanceParamProps>({
     teacher_id: 'B.ES48',
     subject_id: 'F.CS101',
     week_day: 2,
     part_time: 5,
     semester_week: 15,
-  }
+  })
+  const [record, setRecord] = useState<RecordanceProps | undefined>(undefined)
+  const [lesson, setLesson] = useState<LessonsProps>([])
+  const [semesterWeek, setSemesterWeek] = useState<undefined | number>(
+    undefined
+  )
+  const [changed, setChanged] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (router.isReady && selectSemesterWeek && teacherCode) {
+      const paramData: {
+        class_number: string
+        class_type: string
+        code: string
+        name: string
+        schedule_time: string
+      } = JSON.parse(String(router.query.data))
+      const [week_day, part_time] = _.split(paramData.schedule_time, '-', 2)
+      setDefaultValues(paramData)
+      setRecordanceParam({
+        teacher_id: teacherCode,
+        subject_id: paramData.code,
+        semester_week: Number(selectSemesterWeek),
+        week_day: Number(week_day),
+        part_time: Number(part_time),
+      })
+      if (!changed) {
+        if (paramData.class_type === CLASS_TYPE[0].type)
+          setSelectLecture(paramData.schedule_time)
+        else if (paramData.class_type === CLASS_TYPE[1].type)
+          setSelectLab(paramData.schedule_time)
+        else setSelectSeminar(paramData.schedule_time)
+      }
+
+      setSelectSubject(paramData.code)
+    }
+  }, [router, selectSemesterWeek, teacherCode])
 
   const { status: weekStatus, data: weekData } = useQuery(
     'semester-week',
@@ -117,15 +150,9 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     status: recordStatus,
     data: recordData,
     refetch: recordanceRefetch,
-  } = useQuery(['student-attendance', payload], () => {
-    return fetchRecordance(payload)
+  } = useQuery(['student-attendance', recordanceParam], () => {
+    return fetchRecordance(recordanceParam)
   })
-
-  const [record, setRecord] = useState<RecordanceProps | undefined>(undefined)
-  const [lesson, setLesson] = useState<LessonsProps>([])
-  const [semesterWeek, setSemesterWeek] = useState<undefined | number>(
-    undefined
-  )
 
   useEffect(() => {
     if (recordData) {
@@ -146,33 +173,9 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   }, [weekData])
 
   useEffect(() => {
-    if (router.isReady) {
-      setDefaultValues(JSON.parse(String(router.query.data)))
-    }
-  }, [router])
-
-  useEffect(() => {
     if (!searchText) setShowClearIcon(false)
     if (searchText.length === 1) setShowClearIcon(true)
   }, [searchText])
-
-  useEffect(() => {
-    if (defaultValues && lesson) {
-      const defaultLesson = _.find(lesson, function (v) {
-        return v.id === defaultValues.code
-      })
-      if (defaultLesson) {
-        setSelectSubject(defaultLesson.id)
-        if (defaultValues.class_type === CLASS_TYPE[0].type) {
-          setSelectLecture(defaultValues.schedule_time)
-        } else if (defaultValues.class_type === CLASS_TYPE[1].type) {
-          setSelectLab(defaultValues.schedule_time)
-        } else {
-          setSelectSeminar(defaultValues.schedule_time)
-        }
-      }
-    }
-  }, [defaultValues, lesson])
 
   useEffect(() => {
     if (semesterWeek) {
@@ -180,25 +183,24 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     }
   }, [semesterWeek])
 
-  if (
-    _.isEmpty(defaultValues) ||
-    recordStatus != 'success' ||
-    weekStatus != 'success' ||
-    lessonStatus != 'success'
-  )
-    return <Loading />
-
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)
-    let selectDefault = 'none'
-    lesson &&
-      lesson.map((item) => {
-        if (item.id == event.target.value) {
-          setSelectLecture(selectDefault)
-          selectDefault = item.lecture[0]
-        }
+    if (!changed) setChanged((prev) => !prev)
+    const selectDefault =
+      lesson &&
+      _.find(lesson, function (o) {
+        return o.id == event.target.value
       })
-    setSelectLecture(selectDefault)
+
+    setSelectLecture(selectDefault?.lecture[0] || 'none')
+    const [week_day, part_time] = _.split(selectDefault?.lecture[0], '-', 2)
+    setRecordanceParam({
+      ...recordanceParam,
+      subject_id: event.target.value,
+      week_day: Number(week_day),
+      part_time: Number(part_time),
+    })
+
     setSelectLab('none')
     setSelectSeminar('none')
     recordanceRefetch()
@@ -206,6 +208,13 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const handleSelectLecture = (event: SelectChangeEvent) => {
     setSelectLecture(event.target.value)
+    if (!changed) setChanged((prev) => !prev)
+    const [week_day, part_time] = _.split(event.target.value, '-', 2)
+    setRecordanceParam({
+      ...recordanceParam,
+      week_day: Number(week_day),
+      part_time: Number(part_time),
+    })
     setSelectSeminar('none')
     setSelectLab('none')
     recordanceRefetch()
@@ -213,6 +222,13 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const handleSelectSeminar = (event: SelectChangeEvent) => {
     setSelectSeminar(event.target.value)
+    if (!changed) setChanged((prev) => !prev)
+    const [week_day, part_time] = _.split(event.target.value, '-', 2)
+    setRecordanceParam({
+      ...recordanceParam,
+      week_day: Number(week_day),
+      part_time: Number(part_time),
+    })
     setSelectLecture('none')
     setSelectLab('none')
     recordanceRefetch()
@@ -220,6 +236,13 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const handleSelectLab = (event: SelectChangeEvent) => {
     setSelectLab(event.target.value)
+    if (!changed) setChanged((prev) => !prev)
+    const [week_day, part_time] = _.split(event.target.value, '-', 2)
+    setRecordanceParam({
+      ...recordanceParam,
+      week_day: Number(week_day),
+      part_time: Number(part_time),
+    })
     setSelectSeminar('none')
     setSelectLecture('none')
     recordanceRefetch()
@@ -227,6 +250,11 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
 
   const handleSelectSemesterWeek = (event: SelectChangeEvent) => {
     setSelectSemesterWeek(event.target.value)
+    if (!changed) setChanged((prev) => !prev)
+    setRecordanceParam({
+      ...recordanceParam,
+      semester_week: Number(event.target.value),
+    })
     recordanceRefetch()
   }
 
@@ -235,7 +263,6 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
   }
 
   const handleReport = () => {
-    // const [exp_weekday, exp_parttime] = _.split('4-2', '-')
     let class_type = CLASS_TYPE[0].type
     let schedule_time = selectLecture
     if (selectLecture != 'none') {
@@ -275,6 +302,14 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     setShowModal(true)
     console.log('edited:', event.target.value, student_id)
   }
+
+  if (
+    _.isEmpty(defaultValues) ||
+    recordStatus != 'success' ||
+    weekStatus != 'success' ||
+    lessonStatus != 'success'
+  )
+    return <Loading />
 
   const renderDate = () => {
     return (
@@ -589,11 +624,11 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           fullWidth
           sx={{
             mr: 1.5,
-            fontWeight: selectSemesterWeek != 'none' ? 700 : 400,
-            color: selectSemesterWeek != 'none' ? 'black' : 'grey',
+            fontWeight: selectSemesterWeek != '0' ? 700 : 400,
+            color: selectSemesterWeek != '0' ? 'black' : 'grey',
           }}
         >
-          <MenuItem value={0} disabled>
+          <MenuItem value="0" disabled>
             {`${t('selection.semesterWeek')}`}
           </MenuItem>
           {SEMESTER_WEEK.map((item, idx) => {
