@@ -1,14 +1,16 @@
+import { CookieValueTypes } from 'cookies-next'
+
 //types
 export type LessonSchedule = {
-  teacher_id: string | null | undefined
+  teacher_id: CookieValueTypes
 }
 
 export type Schedule = {
-  teacher_id: string | null | undefined
+  teacher_id: CookieValueTypes
 }
 
 export type Recordance = {
-  teacher_id: string
+  teacher_id: CookieValueTypes
   subject_id: string
   week_day: number
   part_time: number
@@ -66,7 +68,7 @@ export type RecordanceProps = {
 }
 
 export type RecordanceParamProps = {
-  teacher_id: string
+  teacher_id: CookieValueTypes
   subject_id: string
   semester_week: number
   week_day: number

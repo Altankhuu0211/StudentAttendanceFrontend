@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Colors from '@theme/colors'
 import { t } from 'i18next'
 import _ from 'lodash'
@@ -41,6 +41,7 @@ const LoginContainer: React.FC<Props> = () => {
     formState: { errors },
   } = methods
   const { onSubmitHandler } = useLogin()
+
   const onSubmit = () => {
     onSubmitHandler(getValues()).then((data) => {
       if (data?.status == 200) {
@@ -58,6 +59,19 @@ const LoginContainer: React.FC<Props> = () => {
       }
     })
   }
+
+  useEffect(() => {
+    const listener = (event) => {
+      if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+        event.preventDefault()
+        onSubmit()
+      }
+    }
+    document.addEventListener('keydown', listener)
+    return () => {
+      document.removeEventListener('keydown', listener)
+    }
+  }, [])
 
   return (
     <Box
@@ -88,7 +102,7 @@ const LoginContainer: React.FC<Props> = () => {
           {`${t('common.shutis')}`}
         </Typography>
       </Box>
-      <form method="post">
+      <form method="post" onSubmit={onSubmit}>
         <Snackbar
           open={openSuccess}
           autoHideDuration={6000}

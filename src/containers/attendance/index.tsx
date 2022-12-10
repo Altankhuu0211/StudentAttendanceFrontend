@@ -44,6 +44,7 @@ import {
   RecordanceParamProps,
   RecordanceProps,
 } from '@constants/types'
+import { CookieValueTypes } from 'cookies-next'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -65,10 +66,10 @@ type Props = {}
 
 const RecordAttendanceContainer: React.FC<Props> = () => {
   const router = useRouter()
-  const [teacherCode, setTeacherCode] = useState<string>('')
+  const [teacherCode, setTeacherCode] = useState<CookieValueTypes | ''>('')
 
   useEffect(() => {
-    setTeacherCode(getFromStorage('user_code') || '')
+    setTeacherCode(getFromStorage('user_code'))
   }, [])
 
   const [showModal, setShowModal] = useState<boolean>(false)

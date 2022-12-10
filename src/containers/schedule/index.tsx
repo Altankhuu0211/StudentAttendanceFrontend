@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import _ from 'lodash'
 import { useQuery } from 'react-query'
 import moment from 'moment'
@@ -27,15 +27,16 @@ import { fetchSchedule, getSemesterWeek } from '@services/index'
 import { combineScheduleTime } from '@utils/common'
 import { PageRoutes } from '@constants/routes.constants'
 import { getFromStorage } from '@utils/common'
+import { CookieValueTypes } from 'cookies-next'
 
 type Props = {}
 
 const ScheduleContainer: React.FC<Props> = () => {
   const router = useRouter()
-  const [teacherCode, setTeacherCode] = useState<string>('')
+  const [teacherCode, setTeacherCode] = useState<CookieValueTypes | ''>('')
 
   useEffect(() => {
-    setTeacherCode(getFromStorage('user_code') || '')
+    setTeacherCode(getFromStorage('user_code'))
   }, [])
 
   const { status: scheduleStatus, data: scheduleData } = useQuery(
@@ -84,11 +85,6 @@ const ScheduleContainer: React.FC<Props> = () => {
     },
   }))
 
-  const StyledTableRow = styled(TableRow)(() => ({
-    // '&:nth-of-type(even)': {
-    //   backgroundColor: Colors.table_grey,
-    // },
-  }))
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
       <Box
@@ -127,7 +123,7 @@ const ScheduleContainer: React.FC<Props> = () => {
         <TableContainer component={Paper}>
           <Table aria-label="caption table" sx={{ width: 1200 }}>
             <TableHead>
-              <StyledTableRow>
+              <TableRow>
                 <StyledTableCell
                   variant="head"
                   align="center"
@@ -155,16 +151,16 @@ const ScheduleContainer: React.FC<Props> = () => {
                     </StyledTableCell>
                   )
                 })}
-              </StyledTableRow>
+              </TableRow>
             </TableHead>
             <TableBody>
               {PART_TIME.map((v, i) => (
-                <StyledTableRow key={i}>
+                <TableRow key={i}>
                   <StyledTableCell align="center">{`${v.number}-р цаг: ${v.time_interval}`}</StyledTableCell>
                   {_.range(0, 5).map((_val, idx) => {
                     return (
                       <StyledTableCell key={idx * 10 + i} align="center">
-                        {response[idx] &&
+                        {!_.isEmpty(response) &&
                           response[idx]?.Subjects.map((subject, index) => {
                             return (
                               subject.part_time === v.number && (
@@ -210,7 +206,7 @@ const ScheduleContainer: React.FC<Props> = () => {
                       </StyledTableCell>
                     )
                   })}
-                </StyledTableRow>
+                </TableRow>
               ))}
             </TableBody>
           </Table>

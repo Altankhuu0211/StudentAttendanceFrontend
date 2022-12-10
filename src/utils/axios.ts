@@ -7,7 +7,7 @@ const client = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',
-    Authorization: `Bearer ${getFromStorage('token')}`,
+    Authorization: `Bearer ${String(getFromStorage('token'))}`,
   },
   baseURL: URI.DOMAIN,
 })

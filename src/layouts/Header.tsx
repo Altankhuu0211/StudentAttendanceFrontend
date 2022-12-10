@@ -10,23 +10,25 @@ import {
 } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { PageRoutes } from '@constants/routes.constants'
-import { getFromStorage, setToStorage } from '@utils/common'
+import { deleteFromStorage, getFromStorage } from '@utils/common'
+import { CookieValueTypes } from 'cookies-next'
 
 export type Props = {}
 
 const Header: React.FC<Props> = () => {
   const router = useRouter()
-  const [userName, setUserName] = useState<string>('')
+  const [userName, setUserName] = useState<CookieValueTypes | ''>('')
 
   useEffect(() => {
-    setUserName(getFromStorage('user_fname') || '')
+    setUserName(getFromStorage('user_fname'))
   }, [])
 
   const onSubmitHandler = () => {
-    setToStorage('user_code', undefined)
-    setToStorage('token', undefined)
-    setToStorage('user_name', undefined)
-    setToStorage('permission', undefined)
+    deleteFromStorage('user_code')
+    deleteFromStorage('token')
+    deleteFromStorage('user_fname')
+    deleteFromStorage('user_lname')
+    deleteFromStorage('permission')
     router.push(PageRoutes.LOGIN)
   }
 

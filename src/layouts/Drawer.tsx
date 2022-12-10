@@ -21,26 +21,28 @@ import {
   List as IconList,
 } from '@mui/icons-material'
 import { PageRoutes } from '@constants/routes.constants'
-import { getFromStorage, setToStorage } from '@utils/common'
+import { deleteFromStorage, getFromStorage } from '@utils/common'
+import { CookieValueTypes } from 'cookies-next'
 
 const drawerWidth = 218
 
 export type Props = {}
 
 const MenuDrawer: React.FC<Props> = () => {
-  const permission = getFromStorage('permission')
   const router = useRouter()
-  const [userCode, setUserCode] = useState<string>('')
+  const [permission, setPermission] = useState<CookieValueTypes | ''>('')
+  const [userCode, setUserCode] = useState<CookieValueTypes | ''>('')
 
   useEffect(() => {
-    setUserCode(getFromStorage('user_code') || '')
+    setPermission(getFromStorage('permission'))
+    setUserCode(getFromStorage('user_code'))
   }, [])
 
   const onSubmitHandler = () => {
-    setToStorage('user_code', undefined)
-    setToStorage('token', undefined)
-    setToStorage('user_name', undefined)
-    setToStorage('permission', undefined)
+    deleteFromStorage('user_code')
+    deleteFromStorage('token')
+    deleteFromStorage('user_name')
+    deleteFromStorage('permission')
     router.push(PageRoutes.LOGIN)
   }
 
