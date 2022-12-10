@@ -7,7 +7,7 @@ const Home: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    router.replace(PageRoutes.LOGIN)
+    if (router.isReady) router.replace(PageRoutes.LOGIN)
   }, [router])
 
   return <></>
