@@ -3,20 +3,24 @@ import Colors from '@theme/colors'
 import { t } from 'i18next'
 
 // components
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, Drawer, IconButton } from '@mui/material'
 import {
   ExpandMore as IconExpandMore,
+  ExpandLess as IconExpandLess,
   PowerSettingsNew as IconPower,
 } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { PageRoutes } from '@constants/routes.constants'
 import { getFromStorage, removeFromStorage } from '@utils/common'
+import MenuDrawer from '@components/MenuDrawer'
+import { DRAWER_WIDTH } from '@constants/common'
 
 export type Props = {}
 
 const Header: React.FC<Props> = () => {
   const router = useRouter()
-
+  const [menuOpen, setMenuOpen] = useState<boolean>(false)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [userName, setUserName] = useState<string>('')
 
   useEffect(() => {
@@ -32,8 +36,26 @@ const Header: React.FC<Props> = () => {
     router.push(PageRoutes.LOGIN)
   }
 
+  const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+    setMenuOpen(!menuOpen)
+    setAnchorEl(anchorEl ? null : event.currentTarget)
+  }
+
   return (
     <Box component="header">
+      <Drawer
+        anchor="left"
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        PaperProps={{
+          sx: {
+            backgroundColor: Colors.lightWhite,
+            width: DRAWER_WIDTH,
+          },
+        }}
+      >
+        <MenuDrawer />
+      </Drawer>
       <Box
         sx={{
           width: '100%',
@@ -100,7 +122,10 @@ const Header: React.FC<Props> = () => {
             {`${t('common.welcome')} `}
             {userName}
           </Typography>
-          <IconExpandMore />
+
+          <IconButton onClick={handleMenuClick} sx={{ p: 0 }}>
+            {menuOpen ? <IconExpandLess /> : <IconExpandMore />}
+          </IconButton>
         </Box>
         <Box
           sx={{

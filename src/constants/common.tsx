@@ -1,5 +1,7 @@
 //form selection menuItem
 
+export const DRAWER_WIDTH = 218
+
 export const PART_TIME = [
   {
     number: 1,
