@@ -9,6 +9,7 @@ export default {
     copyright: '© 2022 Мэдээллийн технологийн төв',
     start: 'Ирц бүртгэл эхлүүлэх',
     report: 'Тайлан',
+    search: 'Хайх',
     save: 'Хадгалах',
     student_code: 'Оюутны код',
     chip_number: 'Оюутны үнэмлэхний дугаар',
@@ -44,5 +45,11 @@ export default {
   },
   modal: {
     message: 'Ирцийг засах уу?',
+    register: {
+      guide: 'Та оюутны картаа уншуулна уу',
+      info_1: 'Одоогоор',
+      info_2: 'карт уншсан байна.',
+      button_text: 'Бүртгэх',
+    },
   },
 }

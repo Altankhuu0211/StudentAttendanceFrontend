@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Colors from '@theme/colors'
 import { useRouter } from 'next/router'
 import { t } from 'i18next'
@@ -21,8 +21,7 @@ import {
   List as IconList,
 } from '@mui/icons-material'
 import { PageRoutes } from '@constants/routes.constants'
-import { deleteFromStorage, getFromStorage } from '@utils/common'
-import { CookieValueTypes } from 'cookies-next'
+import { getFromStorage, removeFromStorage } from '@utils/common'
 
 const drawerWidth = 218
 
@@ -30,19 +29,21 @@ export type Props = {}
 
 const MenuDrawer: React.FC<Props> = () => {
   const router = useRouter()
-  const [permission, setPermission] = useState<CookieValueTypes | ''>('')
-  const [userCode, setUserCode] = useState<CookieValueTypes | ''>('')
+
+  const [permission, setPermission] = useState<string>('')
+  const [userCode, setUserCode] = useState<string>('')
 
   useEffect(() => {
-    setPermission(getFromStorage('permission'))
-    setUserCode(getFromStorage('user_code'))
+    setPermission(getFromStorage('permission') || '')
+    setUserCode(getFromStorage('user_code') || '')
   }, [])
 
   const onSubmitHandler = () => {
-    deleteFromStorage('user_code')
-    deleteFromStorage('token')
-    deleteFromStorage('user_name')
-    deleteFromStorage('permission')
+    removeFromStorage('token')
+    removeFromStorage('permission')
+    removeFromStorage('user_code')
+    removeFromStorage('user_fname')
+    removeFromStorage('user_lname')
     router.push(PageRoutes.LOGIN)
   }
 
