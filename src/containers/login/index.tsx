@@ -94,7 +94,7 @@ const LoginContainer: React.FC<Props> = () => {
         <Typography
           sx={{
             color: Colors.mainWhite,
-            fontSize: '16px',
+            fontSize: { xs: '14px', sm: '16px' },
             p: '10px',
             textTransform: 'uppercase',
           }}

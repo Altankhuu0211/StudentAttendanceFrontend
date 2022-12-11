@@ -1295,6 +1295,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chart.js@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "chart.js@npm:4.0.1"
+  checksum: 013dabf3cd4ad2d71574e1d616906ae6f5b3f5914efb7f8ac7407bfe9b621e997f30966350bbdf31e3a1322c8c602715ef4dd6d0b6072590bb48db03861ac401
+  languageName: node
+  linkType: hard
+
 "classnames@npm:^2.2.5":
   version: 2.3.2
   resolution: "classnames@npm:2.3.2"
@@ -3140,6 +3147,7 @@ next@latest:
     "@types/react-modal-video": ^1.2.0
     "@types/react-slick": ^0.23.10
     axios: ^0.27.2
+    chart.js: ^4.0.1
     cookies-next: ^2.1.1
     date-fn: ^0.0.2
     date-fns: ^2.28.0
@@ -3154,6 +3162,7 @@ next@latest:
     next: latest
     next-seo: ^5.5.0
     react: latest
+    react-chartjs-2: ^5.0.1
     react-dom: latest
     react-google-recaptcha: ^2.1.0
     react-hook-form: ^7.34.0
@@ -3460,6 +3469,16 @@ next@latest:
   peerDependencies:
     react: ">=16.4.1"
   checksum: 303890eeaf9e18d59fca77f9c891bf3b52d2ec9ea88f0af9d19c160a1f101b447c5104ca46e2dd84c19de756d4797f1f054d041b888a3d57204d9145f4b1b532
+  languageName: node
+  linkType: hard
+
+"react-chartjs-2@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "react-chartjs-2@npm:5.0.1"
+  peerDependencies:
+    chart.js: ^4.0.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: b6f20cf68eb8961891af10250e737b50b940d74b7a3a07aae51f356960a865f822ee61856131c3965c7c547f06013ad963a679ed14d59d12e7c7d64c1db52f6c
   languageName: node
   linkType: hard
 

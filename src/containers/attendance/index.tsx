@@ -5,6 +5,7 @@ import moment from 'moment'
 import { useQuery } from 'react-query'
 import { t } from 'i18next'
 import Colors from '@theme/colors'
+import AttendanceChart from '@containers/attendance-chart'
 
 // components
 import {
@@ -349,6 +350,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
       <Box
         sx={{
           display: 'flex',
+          flexWrap: 'wrap',
           p: 2,
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -360,8 +362,10 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
         <Box
           sx={{
             display: 'flex',
+
             alignItems: 'center',
             width: '50%',
+            mb: 2,
           }}
         >
           <Box
@@ -508,11 +512,31 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
     )
   }
 
+  const renderAnalyse = () => {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          p: 2,
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          color: Colors.mainWhite,
+          borderRight: '1px solid black',
+          borderLeft: '1px solid black',
+        }}
+      >
+        <AttendanceChart />
+      </Box>
+    )
+  }
+
   const renderFilterPanel = () => {
     return (
       <Box
         sx={{
           display: 'flex',
+          flexDirection: { xs: 'column', sm: 'column', md: 'row' },
           p: 2,
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -527,6 +551,8 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           onChange={handleSelectSubject}
           fullWidth
           sx={{
+            maxWidth: 210,
+            mb: 2,
             mr: 1.5,
             fontWeight: selectSubject != 'none' ? 700 : 400,
             color: selectSubject != 'none' ? 'black' : 'grey',
@@ -549,6 +575,8 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           onChange={handleSelectLecture}
           fullWidth
           sx={{
+            maxWidth: 210,
+            mb: 2,
             mr: 1.5,
             fontWeight: selectLecture != 'none' ? 700 : 400,
             color: selectLecture != 'none' ? 'black' : 'grey',
@@ -574,6 +602,8 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           onChange={handleSelectSeminar}
           fullWidth
           sx={{
+            maxWidth: 210,
+            mb: 2,
             mr: 1.5,
             fontWeight: selectSeminar != 'none' ? 700 : 400,
             color: selectSeminar != 'none' ? 'black' : 'grey',
@@ -599,6 +629,8 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           onChange={handleSelectLab}
           fullWidth
           sx={{
+            maxWidth: 210,
+            mb: 2,
             mr: 1.5,
             fontWeight: selectLab != 'none' ? 700 : 400,
             color: selectLab != 'none' ? 'black' : 'grey',
@@ -624,13 +656,14 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
           onChange={handleSelectSemesterWeek}
           fullWidth
           sx={{
-            mr: 1.5,
+            maxWidth: 210,
+            mb: 2,
             fontWeight: selectSemesterWeek != '0' ? 700 : 400,
             color: selectSemesterWeek != '0' ? 'black' : 'grey',
           }}
         >
           <MenuItem value="0" disabled>
-            {`${t('selection.semesterWeek')}`}
+            {`${t('selection.semester_week')}`}
           </MenuItem>
           {SEMESTER_WEEK.map((item, idx) => {
             return (
@@ -640,16 +673,6 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
             )
           })}
         </Select>
-        {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label={`${t('selection.date')}`}
-            value={selectedDate}
-            onChange={(newValue) => {
-              setSelectedDate(newValue)
-            }}
-            renderInput={(params) => <TextField fullWidth {...params} />}
-          />
-        </LocalizationProvider> */}
       </Box>
     )
   }
@@ -664,6 +687,7 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
         {renderDate()}
         {renderInfoPanel()}
         {renderFilterPanel()}
+        {renderAnalyse()}
         <RefModal
           showModal={showModal}
           closeModalHandler={() => setShowModal(false)}
@@ -689,14 +713,20 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                 <StyledTableCell
                   variant="head"
                   align="center"
-                  sx={{ width: 250 }}
+                  sx={{
+                    // display: { xs: 'none', sm: 'none', md: 'flex' },
+                    width: 250,
+                  }}
                 >
                   {`${t('common.student_lname')}`}
                 </StyledTableCell>
                 <StyledTableCell
                   variant="head"
                   align="center"
-                  sx={{ width: 250 }}
+                  sx={{
+                    // display: { xs: 'none', sm: 'none', md: 'flex' },
+                    width: 250,
+                  }}
                 >
                   {`${t('common.student_fname')}`}
                 </StyledTableCell>
@@ -710,7 +740,10 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                 <StyledTableCell
                   variant="head"
                   align="center"
-                  sx={{ width: 200 }}
+                  sx={{
+                    // display: { xs: 'none', sm: 'none', md: 'flex' },
+                    width: 200,
+                  }}
                 >
                   {`${t('common.arrival_time')}`}
                 </StyledTableCell>
@@ -721,10 +754,16 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                 <StyledTableRow key={i}>
                   <StyledTableCell align="center">{i + 1}</StyledTableCell>
                   <StyledTableCell align="left">{v.student_id}</StyledTableCell>
-                  <StyledTableCell align="left">
+                  <StyledTableCell
+                    align="left"
+                    // sx={{ display: { xs: 'none', sm: 'none', md: 'flex' } }}
+                  >
                     {v.student_lname}
                   </StyledTableCell>
-                  <StyledTableCell align="left">
+                  <StyledTableCell
+                    align="left"
+                    // sx={{ display: { xs: 'none', sm: 'none', md: 'flex' } }}
+                  >
                     {v.student_fname}
                   </StyledTableCell>
                   <StyledTableCell align="center">
@@ -753,7 +792,12 @@ const RecordAttendanceContainer: React.FC<Props> = () => {
                       })}
                     </Select>
                   </StyledTableCell>
-                  <StyledTableCell align="center">{v.time}</StyledTableCell>
+                  <StyledTableCell
+                    align="center"
+                    // sx={{ display: { xs: 'none', sm: 'none', md: 'flex' } }}
+                  >
+                    {v.time}
+                  </StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
