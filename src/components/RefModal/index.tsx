@@ -40,7 +40,7 @@ const Modal: React.FC<Props> = ({ showModal, closeModalHandler }) => {
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: 1, mt: 1 }}>
-          <IconButton onClick={() => closeModalHandler()}>
+          <IconButton onClick={closeModalHandler}>
             <IconClose sx={{ color: Colors.mainBlack }} />
           </IconButton>
         </Box>
@@ -79,7 +79,11 @@ const Modal: React.FC<Props> = ({ showModal, closeModalHandler }) => {
             >
               {`${t('common.yes')}`}
             </Button>
-            <Button variant="contained" sx={{ width: 100, bgcolor: 'red' }}>
+            <Button
+              variant="contained"
+              sx={{ width: 100, bgcolor: 'red' }}
+              onClick={closeModalHandler}
+            >
               {`${t('common.no')}`}
             </Button>
           </Box>

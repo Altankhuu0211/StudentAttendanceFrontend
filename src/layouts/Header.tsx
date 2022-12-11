@@ -11,8 +11,7 @@ import {
 } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { PageRoutes } from '@constants/routes.constants'
-import { deleteFromStorage, getFromStorage } from '@utils/common'
-import { CookieValueTypes } from 'cookies-next'
+import { getFromStorage, removeFromStorage } from '@utils/common'
 import MenuDrawer from '@components/MenuDrawer'
 import { DRAWER_WIDTH } from '@constants/common'
 
@@ -22,18 +21,18 @@ const Header: React.FC<Props> = () => {
   const router = useRouter()
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [userName, setUserName] = useState<CookieValueTypes | ''>('')
+  const [userName, setUserName] = useState<string>('')
 
   useEffect(() => {
-    setUserName(getFromStorage('user_fname'))
+    setUserName(getFromStorage('user_fname') || '')
   }, [])
 
   const onSubmitHandler = () => {
-    deleteFromStorage('user_code')
-    deleteFromStorage('token')
-    deleteFromStorage('user_fname')
-    deleteFromStorage('user_lname')
-    deleteFromStorage('permission')
+    removeFromStorage('token')
+    removeFromStorage('permission')
+    removeFromStorage('user_code')
+    removeFromStorage('user_fname')
+    removeFromStorage('user_lname')
     router.push(PageRoutes.LOGIN)
   }
 

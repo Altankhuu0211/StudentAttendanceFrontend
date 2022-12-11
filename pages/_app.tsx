@@ -1,20 +1,22 @@
-import * as React from 'react'
+import React, { useEffect } from 'react'
 import Head from 'next/head'
 import { AppProps } from 'next/app'
+import Router from 'next/router'
 import moment from 'moment'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
+import NProgress from 'nprogress'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import createEmotionCache from '../src/utils/createEmotionCache'
 import theme from '../src/theme/index'
-import '../node_modules/react-modal-video/css/modal-video.min.css'
 import '../src/css/index.css'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import '@locales/i18n'
 import 'moment/locale/mn'
+import 'nprogress/nprogress.css'
 
 moment.locale('mn')
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -27,6 +29,22 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
   const [queryClient] = React.useState(() => new QueryClient())
+
+  NProgress.configure({ showSpinner: false })
+  useEffect(() => {
+    const handleRouteStart = () => NProgress.start()
+    const handleRouteDone = () => NProgress.done()
+
+    Router.events.on('routeChangeStart', handleRouteStart)
+    Router.events.on('routeChangeComplete', handleRouteDone)
+    Router.events.on('routeChangeError', handleRouteDone)
+
+    return () => {
+      Router.events.off('routeChangeStart', handleRouteStart)
+      Router.events.off('routeChangeComplete', handleRouteDone)
+      Router.events.off('routeChangeError', handleRouteDone)
+    }
+  }, [])
 
   return (
     <CacheProvider value={emotionCache}>

@@ -1,21 +1,21 @@
-import { CookieValueTypes } from 'cookies-next'
-
 //types
 export type LessonSchedule = {
-  teacher_id: CookieValueTypes
+  teacher_id: string
 }
 
 export type Schedule = {
-  teacher_id: CookieValueTypes
+  teacher_id: string
 }
 
-export type Recordance = {
-  teacher_id: CookieValueTypes
-  subject_id: string
-  week_day: number
-  part_time: number
-  semester_week: number
-}
+export type Recordance =
+  | {
+      teacher_id: string
+      subject_id: string
+      week_day: number
+      part_time: number
+      semester_week: number
+    }
+  | {}
 
 export type Report = {
   teacher_id: string // 'J.SW10'
@@ -68,9 +68,24 @@ export type RecordanceProps = {
 }
 
 export type RecordanceParamProps = {
-  teacher_id: CookieValueTypes
+  teacher_id: string
   subject_id: string
   semester_week: number
   week_day: number
   part_time: number
+}
+
+export type FilterValuesProps = {
+  subject: string
+  lecture: string
+  seminar: string
+  lab: string
+  week: string
+  weekDay: string
+  partTime: string
+}
+
+export type RegistrationItemProps = {
+  chip_number: string
+  time: string
 }

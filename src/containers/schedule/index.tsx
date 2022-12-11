@@ -24,19 +24,15 @@ import Loading from '@components/Loading'
 import { PART_TIME, WEEKDAY, CLASS_TYPE } from '@constants/common'
 import { useRouter } from 'next/router'
 import { fetchSchedule, getSemesterWeek } from '@services/index'
-import { combineScheduleTime } from '@utils/common'
+import { combineScheduleTime, getFromStorage } from '@utils/common'
 import { PageRoutes } from '@constants/routes.constants'
-import { getFromStorage } from '@utils/common'
-import { CookieValueTypes } from 'cookies-next'
 
-type Props = {}
-
-const ScheduleContainer: React.FC<Props> = () => {
+const ScheduleContainer: React.FC<{}> = () => {
   const router = useRouter()
-  const [teacherCode, setTeacherCode] = useState<CookieValueTypes | ''>('')
+  const [teacherCode, setTeacherCode] = useState<string>('')
 
   useEffect(() => {
-    setTeacherCode(getFromStorage('user_code'))
+    setTeacherCode(getFromStorage('user_code') || '')
   }, [])
 
   const { status: scheduleStatus, data: scheduleData } = useQuery(

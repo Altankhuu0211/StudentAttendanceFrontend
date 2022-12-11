@@ -26,9 +26,7 @@ import { useRouter } from 'next/router'
 import { PageRoutes } from '@constants/routes.constants'
 import { setToStorage } from '@utils/common'
 
-type Props = {}
-
-const LoginContainer: React.FC<Props> = () => {
+const LoginContainer: React.FC<{}> = () => {
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const [openSuccess, setOpenSuccess] = useState(false)
