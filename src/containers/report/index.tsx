@@ -56,7 +56,7 @@ const ReportContainer: React.FC<Props> = () => {
   const [defaultValues, setDefaultValues] = useState<
     | {
         class_type: string
-        code: string
+        subject_code: string
         schedule_time: string
       }
     | undefined
@@ -81,9 +81,9 @@ const ReportContainer: React.FC<Props> = () => {
   }
 
   const { status: lessonStatus, data: lessonData } = useQuery(
-    ['lesson-schedule', 'J.SW10'],
+    ['lesson-schedule', 'B.ES48'],
     () => {
-      return getLessonSchedule({ teacher_id: 'J.SW10' })
+      return getLessonSchedule({ teacher_id: 'B.ES48' })
     }
   )
 
@@ -101,16 +101,16 @@ const ReportContainer: React.FC<Props> = () => {
     }
   )
   console.log('reportdata:', repordData)
-  const response = repordData?.data
+  const response = repordData?.data?.data
   const semester_week = weekData?.data?.data
-  const lesson = lessonData?.data
+  const lesson = lessonData?.data?.data
   let selectDefault = 'none'
 
   useEffect(() => {
     if (defaultValues && lesson) {
-      console.log('lesson', lesson, defaultValues.code)
+      console.log('lesson', lesson, defaultValues.subject_code)
       const defaultLesson = _.find(lesson, function (v) {
-        return v.id === defaultValues.code
+        return v.id === defaultValues.subject_code
       })
       if (defaultLesson) {
         setSelectSubject(defaultLesson.id)

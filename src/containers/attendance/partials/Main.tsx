@@ -242,7 +242,8 @@ const Main: React.FC<Props> = ({ code, week }) => {
       schedule_time = selectSeminar
     }
     const paramData = {
-      code: selectSubject,
+      teacher_code: code,
+      subject_code: selectSubject,
       class_type: class_type,
       schedule_time: schedule_time,
     }
