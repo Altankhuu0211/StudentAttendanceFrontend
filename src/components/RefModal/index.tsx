@@ -1,20 +1,88 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useMutation } from 'react-query'
 import Colors from '@theme/colors'
 import { t } from 'i18next'
 
 // components
-import { Box, Typography, IconButton, Button } from '@mui/material'
+import {
+  Box,
+  Typography,
+  IconButton,
+  Button,
+  Snackbar,
+  Alert,
+} from '@mui/material'
 import { Close as IconClose } from '@mui/icons-material'
+import { postStudentStatusEdited } from '@services/index'
+import Loading from '@components/Loading'
+import { StudentStatusEdited } from '@constants/types'
+import { setToStorage } from '@utils/common'
 
 type Props = {
   showModal: boolean
+  params: StudentStatusEdited | {}
   closeModalHandler: () => any
 }
 
-const Modal: React.FC<Props> = ({ showModal, closeModalHandler }) => {
+const Modal: React.FC<Props> = ({ showModal, closeModalHandler, params }) => {
+  const [openSuccess, setOpenSuccess] = useState(false)
+  const [openFailed, setOpenFailed] = useState(false)
+  const {
+    status: postStatus,
+    data,
+    mutateAsync,
+  } = useMutation(postStudentStatusEdited)
+  const onSubmitHandler = (payload) => {
+    const res = mutateAsync(payload, { onSuccess: () => data })
+    return res
+  }
+
+  const onSubmit = () => {
+    onSubmitHandler(params).then((data) => {
+      if (data?.data?.success === true) {
+        setOpenSuccess(true)
+        setOpenFailed(false)
+        setToStorage('attendance_edited', 'true')
+        closeModalHandler()
+      } else {
+        setOpenSuccess(false)
+        setOpenFailed(true)
+      }
+    })
+  }
+
   if (!showModal) return null
   return (
     <>
+      <Snackbar
+        open={openSuccess}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert
+          severity="success"
+          onClose={() => {
+            setOpenSuccess(false)
+          }}
+        >
+          {`${t('alert.success')}`}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={openFailed}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert
+          severity="error"
+          onClose={() => {
+            setOpenFailed(false)
+          }}
+        >
+          {`${t('alert.failed')}`}
+        </Alert>
+      </Snackbar>
+      {postStatus != 'success' && postStatus != 'idle' && <Loading />}
       <Box
         sx={{
           position: 'fixed',
@@ -76,6 +144,7 @@ const Modal: React.FC<Props> = ({ showModal, closeModalHandler }) => {
             <Button
               variant="contained"
               sx={{ mr: 2, width: 100, bgcolor: 'green' }}
+              onClick={onSubmit}
             >
               {`${t('common.yes')}`}
             </Button>

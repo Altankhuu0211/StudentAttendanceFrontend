@@ -16,7 +16,8 @@ import {
   TableRow,
   TableContainer,
   Paper,
-  CircularProgress,
+  Snackbar,
+  Alert,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import {
@@ -25,7 +26,7 @@ import {
 } from '@mui/icons-material'
 import { tableCellClasses } from '@mui/material/TableCell'
 import RefModal from '@components/RefModal'
-import { CLASS_TYPE } from '@constants/common'
+import { CLASS_TYPE, ATTENDANCE_STATUS } from '@constants/common'
 import { fetchRecordance, getLessonSchedule } from '@services/index'
 import { PageRoutes } from '@constants/routes.constants'
 import {
@@ -34,12 +35,15 @@ import {
   RecordanceProps,
   RegistrationItemProps,
   StudentProps,
+  StudentStatusEdited,
 } from '@constants/types'
 import DatePanel from './DatePanel'
 import InfoPanel from './InfoPanel'
 import FilterPanel from './FilterPanel'
 import TablePanel from './TablePanel'
 import RegisterModal from './RegisterModal'
+import Loading from '@components/Loading'
+import { getFromStorage, removeFromStorage } from '@utils/common'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -64,11 +68,16 @@ type Props = {
 
 const Main: React.FC<Props> = ({ code, week }) => {
   const router = useRouter()
-
+  const [openSuccess, setOpenSuccess] = useState(false)
+  const [openFailed, setOpenFailed] = useState(false)
+  const [edited, setEdited] = useState<string>('')
   const [showRegister, setShowRegister] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const [recordanceParam, setRecordanceParam] = useState<
     RecordanceParamProps | {}
+  >({})
+  const [studentStatusEditedParam, setStudentStatusEditedParam] = useState<
+    StudentStatusEdited | {}
   >({})
   const [record, setRecord] = useState<RecordanceProps | undefined>(undefined)
   const [lesson, setLesson] = useState<LessonsProps>([])
@@ -130,6 +139,19 @@ const Main: React.FC<Props> = ({ code, week }) => {
       setLesson(lessonData?.data?.data)
     }
   }, [lessonData])
+
+  useEffect(() => {
+    setEdited(getFromStorage('attendance_edited') || '')
+  }, [])
+
+  useEffect(() => {
+    if (edited == 'true') {
+      setOpenSuccess(true)
+      setOpenFailed(false)
+      recordanceRefetch()
+      removeFromStorage('attendance_edited')
+    }
+  }, [edited])
 
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)
@@ -235,8 +257,16 @@ const Main: React.FC<Props> = ({ code, week }) => {
     event: SelectChangeEvent<string>,
     student_id: string
   ) => {
+    let status = 0
+    ATTENDANCE_STATUS.map((val, idx) => {
+      if (event.target.value == val) status = idx
+    })
+    setStudentStatusEditedParam({
+      ...recordanceParam,
+      student_id: student_id,
+      status_updated: status,
+    })
     setShowModal(true)
-    console.log('edited:', event.target.value, student_id)
   }
 
   const handleChangeSearchedAttendance = (
@@ -260,21 +290,39 @@ const Main: React.FC<Props> = ({ code, week }) => {
       )
 
   if (recordStatus != 'success' || lessonStatus != 'success') {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    )
+    return <Loading />
   }
 
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <Snackbar
+        open={openSuccess}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert
+          severity="success"
+          onClose={() => {
+            setOpenSuccess(false)
+          }}
+        >
+          {`${t('alert.success')}`}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={openFailed}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert
+          severity="error"
+          onClose={() => {
+            setOpenFailed(false)
+          }}
+        >
+          {`${t('alert.failed')}`}
+        </Alert>
+      </Snackbar>
       <Box
         sx={{
           width: '100%',
@@ -314,6 +362,7 @@ const Main: React.FC<Props> = ({ code, week }) => {
         <RefModal
           showModal={showModal}
           closeModalHandler={() => setShowModal(false)}
+          params={studentStatusEditedParam}
         />
         <TableContainer component={Paper}>
           <Table aria-label="caption table" sx={{ width: '100%' }}>

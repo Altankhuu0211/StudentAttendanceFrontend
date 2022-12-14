@@ -74,10 +74,10 @@ const ReportContainer: React.FC<Props> = () => {
   }, [router])
 
   const payload = {
-    teacher_id: 'J.SW10',
+    teacher_id: 'B.ES48',
     subject_id: 'F.CS101',
-    class_type: 'Лекц',
-    schedule_time: '4-1',
+    week_day: 2,
+    part_time: 5,
   }
 
   const { status: lessonStatus, data: lessonData } = useQuery(
@@ -100,7 +100,7 @@ const ReportContainer: React.FC<Props> = () => {
       return getSemesterWeek()
     }
   )
-
+  console.log('reportdata:', repordData)
   const response = repordData?.data
   const semester_week = weekData?.data?.data
   const lesson = lessonData?.data

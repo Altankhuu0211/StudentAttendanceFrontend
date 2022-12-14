@@ -546,10 +546,10 @@ export const fetchRecordance = (params: Recordance) => {
 }
 
 export const fetchReport = (params: Report) => {
-  // return api({
-  //   url: URI.GET_REPORT,
-  //   params: { q: params },
-  // })
+  return api({
+    url: URI.GET_REPORT,
+    params: params,
+  })
   return {
     data: [
       {
