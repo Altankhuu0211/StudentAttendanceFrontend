@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { useMutation } from 'react-query'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query'
 import { t } from 'i18next'
 import Colors from '@theme/colors'
+import { postStudentStatusEdited } from '@services/index'
 
 // components
 import {
@@ -280,6 +282,31 @@ const Main: React.FC<Props> = ({ code, week }) => {
     setShowRegister(false)
   }
 
+  const {
+    status: postStatus,
+    data,
+    mutateAsync,
+  } = useMutation(postStudentStatusEdited)
+  const onSubmitHandler = (payload) => {
+    const res = mutateAsync(payload, { onSuccess: () => data })
+    return res
+  }
+
+  const onChangeAttendance = () => {
+    onSubmitHandler(studentStatusEditedParam).then((data) => {
+      if (data?.data?.success === true) {
+        setOpenSuccess(true)
+        setOpenFailed(false)
+        setShowModal(false)
+        recordanceRefetch()
+      } else {
+        setOpenSuccess(false)
+        setOpenFailed(true)
+      }
+      setStudentStatusEditedParam({})
+    })
+  }
+
   const attendanceData = searchedAttendance
     ? searchedAttendance
     : sorted
@@ -324,6 +351,7 @@ const Main: React.FC<Props> = ({ code, week }) => {
           {`${t('alert.failed')}`}
         </Alert>
       </Snackbar>
+      {postStatus != 'success' && postStatus != 'idle' && <Loading />}
       <Box
         sx={{
           width: '100%',
@@ -363,7 +391,7 @@ const Main: React.FC<Props> = ({ code, week }) => {
         <RefModal
           showModal={showModal}
           closeModalHandler={() => setShowModal(false)}
-          params={studentStatusEditedParam}
+          onSubmit={onChangeAttendance}
         />
         <TableContainer component={Paper}>
           <Table aria-label="caption table" sx={{ width: '100%' }}>

@@ -2133,3 +2133,11 @@ export const postStudentChipNumber = (params: StudentChipNumber) => {
     data: JSON.stringify(params),
   })
 }
+
+export const postHolboo = (params) => {
+  return api({
+    url: '/adminbackend/api/Login/OutSideLogin',
+    method: 'POST',
+    data: JSON.stringify(params),
+  })
+}
