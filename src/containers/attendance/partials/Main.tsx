@@ -45,7 +45,6 @@ import FilterPanel from './FilterPanel'
 import TablePanel from './TablePanel'
 import RegisterModal from './RegisterModal'
 import Loading from '@components/Loading'
-import { getFromStorage, removeFromStorage } from '@utils/common'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -72,7 +71,6 @@ const Main: React.FC<Props> = ({ code, week }) => {
   const router = useRouter()
   const [openSuccess, setOpenSuccess] = useState(false)
   const [openFailed, setOpenFailed] = useState(false)
-  const [edited, setEdited] = useState<string>('')
   const [showRegister, setShowRegister] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const [recordanceParam, setRecordanceParam] = useState<
@@ -141,19 +139,6 @@ const Main: React.FC<Props> = ({ code, week }) => {
       setLesson(lessonData?.data?.data)
     }
   }, [lessonData])
-
-  useEffect(() => {
-    setEdited(getFromStorage('attendance_edited') || '')
-  }, [])
-
-  useEffect(() => {
-    if (edited == 'true') {
-      setOpenSuccess(true)
-      setOpenFailed(false)
-      recordanceRefetch()
-      removeFromStorage('attendance_edited')
-    }
-  }, [edited])
 
   const handleSelectSubject = (event: SelectChangeEvent) => {
     setSelectSubject(event.target.value)

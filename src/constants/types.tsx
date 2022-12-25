@@ -17,12 +17,14 @@ export type Recordance =
     }
   | {}
 
-export type Report = {
-  teacher_id: string
-  subject_id: string
-  week_day: number
-  part_time: number
-}
+export type Report =
+  | {
+      teacher_id: string
+      subject_id: string
+      week_day: number
+      part_time: number
+    }
+  | {}
 
 export type StudentStatusEdited = {
   teacher_id: string
@@ -56,6 +58,20 @@ export type StudentProps = {
   student_lname: string
   time: null | string
   updated_at: string
+}
+
+export type ReportProps = {
+  student_fname: string
+  student_id: string
+  student_lname: string
+  attendance: any
+}
+
+export type ReportParamProps = {
+  teacher_id: string
+  subject_id: string
+  week_day: number
+  part_time: number
 }
 
 export type RecordanceProps = {

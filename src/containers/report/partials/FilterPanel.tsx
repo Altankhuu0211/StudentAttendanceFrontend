@@ -3,40 +3,33 @@ import { Box, MenuItem, Select } from '@mui/material'
 import { t } from 'i18next'
 import _ from 'lodash'
 import Colors from '@theme/colors'
-import { SEMESTER_WEEK } from '@constants/common'
 import { LessonsProps } from '@constants/types'
 import Loading from '@components/Loading'
 
 type Props = {
-  semesterWeek: string
   lesson: LessonsProps
   selectSubject: string
   selectLecture: string
   selectSeminar: string
   selectLab: string
-  selectWeek: string
   handleChangeSubject: (e) => void
   handleChangeLecture: (e) => void
   handleChangeSeminar: (e) => void
   handleChangeLab: (e) => void
-  handleChangeWeek: (e) => void
 }
 
 const FilterPanel: React.FC<Props> = ({
-  semesterWeek,
   lesson,
   selectSubject,
   selectLecture,
   selectSeminar,
   selectLab,
-  selectWeek,
   handleChangeSubject,
   handleChangeLecture,
   handleChangeSeminar,
   handleChangeLab,
-  handleChangeWeek,
 }) => {
-  if (_.isEmpty(semesterWeek) && _.isEmpty(lesson)) {
+  if (_.isEmpty(lesson)) {
     return <Loading />
   }
 
@@ -146,27 +139,6 @@ const FilterPanel: React.FC<Props> = ({
                 </MenuItem>
               )
             })
-        })}
-      </Select>
-      <Select
-        value={selectWeek}
-        onChange={handleChangeWeek}
-        fullWidth
-        sx={{
-          mr: 1.5,
-          fontWeight: selectWeek != '0' ? 700 : 400,
-          color: selectWeek != '0' ? 'black' : 'grey',
-        }}
-      >
-        <MenuItem value="0" disabled>
-          {`${t('selection.semester_week')}`}
-        </MenuItem>
-        {SEMESTER_WEEK.map((item, idx) => {
-          return (
-            <MenuItem key={idx + 1} value={String(idx + 1)}>
-              {item}
-            </MenuItem>
-          )
         })}
       </Select>
     </Box>
