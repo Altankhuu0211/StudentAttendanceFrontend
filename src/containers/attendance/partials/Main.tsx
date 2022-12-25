@@ -396,13 +396,7 @@ const Main: React.FC<Props> = ({ code, week }) => {
                 >
                   {`${t('common.student_code')}`}
                 </StyledTableCell>
-                <StyledTableCell
-                  variant="head"
-                  align="center"
-                  sx={{ width: 250 }}
-                >
-                  {`${t('common.student_lname')}`}
-                </StyledTableCell>
+
                 <StyledTableCell
                   variant="head"
                   align="center"

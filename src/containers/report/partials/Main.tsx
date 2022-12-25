@@ -204,9 +204,6 @@ const ReportContainer: React.FC<Props> = ({ code, week }) => {
                   {`${t('common.student_code')}`}
                 </StyledTableCell>
                 <StyledTableCell variant="head" align="center">
-                  {`${t('common.student_lname')}`}
-                </StyledTableCell>
-                <StyledTableCell variant="head" align="center">
                   {`${t('common.student_fname')}`}
                 </StyledTableCell>
                 {_.range(1, 17).map((val, id) => {

@@ -41,8 +41,7 @@ const TablePanel: React.FC<Props> = ({ attendance, handleChangeStatus }) => {
           <StyledTableRow key={i}>
             <StyledTableCell align="center">{i + 1}</StyledTableCell>
             <StyledTableCell align="left">{v.student_id}</StyledTableCell>
-            <StyledTableCell align="left">{v.student_lname}</StyledTableCell>
-            <StyledTableCell align="left">{v.student_fname}</StyledTableCell>
+            <StyledTableCell align="left">{`${v.student_lname}.${v.student_fname}`}</StyledTableCell>
             <StyledTableCell align="center">
               <Select
                 value={ATTENDANCE_STATUS[v.status]}

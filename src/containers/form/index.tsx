@@ -118,9 +118,6 @@ const FormContainer: React.FC<Props> = () => {
                     {`${t('common.student_code')}`}
                   </StyledTableCell>
                   <StyledTableCell variant="head" align="center">
-                    {`${t('common.student_lname')}`}
-                  </StyledTableCell>
-                  <StyledTableCell variant="head" align="center">
                     {`${t('common.student_fname')}`}
                   </StyledTableCell>
                   <StyledTableCell variant="head" align="center">
@@ -134,12 +131,7 @@ const FormContainer: React.FC<Props> = () => {
                     <StyledTableCell align="center">
                       {v.student_id}
                     </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {v.student_lname}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {v.student_fname}
-                    </StyledTableCell>
+                    <StyledTableCell align="left">{`${v.student_lname}.${v.student_fname}`}</StyledTableCell>
                     <StyledTableCell align="right">
                       {v.chip_number}
                       <IconButton

@@ -32,8 +32,7 @@ const TablePanel: React.FC<Props> = ({ reportData }) => {
           <StyledTableRow key={i}>
             <StyledTableCell align="center">{i + 1}</StyledTableCell>
             <StyledTableCell align="left">{v.student_id}</StyledTableCell>
-            <StyledTableCell align="left">{v.student_lname}</StyledTableCell>
-            <StyledTableCell align="left">{v.student_fname}</StyledTableCell>
+            <StyledTableCell align="left">{`${v.student_lname}.${v.student_fname}`}</StyledTableCell>
             {_.range(1, 17).map((val) => {
               if (
                 v.attendance
