@@ -7,7 +7,13 @@ import Colors from '@theme/colors'
 
 // components
 import StickySidebar from '@components/StickySidebar'
-import { Box, Button, IconButton, TextField, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  InputAdornment,
+} from '@mui/material'
 import { styled } from '@mui/material/styles'
 import {
   Table,
@@ -23,9 +29,11 @@ import {
 import { tableCellClasses } from '@mui/material/TableCell'
 import Loading from '@components/Loading'
 import { fetchStudentList, postStudentChipNumber } from '@services/index'
-import { Edit as IconEdit } from '@mui/icons-material'
 import useFormValidation, { initialValues } from './useFormValidation'
 import { FieldValues } from 'react-hook-form'
+import { FormProps } from '@constants/types'
+import TablePanel from './partials/TablePanel'
+import { Search as IconSearch, Clear as IconClear } from '@mui/icons-material'
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -49,6 +57,12 @@ const FormContainer: React.FC<Props> = () => {
   const [studentCode, setStudentCode] = useState('')
   const [openSuccess, setOpenSuccess] = useState(false)
   const [openFailed, setOpenFailed] = useState(false)
+  const [searchedAttendance, setSearchedAttendance] = useState<
+    undefined | FormProps[]
+  >(undefined)
+  const [searchText, setSearchText] = useState('')
+  const [showClearIcon, setShowClearIcon] = useState(false)
+
   const { Controller, methods } = useFormValidation()
   const {
     control,
@@ -79,16 +93,19 @@ const FormContainer: React.FC<Props> = () => {
     return <Loading />
   }
 
-  console.log('studentList:', studentsData)
-
   const response = studentsData?.data?.data
+
+  const attendanceData = searchedAttendance ? searchedAttendance : response
+
+  const handleChangeSearchedAttendance = (value: undefined | FormProps[]) => {
+    setSearchedAttendance(value)
+  }
 
   const onSubmit = () => {
     setValue('student_id', studentCode)
     const payload = {
       ...getValues(),
     }
-    console.log('payload:', payload)
     onSubmitHandler(payload).then((data) => {
       if (data?.data?.success === true) {
         setOpenFailed(false)
@@ -101,13 +118,91 @@ const FormContainer: React.FC<Props> = () => {
     })
   }
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchText(event.target.value)
+    if (event.target.value === '') {
+      setShowClearIcon(false)
+      handleChangeSearchedAttendance(undefined)
+    } else setShowClearIcon(true)
+  }
+
+  const handleClear = () => {
+    setSearchText('')
+    handleChangeSearchedAttendance(undefined)
+  }
+
+  const onSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    handleChangeSearchedAttendance(
+      response &&
+        response.filter(
+          (v) =>
+            v.student_id.includes(searchText) ||
+            v.student_fname.includes(searchText) ||
+            v.student_lname.includes(searchText)
+        )
+    )
+  }
+
+  const handleChangeStatus = (student_id: string) => {
+    setStudentCode(student_id)
+  }
+
   return (
     <>
       {postChipStatus != 'success' && postChipStatus != 'idle' && <Loading />}
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'left' }}>
         <Box sx={{ width: '60%', mr: 8 }}>
-          <TableContainer component={Paper}>
-            <Table aria-label="caption table" sx={{ width: '100%' }}>
+          <Box
+            component="form"
+            onSubmit={onSearch}
+            sx={{
+              width: '100%',
+              mb: 2,
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <Box sx={{ width: 250 }}>
+              <TextField
+                size="small"
+                variant="outlined"
+                onChange={handleChange}
+                value={searchText}
+                placeholder={`${t('common.search')}`}
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <IconSearch />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment
+                      position="end"
+                      style={{
+                        display: showClearIcon ? 'flex' : 'none',
+                        cursor: 'pointer',
+                      }}
+                      onClick={handleClear}
+                    >
+                      <IconClear />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
+          </Box>
+          <TableContainer
+            component={Paper}
+            sx={{
+              height: '100vh',
+            }}
+          >
+            <Table
+              aria-label="caption table"
+              sx={{ width: '100%', height: 'max-content' }}
+            >
               <TableHead>
                 <StyledTableRow>
                   <StyledTableCell
@@ -126,7 +221,7 @@ const FormContainer: React.FC<Props> = () => {
                 </StyledTableRow>
               </TableHead>
               <TableBody>
-                {response.map((v, i) => (
+                {/* {response.map((v, i) => (
                   <StyledTableRow key={i}>
                     <StyledTableCell align="center">
                       {v.student_id}
@@ -142,7 +237,11 @@ const FormContainer: React.FC<Props> = () => {
                       </IconButton>
                     </StyledTableCell>
                   </StyledTableRow>
-                ))}
+                ))} */}
+                <TablePanel
+                  attendance={attendanceData}
+                  handleChangeStatus={handleChangeStatus}
+                />
               </TableBody>
             </Table>
           </TableContainer>

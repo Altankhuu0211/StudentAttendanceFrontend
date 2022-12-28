@@ -60,6 +60,13 @@ export type StudentProps = {
   updated_at: string
 }
 
+export type FormProps = {
+  student_fname: string
+  student_id: string
+  student_lname: string
+  chip_number: string
+}
+
 export type ReportProps = {
   student_fname: string
   student_id: string
@@ -103,5 +110,11 @@ export type FilterValuesProps = {
 
 export type RegistrationItemProps = {
   chip_number: string
+}
+
+export type RegistrationParams = {
+  date: string
   time: string
+  rfid_no: string
+  attendance: RegistrationItemProps[]
 }

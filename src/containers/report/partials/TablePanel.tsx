@@ -65,9 +65,9 @@ const TablePanel: React.FC<Props> = ({ reportData }) => {
                 )
               return <StyledTableCell key={val} variant="head" align="center" />
             })}
-            <StyledTableCell variant="head" align="center">
+            {/* <StyledTableCell variant="head" align="center">
               {v.attendance.length}
-            </StyledTableCell>
+            </StyledTableCell> */}
           </StyledTableRow>
         ))}
     </>

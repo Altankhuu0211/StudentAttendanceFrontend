@@ -12,4 +12,5 @@ export const URI = {
   POST_ATTENDANCE_EDITED: '/teacher/update-student-attendance-status',
   GET_STUDENTS_LIST: '/student-affairs/students-list',
   POST_STUDENT_CHIP_NUMBER: '/student-affairs/insert-student-chip-number',
+  REGISTER_ATTENDANCE: '/attendance/rfid',
 }

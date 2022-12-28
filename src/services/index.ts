@@ -2,11 +2,11 @@ import { api } from '@utils/axios'
 import { URI } from '@constants/uri.constants'
 import {
   Schedule,
-  LessonSchedule,
   StudentStatusEdited,
   StudentChipNumber,
   Report,
   Recordance,
+  RegistrationParams,
 } from '@constants/types'
 
 export const login = (teacherLogin) => {
@@ -100,10 +100,10 @@ export const postStudentChipNumber = (params: StudentChipNumber) => {
   })
 }
 
-// export const postHolboo = (params) => {
-//   return api({
-//     url: '/adminbackend/api/Login/OutSideLogin',
-//     method: 'POST',
-//     data: JSON.stringify(params),
-//   })
-// }
+export const registerAttendance = (params: RegistrationParams) => {
+  return api({
+    url: URI.REGISTER_ATTENDANCE,
+    method: 'POST',
+    data: JSON.stringify(params),
+  })
+}

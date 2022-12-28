@@ -157,7 +157,7 @@ const ScheduleContainer: React.FC<{}> = () => {
                     return (
                       <StyledTableCell key={idx * 10 + i} align="center">
                         {!_.isEmpty(response) &&
-                          response[idx]?.Subjects.map((subject, index) => {
+                          response[idx]?.Subjects?.map((subject, index) => {
                             return (
                               subject.part_time === v.number && (
                                 <Box

@@ -35,7 +35,6 @@ import {
   LessonsProps,
   RecordanceParamProps,
   RecordanceProps,
-  RegistrationItemProps,
   StudentProps,
   StudentStatusEdited,
 } from '@constants/types'
@@ -211,10 +210,6 @@ const Main: React.FC<Props> = ({ code, week }) => {
     setShowRegister(true)
   }
 
-  const handleRegister = (value: RegistrationItemProps[]) => {
-    console.log(value)
-  }
-
   const handleReport = () => {
     let class_type = CLASS_TYPE[0].type
     let schedule_time = selectLecture
@@ -265,6 +260,8 @@ const Main: React.FC<Props> = ({ code, week }) => {
 
   const closeModalHandler = () => {
     setShowRegister(false)
+    recordanceRefetch()
+    setOpenSuccess(true)
   }
 
   const {
@@ -343,9 +340,16 @@ const Main: React.FC<Props> = ({ code, week }) => {
         }}
       >
         <RegisterModal
+          teacher_code={code}
+          schedule_time={
+            selectLecture != 'none'
+              ? selectLecture
+              : selectLab != 'none'
+              ? selectLab
+              : selectSeminar
+          }
           open={showRegister}
           closeModalHandler={closeModalHandler}
-          handleRegister={handleRegister}
         />
         <DatePanel week={week} />
         <InfoPanel

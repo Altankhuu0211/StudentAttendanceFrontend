@@ -61,7 +61,6 @@ const ReportContainer: React.FC<Props> = ({ code, week }) => {
   useEffect(() => {
     if (router.isReady) {
       const paramData = JSON.parse(String(router.query.data))
-      console.log('paramData:', paramData)
       setSelectSubject(paramData.subject_code)
       if (paramData.class_type === CLASS_TYPE[0].type)
         setSelectLecture(paramData.schedule_time)
@@ -76,7 +75,6 @@ const ReportContainer: React.FC<Props> = ({ code, week }) => {
         week_day: Number(week_day),
         part_time: Number(part_time),
       })
-      console.log('reportParam', reportParam)
     }
   }, [router])
 
@@ -213,9 +211,9 @@ const ReportContainer: React.FC<Props> = ({ code, week }) => {
                     </StyledTableCell>
                   )
                 })}
-                <StyledTableCell variant="head" align="center">
+                {/* <StyledTableCell variant="head" align="center">
                   {`${t('common.total_attendance')}`}
-                </StyledTableCell>
+                </StyledTableCell> */}
               </StyledTableRow>
             </TableHead>
             <TableBody>

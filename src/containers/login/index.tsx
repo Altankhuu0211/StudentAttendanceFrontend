@@ -60,7 +60,8 @@ const LoginContainer: React.FC<{}> = () => {
 
   useEffect(() => {
     const listener = (event) => {
-      if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+      //  if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+      if (event.code === 'Enter' || event.code === 'Numpad') {
         event.preventDefault()
         onSubmit()
       }
