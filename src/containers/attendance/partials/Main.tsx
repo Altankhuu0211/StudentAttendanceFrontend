@@ -128,6 +128,10 @@ const Main: React.FC<Props> = ({ code, week }) => {
   })
 
   useEffect(() => {
+    recordanceRefetch()
+  }, [recordanceParam])
+
+  useEffect(() => {
     if (recordData) {
       setRecord(recordData?.data?.data)
     }
@@ -153,6 +157,7 @@ const Main: React.FC<Props> = ({ code, week }) => {
     const [week_day, part_time] = _.split(selectDefault?.lecture[0], '-', 2)
     setRecordanceParam({
       ...recordanceParam,
+      subject_id: event.target.value,
       week_day: Number(week_day),
       part_time: Number(part_time),
     })
@@ -201,10 +206,6 @@ const Main: React.FC<Props> = ({ code, week }) => {
       semester_week: Number(event.target.value),
     })
   }
-
-  useEffect(() => {
-    recordanceRefetch()
-  }, [recordanceParam])
 
   const handleBeginRegister = () => {
     setShowRegister(true)

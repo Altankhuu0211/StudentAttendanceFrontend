@@ -119,6 +119,7 @@ const ReportContainer: React.FC<Props> = ({ code, week }) => {
     const [week_day, part_time] = _.split(selectDefault?.lecture[0], '-', 2)
     setReportParam({
       ...reportParam,
+      subject_id: event.target.value,
       week_day: Number(week_day),
       part_time: Number(part_time),
     })
