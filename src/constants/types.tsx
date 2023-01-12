@@ -72,6 +72,7 @@ export type ReportProps = {
   student_id: string
   student_lname: string
   attendance: any
+  total_attendance: number
 }
 
 export type ReportParamProps = {

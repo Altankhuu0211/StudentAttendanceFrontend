@@ -212,9 +212,9 @@ const ReportContainer: React.FC<Props> = ({ code, week }) => {
                     </StyledTableCell>
                   )
                 })}
-                {/* <StyledTableCell variant="head" align="center">
+                <StyledTableCell variant="head" align="center">
                   {`${t('common.total_attendance')}`}
-                </StyledTableCell> */}
+                </StyledTableCell>
               </StyledTableRow>
             </TableHead>
             <TableBody>
