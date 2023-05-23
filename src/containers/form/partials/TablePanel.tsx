@@ -37,13 +37,13 @@ const TablePanel: React.FC<Props> = ({ attendance, handleChangeStatus }) => {
       {attendance &&
         attendance.map((v, i) => (
           <StyledTableRow key={i}>
-            <StyledTableCell align="left">{v.student_id}</StyledTableCell>
-            <StyledTableCell align="left">{`${v.student_lname}.${v.student_fname}`}</StyledTableCell>
+            <StyledTableCell align="left">{v.id}</StyledTableCell>
+            <StyledTableCell align="left">{v.fullname}</StyledTableCell>
             <StyledTableCell align="right">
-              {v.chip_number}
+              {v.card_number}
               <IconButton
                 sx={{ ml: 6 }}
-                onClick={() => handleChangeStatus(v.student_id)}
+                onClick={() => handleChangeStatus(v.id)}
               >
                 <IconEdit sx={{ fontSize: '16px' }} />
               </IconButton>

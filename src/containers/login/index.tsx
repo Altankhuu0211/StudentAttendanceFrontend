@@ -42,15 +42,15 @@ const LoginContainer: React.FC<{}> = () => {
 
   const onSubmit = () => {
     onSubmitHandler(getValues()).then((data) => {
-      if (data?.status == 200) {
+      if (data?.status == 201) {
         setOpenSuccess(true)
         setToStorage('token', data?.data?.token)
         setToStorage('permission', data?.data?.result?.permission)
-        setToStorage('user_code', data?.data?.result?.code_)
-        setToStorage('user_fname', data?.data?.result?.fname)
-        setToStorage('user_lname', data?.data?.result?.lname)
-        if (data?.data?.result?.permission == 3) router.push(PageRoutes.HOME)
-        else if (data?.data?.result?.permission == 2)
+        setToStorage('user_code', data?.data?.result?.id)
+        setToStorage('user_fname', data?.data?.result?.fullname)
+        if (data?.data?.result?.permission == 'teacher') {
+          router.push(PageRoutes.HOME)
+        } else if (data?.data?.result?.permission == 'affairs')
           router.push(PageRoutes.FORM)
       } else {
         setOpenFailed(true)

@@ -10,7 +10,7 @@ export type Schedule = {
 export type Recordance =
   | {
       teacher_id: string
-      subject_id: string
+      subject_id?: string
       week_day: number
       part_time: number
       semester_week: number
@@ -53,24 +53,21 @@ export type LessonsProps = LessonProps[] | []
 
 export type StudentProps = {
   status: number
-  student_fname: string
   student_id: string
-  student_lname: string
-  time: null | string
+  fullname: string
+  arrival_time: null | string
   updated_at: string
 }
 
 export type FormProps = {
-  student_fname: string
-  student_id: string
-  student_lname: string
-  chip_number: string
+  fullname: string
+  id: string
+  card_number: string
 }
 
 export type ReportProps = {
-  student_fname: string
   student_id: string
-  student_lname: string
+  fullname: string
   attendance: any
   total_attendance: number
 }

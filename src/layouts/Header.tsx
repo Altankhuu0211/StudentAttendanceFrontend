@@ -32,7 +32,6 @@ const Header: React.FC<Props> = () => {
     removeFromStorage('permission')
     removeFromStorage('user_code')
     removeFromStorage('user_fname')
-    removeFromStorage('user_lname')
     router.push(PageRoutes.LOGIN)
   }
 

@@ -94,7 +94,7 @@ const Main: React.FC<Props> = ({ code, week }) => {
     if (router.isReady) {
       const paramData = JSON.parse(String(router.query.data))
       setSelectWeek(String(week))
-      setSelectSubject(paramData.code)
+      setSelectSubject(paramData.subject_id)
       if (paramData.class_type === CLASS_TYPE[0].type)
         setSelectLecture(paramData.schedule_time)
       else if (paramData.class_type === CLASS_TYPE[1].type)
@@ -104,10 +104,10 @@ const Main: React.FC<Props> = ({ code, week }) => {
       const [week_day, part_time] = _.split(paramData.schedule_time, '-', 2)
       setRecordanceParam({
         teacher_id: code,
-        subject_id: paramData.code,
-        semester_week: Number(week),
-        week_day: Number(week_day),
-        part_time: Number(part_time),
+        subject_id: paramData.subject_id,
+        semester_week: week,
+        week_day: week_day,
+        part_time: part_time,
       })
     }
   }, [router])
@@ -158,8 +158,8 @@ const Main: React.FC<Props> = ({ code, week }) => {
     setRecordanceParam({
       ...recordanceParam,
       subject_id: event.target.value,
-      week_day: Number(week_day),
-      part_time: Number(part_time),
+      week_day: week_day,
+      part_time: part_time,
     })
   }
 
@@ -170,8 +170,8 @@ const Main: React.FC<Props> = ({ code, week }) => {
     const [week_day, part_time] = _.split(event.target.value, '-', 2)
     setRecordanceParam({
       ...recordanceParam,
-      week_day: Number(week_day),
-      part_time: Number(part_time),
+      week_day: week_day,
+      part_time: part_time,
     })
   }
 
@@ -182,8 +182,8 @@ const Main: React.FC<Props> = ({ code, week }) => {
     const [week_day, part_time] = _.split(event.target.value, '-', 2)
     setRecordanceParam({
       ...recordanceParam,
-      week_day: Number(week_day),
-      part_time: Number(part_time),
+      week_day: week_day,
+      part_time: part_time,
     })
   }
 
@@ -194,8 +194,8 @@ const Main: React.FC<Props> = ({ code, week }) => {
     const [week_day, part_time] = _.split(event.target.value, '-', 2)
     setRecordanceParam({
       ...recordanceParam,
-      week_day: Number(week_day),
-      part_time: Number(part_time),
+      week_day: week_day,
+      part_time: part_time,
     })
   }
 
@@ -277,7 +277,7 @@ const Main: React.FC<Props> = ({ code, week }) => {
 
   const onChangeAttendance = () => {
     onSubmitHandler(studentStatusEditedParam).then((data) => {
-      if (data?.data?.success === true) {
+      if (data?.data != 0) {
         setOpenSuccess(true)
         setOpenFailed(false)
         setShowModal(false)
@@ -349,6 +349,7 @@ const Main: React.FC<Props> = ({ code, week }) => {
               ? selectLab
               : selectSeminar
           }
+          semester_week={selectWeek}
           open={showRegister}
           closeModalHandler={closeModalHandler}
         />

@@ -38,7 +38,7 @@ const MenuDrawer: React.FC<Props> = () => {
   const onSubmitHandler = () => {
     removeFromStorage('user_code')
     removeFromStorage('token')
-    removeFromStorage('user_name')
+    removeFromStorage('user_fname')
     removeFromStorage('permission')
     router.push(PageRoutes.LOGIN)
   }
@@ -103,7 +103,7 @@ const MenuDrawer: React.FC<Props> = () => {
       </Box>
       <Box>
         <List sx={{ mt: -1 }}>
-          {permission == '3' &&
+          {permission == 'teacher' &&
             ['Нүүр', 'Багш', 'Хичээл'].map((text, index) => (
               <ListItem
                 key={index}
@@ -133,7 +133,7 @@ const MenuDrawer: React.FC<Props> = () => {
                 </ListItemButton>
               </ListItem>
             ))}
-          {permission == '3' && (
+          {permission == 'teacher' && (
             <ListItem disablePadding>
               <ListItemButton
                 sx={{
@@ -163,7 +163,7 @@ const MenuDrawer: React.FC<Props> = () => {
               </ListItemButton>
             </ListItem>
           )}
-          {permission == '2' && (
+          {permission == 'affairs' && (
             <ListItem disablePadding>
               <ListItemButton
                 sx={{

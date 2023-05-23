@@ -8,19 +8,20 @@ import {
   Alert,
   Snackbar,
 } from '@mui/material'
-import { useQuery } from 'react-query'
 import { useMutation } from 'react-query'
 import { Close as IconClose } from '@mui/icons-material'
 import Colors from '@theme/colors'
 import { t } from 'i18next'
 import { RegistrationItemProps } from '@constants/types'
-import { fetchSchedule, registerAttendance } from '@services/index'
+import { registerAttendance } from '@services/index'
 import Loading from '@components/Loading'
 import _ from 'lodash'
+// import app from '@utils/feathers_client'
 
 type Props = {
-  teacher_code: string
+  teacher_code?: string
   schedule_time: string
+  semester_week: string
   open: boolean
   closeModalHandler: () => void
 }
@@ -28,21 +29,15 @@ type Props = {
 const RegisterModal: React.FC<Props> = ({
   teacher_code,
   schedule_time,
+  semester_week,
   open,
   closeModalHandler,
 }) => {
   const [list, setList] = useState<RegistrationItemProps[]>([])
   const [code, setCode] = useState('')
-  const [rfid, setRfid] = useState('')
+  // const [rfid, setRfid] = useState('')
   const [openSuccess, setOpenSuccess] = useState(false)
   const [openFailed, setOpenFailed] = useState(false)
-
-  const { status: scheduleStatus, data: scheduleData } = useQuery(
-    ['schedule', teacher_code],
-    () => {
-      return fetchSchedule({ teacher_id: teacher_code })
-    }
-  )
 
   const {
     status: registerStatus,
@@ -60,16 +55,15 @@ const RegisterModal: React.FC<Props> = ({
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const [week_day, parttime] = _.split(schedule_time, '-', 2)
-    scheduleData?.data?.data.map((val) => {
-      if (val.weekday == week_day) {
-        val.Subjects.map((i) => {
-          if (i.part_time == parttime) {
-            setRfid(i.class_number)
-          }
-        })
-      }
-    })
+
+    // const [week_day, parttime] = _.split(schedule_time, '-', 2)
+    // const data: any = app
+    //   .service('schedule')
+    //   .find({ query: { weekday: week_day, part_time: parttime } })
+    //   .then((data) => {
+    //     return data
+    //   })
+    // setRfid(data.data[0].class_id)
     if (list.some((v) => v.chip_number === code)) {
     } else {
       setList([...list, { chip_number: code }])
@@ -78,14 +72,22 @@ const RegisterModal: React.FC<Props> = ({
   }
 
   const onSubmitRegister = () => {
+    const now = new Date()
+    const current = now.toLocaleTimeString()
+    const [week_day, parttime] = _.split(schedule_time, '-', 2)
     const payload = {
-      date: '2022-10-25',
-      time: '08:39:46',
-      rfid_no: rfid,
+      teacher_id: teacher_code,
+      weekday: week_day,
+      part_time: parttime,
+      semester_week: semester_week,
+      time: current,
+      // date: '2022-10-25',
+      // time: '08:39:46',
+      // rfid_no: rfid,
       attendance: list,
     }
     onSubmitHandler(payload).then((data) => {
-      if (data?.data?.success === true) {
+      if (data?.status == 201) {
         setOpenSuccess(true)
         setOpenFailed(false)
         closeModalHandler()
@@ -95,10 +97,6 @@ const RegisterModal: React.FC<Props> = ({
         setOpenFailed(true)
       }
     })
-  }
-
-  if (scheduleStatus != 'success') {
-    return <Loading />
   }
 
   if (!open) return null

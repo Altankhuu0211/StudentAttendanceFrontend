@@ -9,6 +9,7 @@ export default {
     copyright: '© 2022 Мэдээллийн технологийн төв',
     start: 'Ирц бүртгэл эхлүүлэх',
     report: 'Тайлан',
+    download: 'Файлаар татах',
     search: 'Хайх',
     save: 'Хадгалах',
     student_code: 'Оюутны код',
@@ -26,6 +27,7 @@ export default {
     welcome: 'Сайн байна уу,',
     yes: 'Тийм',
     no: 'Үгүй',
+    backup: 'Хичээлийн хуваарь unimis-ээс татах',
   },
   selection: {
     lesson: 'Хичээл сонгоно уу',
