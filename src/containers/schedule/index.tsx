@@ -171,8 +171,6 @@ const ScheduleContainer: React.FC<{}> = () => {
   )
     return <Loading />
 
-  console.log(analytics)
-
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
       <Box sx={{ overflowX: 'hidden' }}>
