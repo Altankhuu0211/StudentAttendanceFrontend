@@ -5,6 +5,7 @@ import {
   StudentChipNumber,
   Report,
   Recordance,
+  GetAnalyticsDataParam,
   // RegistrationParams,
 } from '@constants/types'
 import app from '@utils/feathers_client'
@@ -45,7 +46,7 @@ export const getLessonSchedule = (params) => {
   return api({
     // url: URI.GET_LESSON_LIST,
     url: `${root}/teacher-lessons`,
-    params: params,
+    params,
   })
 }
 
@@ -53,7 +54,7 @@ export const fetchSchedule = (params) => {
   return api({
     // url: URI.GET_SCHEDULE,
     url: `${root}/teacher-schedule`,
-    params: params,
+    params,
   })
 }
 
@@ -83,7 +84,7 @@ export const fetchRecordance = (params: Recordance) => {
   return api({
     // url: URI.GET_CLASS_ATTENDANCE,
     url: `${root}/class-attendance`,
-    params: params,
+    params,
   })
 }
 
@@ -91,7 +92,7 @@ export const fetchReport = (params: Report) => {
   return api({
     // url: URI.GET_REPORT,
     url: `${root}/class-report`,
-    params: params,
+    params,
   })
 }
 
@@ -119,5 +120,13 @@ export const registerAttendance = (params) => {
     url: `${root}/record-attendance`,
     method: 'POST',
     data: JSON.stringify(params),
+  })
+}
+
+export const getAnalyticsData = (params: GetAnalyticsDataParam) => {
+  return api({
+    url: `${root}/analytics`,
+    method: 'GET',
+    params,
   })
 }

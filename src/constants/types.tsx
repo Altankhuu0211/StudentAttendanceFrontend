@@ -116,3 +116,9 @@ export type RegistrationParams = {
   rfid_no: string
   attendance: RegistrationItemProps[]
 }
+
+export type GetAnalyticsDataParam = {
+  teacher_id: string
+  week_day: number
+  part_time: number
+}
