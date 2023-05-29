@@ -6,7 +6,7 @@ import Colors from '@theme/colors'
 import { useRouter } from 'next/router'
 
 // components
-import { Box, SelectChangeEvent, Typography } from '@mui/material'
+import { Box, SelectChangeEvent, Typography, Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import {
   Table,
@@ -79,7 +79,7 @@ const ReportContainer: React.FC<Props> = ({ code, week }) => {
   }, [router])
 
   const { status: lessonStatus, data: lessonData } = useQuery(
-    ['teacher-schedule', code],
+    ['teacher-lessons', code],
     () => {
       return getLessonSchedule({ teacher_id: code })
     }
@@ -161,6 +161,105 @@ const ReportContainer: React.FC<Props> = ({ code, week }) => {
     })
   }
 
+  function convertToCSV(objArray: any[]): string {
+    const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray
+    let csv = ''
+
+    for (let i = 0; i < array.length; i++) {
+      let line = ''
+      for (let key in array[i]) {
+        if (line !== '') line += ','
+
+        line += array[i][key]
+      }
+
+      csv += line + '\r\n'
+    }
+
+    return csv
+  }
+
+  function downloadCSV(
+    data: any[],
+    headers?: string[],
+    fileTitle: string = 'data',
+    title: string = ''
+  ): void {
+    let csv = ''
+
+    if (title !== '') {
+      csv += `${title}\r\n` // Include the title in the CSV
+    }
+
+    if (headers && headers.length > 0) {
+      csv += headers.join(',') + '\r\n'
+    }
+
+    csv += convertToCSV(data)
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+
+    link.setAttribute('href', url)
+    link.setAttribute('download', `${fileTitle}.csv`)
+    link.style.visibility = 'hidden'
+
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+    URL.revokeObjectURL(url)
+  }
+
+  const onDownload = () => {
+    const headers = [
+      '№',
+      'Оюутны код',
+      'Оюутны нэр',
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      '11',
+      '12',
+      '13',
+      '14',
+      '15',
+      '16',
+      'Нийт ирц',
+    ]
+    const fileTitle = 'attendance'
+    const title = 'Ирцийн тайлан'
+
+    const reportt: any = report
+    var row: any = []
+    var data: any = []
+    reportt.map((stud, idx) => {
+      var status: any = []
+      stud.attendance.map((att) => {
+        if (att.status == '2' || att.status == '3') status.push('0.5')
+        else status.push(att.status)
+      })
+      row = [
+        idx + 1,
+        stud.student_id,
+        stud.fullname,
+        ...status,
+        stud.total_attendance,
+      ]
+      data.push(row)
+    })
+
+    downloadCSV(data, headers, fileTitle, title)
+  }
+
   useEffect(() => {
     reportRefetch()
   }, [reportParam])
@@ -222,16 +321,21 @@ const ReportContainer: React.FC<Props> = ({ code, week }) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Box
-          sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}
-        >
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            variant="contained"
+            onClick={onDownload}
+            sx={{ mt: 2, mr: 2 }}
+          >
+            {`${t('common.download')}`}
+          </Button>
           <Box
             sx={{
               width: 'fit-content',
               display: 'flex',
               justifyContent: 'flex-end',
               border: '1px solid black',
-              p: 2,
+              p: 1,
               mt: 2,
             }}
           >
@@ -248,7 +352,7 @@ const ReportContainer: React.FC<Props> = ({ code, week }) => {
               </Typography>
             </Box>
 
-            <Box
+            {/* <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -259,7 +363,7 @@ const ReportContainer: React.FC<Props> = ({ code, week }) => {
               <Typography variant="body2" sx={{ ml: 1 }}>
                 {`${t('common.absent')}`}
               </Typography>
-            </Box>
+            </Box> */}
             <Box
               sx={{
                 display: 'flex',

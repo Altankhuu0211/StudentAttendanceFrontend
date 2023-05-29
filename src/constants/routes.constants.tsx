@@ -5,3 +5,5 @@ export const PageRoutes = {
   LOGIN: '/login',
   FORM: '/form',
 }
+
+export const root = 'http://localhost:3040'

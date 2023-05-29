@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import Head from 'next/head'
 import { AppProps } from 'next/app'
 import Router from 'next/router'
-import moment from 'moment'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { ThemeProvider } from '@mui/material/styles'
@@ -17,8 +16,6 @@ import 'slick-carousel/slick/slick-theme.css'
 import '@locales/i18n'
 import 'moment/locale/mn'
 import 'nprogress/nprogress.css'
-
-moment.locale('mn')
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
 

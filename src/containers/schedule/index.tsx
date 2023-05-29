@@ -23,7 +23,7 @@ import Loading from '@components/Loading'
 // constants
 import { PART_TIME, WEEKDAY, CLASS_TYPE } from '@constants/common'
 import { useRouter } from 'next/router'
-import { fetchSchedule, getSemesterWeek } from '@services/index'
+import { getSemesterWeek, fetchSchedule } from '@services/index'
 import { combineScheduleTime, getFromStorage } from '@utils/common'
 import { PageRoutes } from '@constants/routes.constants'
 
@@ -38,7 +38,7 @@ const ScheduleContainer: React.FC<{}> = () => {
   const { status: scheduleStatus, data: scheduleData } = useQuery(
     ['teacher-schedule', teacherCode],
     () => {
-      return fetchSchedule({ teacher_id: teacherCode })
+      return fetchSchedule({ teacher_id: getFromStorage('user_code') })
     }
   )
 
@@ -56,12 +56,13 @@ const ScheduleContainer: React.FC<{}> = () => {
   const response = scheduleData?.data?.data
   const semester_week = weekData?.data?.data
 
-  const handleSubjectClick = (subject: any, weekday: number) => {
-    let paramData = subject
+  const handleSubjectClick = (obj: any) => {
+    let paramData = obj
     paramData = {
       ...paramData,
-      schedule_time: combineScheduleTime(weekday, paramData.part_time),
+      schedule_time: combineScheduleTime(obj.weekday, obj.part_time),
     }
+    delete paramData.weekday
     delete paramData.part_time
     router.push({
       pathname: PageRoutes.ATTENDANCE,
@@ -83,13 +84,7 @@ const ScheduleContainer: React.FC<{}> = () => {
 
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-      <Box
-        sx={
-          {
-            // maxWidth: 1200,
-          }
-        }
-      >
+      <Box>
         <Box
           sx={{
             display: 'flex',
@@ -156,49 +151,40 @@ const ScheduleContainer: React.FC<{}> = () => {
                   {_.range(0, 5).map((_val, idx) => {
                     return (
                       <StyledTableCell key={idx * 10 + i} align="center">
-                        {!_.isEmpty(response) &&
-                          response[idx]?.Subjects?.map((subject, index) => {
-                            return (
-                              subject.part_time === v.number && (
-                                <Box
-                                  key={index}
-                                  onClick={() =>
-                                    handleSubjectClick(
-                                      subject,
-                                      response[idx]?.weekday
-                                    )
-                                  }
-                                  sx={{
-                                    bgcolor: CLASS_TYPE.map((va) => {
-                                      return va.type === subject.class_type
-                                        ? va.color
-                                        : null
-                                    }),
-                                    m: '-14px',
-                                    cursor: 'pointer',
-                                    opacity: 1,
-                                    transition: '0.3s',
-                                    '&:hover': {
-                                      opacity: 0.7,
-                                    },
-                                  }}
-                                >
-                                  <Typography
-                                    variant="body2"
-                                    sx={{ fontWeight: 600 }}
-                                  >
-                                    {subject.code}
-                                  </Typography>
-                                  <Typography variant="body2">
-                                    {subject.name}
-                                  </Typography>
-                                  <Typography variant="body2">
-                                    {subject.class_type} №{subject.class_number}
-                                  </Typography>
-                                </Box>
-                              )
-                            )
-                          })}
+                        {!_.isEmpty(response) && response[i][idx] != null && (
+                          <Box
+                            key={idx * 10 + i}
+                            onClick={() => handleSubjectClick(response[i][idx])}
+                            sx={{
+                              bgcolor: CLASS_TYPE.map((va) => {
+                                return va.type === response[i][idx].class_type
+                                  ? va.color
+                                  : null
+                              }),
+                              m: '-14px',
+                              cursor: 'pointer',
+                              opacity: 1,
+                              transition: '0.3s',
+                              '&:hover': {
+                                opacity: 0.7,
+                              },
+                            }}
+                          >
+                            <Typography
+                              variant="body2"
+                              sx={{ fontWeight: 600 }}
+                            >
+                              {response[i][idx].subject_id}
+                            </Typography>
+                            <Typography variant="body2">
+                              {response[i][idx].name}
+                            </Typography>
+                            <Typography variant="body2">
+                              {response[i][idx].class_type} №
+                              {response[i][idx].class_id}
+                            </Typography>
+                          </Box>
+                        )}
                       </StyledTableCell>
                     )
                   })}

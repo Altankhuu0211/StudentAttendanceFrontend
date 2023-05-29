@@ -56,9 +56,7 @@ const InfoPanel: React.FC<Props> = ({
       attendance &&
         attendance.filter(
           (v) =>
-            v.student_id.includes(searchText) ||
-            v.student_fname.includes(searchText) ||
-            v.student_lname.includes(searchText)
+            v.student_id.includes(searchText) || v.fullname.includes(searchText)
         )
     )
   }

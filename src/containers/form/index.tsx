@@ -4,6 +4,7 @@ import { useQuery } from 'react-query'
 import { useMutation } from 'react-query'
 import { t } from 'i18next'
 import Colors from '@theme/colors'
+import app from '@utils/feathers_client'
 
 // components
 import StickySidebar from '@components/StickySidebar'
@@ -93,7 +94,7 @@ const FormContainer: React.FC<Props> = () => {
     return <Loading />
   }
 
-  const response = studentsData?.data?.data
+  const response = studentsData
 
   const attendanceData = searchedAttendance ? searchedAttendance : response
 
@@ -101,13 +102,13 @@ const FormContainer: React.FC<Props> = () => {
     setSearchedAttendance(value)
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setValue('student_id', studentCode)
     const payload = {
       ...getValues(),
     }
     onSubmitHandler(payload).then((data) => {
-      if (data?.data?.success === true) {
+      if (data?.data != 0) {
         setOpenFailed(false)
         setOpenSuccess(true)
         reset(initialValues)
@@ -116,6 +117,22 @@ const FormContainer: React.FC<Props> = () => {
         setOpenFailed(true)
       }
     })
+  }
+
+  const onBackup = async () => {
+    app
+      .service('backup')
+      .find()
+      .then((data) => {
+        console.log('backup:', data)
+        if (data?.data == 'success') {
+          setOpenFailed(false)
+          setOpenSuccess(true)
+        } else {
+          setOpenSuccess(false)
+          setOpenFailed(true)
+        }
+      })
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -136,10 +153,7 @@ const FormContainer: React.FC<Props> = () => {
     handleChangeSearchedAttendance(
       response &&
         response.filter(
-          (v) =>
-            v.student_id.includes(searchText) ||
-            v.student_fname.includes(searchText) ||
-            v.student_lname.includes(searchText)
+          (v) => v.id.includes(searchText) || v.fullname.includes(searchText)
         )
     )
   }
@@ -221,23 +235,6 @@ const FormContainer: React.FC<Props> = () => {
                 </StyledTableRow>
               </TableHead>
               <TableBody>
-                {/* {response.map((v, i) => (
-                  <StyledTableRow key={i}>
-                    <StyledTableCell align="center">
-                      {v.student_id}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">{`${v.student_lname}.${v.student_fname}`}</StyledTableCell>
-                    <StyledTableCell align="right">
-                      {v.chip_number}
-                      <IconButton
-                        sx={{ ml: 6 }}
-                        onClick={() => setStudentCode(v.student_id)}
-                      >
-                        <IconEdit sx={{ fontSize: '16px' }} />
-                      </IconButton>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))} */}
                 <TablePanel
                   attendance={attendanceData}
                   handleChangeStatus={handleChangeStatus}
@@ -346,6 +343,9 @@ const FormContainer: React.FC<Props> = () => {
                 </Button>
               </Box>
             </form>
+            <Button variant="contained" sx={{ my: 4 }} onClick={onBackup}>
+              {`${t('common.backup')}`}
+            </Button>
           </StickySidebar>
         </Box>
       </Box>

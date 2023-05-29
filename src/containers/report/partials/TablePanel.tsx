@@ -32,38 +32,23 @@ const TablePanel: React.FC<Props> = ({ reportData }) => {
           <StyledTableRow key={i}>
             <StyledTableCell align="center">{i + 1}</StyledTableCell>
             <StyledTableCell align="left">{v.student_id}</StyledTableCell>
-            <StyledTableCell align="left">{`${v.student_lname}.${v.student_fname}`}</StyledTableCell>
-            {_.range(1, 17).map((val) => {
-              if (
-                v.attendance
-                  .map((att) => {
-                    return att.week
-                  })
-                  .includes(val)
-              )
-                return (
-                  <StyledTableCell
-                    key={val}
-                    variant="head"
-                    align="center"
-                    sx={{
-                      bgcolor: v.attendance
-                        .map((att) => {
-                          return att.week === val ? att.status : ''
-                        })
-                        .includes(1)
+            <StyledTableCell align="left">{v.fullname}</StyledTableCell>
+            {v.attendance.map((att, idx) => {
+              return (
+                <StyledTableCell
+                  key={idx}
+                  variant="head"
+                  align="center"
+                  sx={{
+                    bgcolor:
+                      att.status == '1'
                         ? Colors.present
-                        : v.attendance
-                            .map((att) => {
-                              return att.week === val ? att.status : ''
-                            })
-                            .includes(0)
-                        ? Colors.absent
+                        : att.status == '0'
+                        ? 'none'
                         : Colors.others,
-                    }}
-                  />
-                )
-              return <StyledTableCell key={val} variant="head" align="center" />
+                  }}
+                />
+              )
             })}
             <StyledTableCell variant="head" align="center">
               {v.total_attendance}
