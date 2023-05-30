@@ -173,7 +173,7 @@ const ScheduleContainer: React.FC<{}> = () => {
 
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-      <Box sx={{ overflowX: 'hidden' }}>
+      <Box sx={{ overflowX: 'hidden', width: '100%' }}>
         <Box
           sx={{
             display: 'flex',
@@ -208,15 +208,15 @@ const ScheduleContainer: React.FC<{}> = () => {
               width: '100%',
             }}
           >
-            <TableHead>
-              <TableRow>
+            <TableHead sx={{ width: '100%' }}>
+              <TableRow sx={{ width: '100%' }}>
                 <StyledTableCell
                   variant="head"
                   align="center"
                   sx={{
                     bgcolor: Colors.secondBlue,
                     color: Colors.mainWhite,
-                    width: 250,
+                    width: '16.67%',
                   }}
                 >
                   {`${t('common.class_time')}`}
@@ -230,7 +230,7 @@ const ScheduleContainer: React.FC<{}> = () => {
                       sx={{
                         bgcolor: Colors.secondBlue,
                         color: Colors.mainWhite,
-                        width: 250,
+                        width: '16.67%',
                       }}
                     >
                       {v.name}
