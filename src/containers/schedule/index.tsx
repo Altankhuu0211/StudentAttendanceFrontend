@@ -331,7 +331,7 @@ const ScheduleContainer: React.FC<{}> = () => {
               <MenuItem disabled value={''}>
                 <em>Хичээлийн цаг сонгоно уу</em>
               </MenuItem>
-              {lessons.map((lesson, index) => [
+              {lessons?.map((lesson, index) => [
                 <ListSubheader
                   key={index}
                   sx={{ fontWeight: 600 }}
