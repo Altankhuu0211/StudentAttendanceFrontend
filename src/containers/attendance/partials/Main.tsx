@@ -300,9 +300,9 @@ const Main: React.FC<Props> = ({ code, week }) => {
           Number(b.student_id.replace('B', ''))
       )
 
-  if (recordStatus != 'success' || lessonStatus != 'success') {
-    return <Loading />
-  }
+  // if (recordStatus != 'success' || lessonStatus != 'success') {
+  //   return <Loading />
+  // }
 
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
@@ -335,6 +335,7 @@ const Main: React.FC<Props> = ({ code, week }) => {
         </Alert>
       </Snackbar>
       {postStatus != 'success' && postStatus != 'idle' && <Loading />}
+      {(recordStatus != 'success' || lessonStatus != 'success') && <Loading />}
       <Box
         sx={{
           width: '100%',

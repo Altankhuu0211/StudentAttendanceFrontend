@@ -1,7 +1,7 @@
 FROM node:16.15.0
 
 # Create app directory
-WORKDIR /Users/altankhuusukhbaatar/desktop/diplom/safront
+WORKDIR /Users/altankhuusukhbaatar/Desktop/safront
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied

@@ -264,12 +264,13 @@ const ReportContainer: React.FC<Props> = ({ code, week }) => {
     reportRefetch()
   }, [reportParam])
 
-  if (reportStatus != 'success' || lessonStatus != 'success') {
-    return <Loading />
-  }
+  // if (reportStatus != 'success' || lessonStatus != 'success') {
+  //   return <Loading />
+  // }
 
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      {(reportStatus != 'success' || lessonStatus != 'success') && <Loading />}
       <Box
         sx={{
           width: '100%',

@@ -13,6 +13,7 @@ const Loading = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.4)',
         zIndex: 1900,
       }}
     >
